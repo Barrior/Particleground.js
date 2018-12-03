@@ -1,4 +1,28 @@
-# JParticles [![CircleCI](https://circleci.com/gh/Barrior/JParticles.svg?style=shield)](https://circleci.com/gh/Barrior/JParticles) [![Coverage Status](https://coveralls.io/repos/github/Barrior/JParticles/badge.svg?branch=master)](https://coveralls.io/github/Barrior/JParticles?branch=master) [![npm version](https://badge.fury.io/js/jparticles.svg)](https://badge.fury.io/js/jparticles) [![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)](https://www.npmjs.com/package/jparticles) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Barrior/JParticles/blob/master/LICENSE)
+<p align="center">
+   <a href="https://jparticles.js.org/" target="_blank" rel="noopener noreferrer">
+      <img width="300" src="./logo/logo_rectangle.svg" alt="JParticles logo">
+   </a>
+</p>
+
+<p align="center">
+  <a href="https://circleci.com/gh/Barrior/JParticles">
+    <img src="https://circleci.com/gh/Barrior/JParticles.svg?style=shield" alt="CircleCI">
+  </a>
+  <a href="https://coveralls.io/github/Barrior/JParticles?branch=master">
+    <img src="https://coveralls.io/repos/github/Barrior/JParticles/badge.svg?branch=master" alt="Coverage Status">
+  </a>
+  <a href="https://badge.fury.io/js/jparticles">
+    <img src="https://badge.fury.io/js/jparticles.svg" alt="npm version">
+  </a>
+  <a href="https://www.npmjs.com/package/jparticles">
+    <img src="https://img.shields.io/badge/dependencies-none-brightgreen.svg" alt="dependencies">
+  </a>
+  <a href="https://github.com/Barrior/JParticles/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license">
+  </a>
+</p>
+
+---
 
 > English | [中文](./README.md)
 
