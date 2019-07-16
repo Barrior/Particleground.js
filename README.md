@@ -1,6 +1,6 @@
 <p align="center">
    <a href="https://jparticles.js.org/" target="_blank" rel="noopener noreferrer">
-      <img width="300" src="./logo/logo_rectangle.svg" alt="JParticles logo">
+      <img width="300" src="./logo/logo_temp.svg" alt="JParticles logo">
    </a>
 </p>
 
