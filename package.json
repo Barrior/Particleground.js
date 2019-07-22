@@ -10,7 +10,7 @@
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint --cache --fix",
+    "lint": "eslint --fix",
     "publish": "./bin/npm-publish.sh"
   },
   "husky": {
@@ -20,7 +20,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "npm run lint --",
+      "npm run lint",
       "git add"
     ]
   },
