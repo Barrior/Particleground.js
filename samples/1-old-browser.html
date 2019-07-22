@@ -5,16 +5,16 @@
     <title>Title</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        #instance-snow .demo {
+        #instance-Snow .demo {
             background-color: #333;
         }
     </style>
 </head>
 <body>
     <div id="root"></div>
-    <script src="../production/jparticles.all.js"></script>
+    <script src="../dist/jparticles.all.js"></script>
     <script>
-        var names = ['particle', 'wave', 'snow'];
+        var names = ['Particle', 'Wave', 'Snow'];
         var options = [{num: 100}];
 
         var html = [];
@@ -52,12 +52,11 @@
             }(i);
         }
 
-        window.demowave.setOptions({
+        window.demoWave.setOptions({
             offsetTop: 10,
             opacity: 0.5,
             speed: undefined
         });
-
     </script>
 </body>
 </html>

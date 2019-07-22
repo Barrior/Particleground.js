@@ -48,8 +48,8 @@
         </div>
     </div>
 
-    <script src="../production/jparticles.js"></script>
-    <script src="../production/wave.js"></script>
+    <script src="../dist/jparticles.js"></script>
+    <script src="../dist/wave.js"></script>
     <script>
         function getCss(elem, prop) {
             if(window.getComputedStyle) {
@@ -95,7 +95,7 @@
                 setProgress();
             }
 
-            var effect = new JParticles.wave(demo, {
+            var effect = new JParticles.Wave(demo, {
                 num: 1,
                 line: false,
                 fill: true,
@@ -158,7 +158,7 @@
                 });
             }
 
-            var effect = new JParticles.wave(demo, {
+            var effect = new JParticles.Wave(demo, {
                 num: 3,
                 lineColor: ['rgba(0, 190, 112, .5)', 'rgba(0, 190, 112, .7)', 'rgba(0, 190, 112, .9)'],
                 lineWidth: [.5, .7, .9],

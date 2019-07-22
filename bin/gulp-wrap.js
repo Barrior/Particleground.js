@@ -1,13 +1,13 @@
-const through = require('through2');
-const pkg = require('../package.json');
-const VERSION = pkg.version;
+const through = require('through2')
+const pkg = require('../package.json')
+const VERSION = pkg.version
 
 const UMDHeader = `
 +function() {
-    var runSupport = true;
+    var runtimeSupport = true;
     var isIE8 = /msie\\s8.0/i.test(navigator.userAgent);
     if (!Object.defineProperty || isIE8) {
-        runSupport = false;
+        runtimeSupport = false;
         Object.defineProperty = function (target, prop, descriptor) {
             target[prop] = descriptor.value;
         };
@@ -38,7 +38,7 @@ const UMDHeader = `
             };
         })();
     }
-`;
+`
 const UMDFooter = `
     
     defineReadOnlyProperty('${VERSION}', 'version', JParticles);
@@ -53,27 +53,21 @@ const UMDFooter = `
         module.exports = JParticles;
     }
 }();
-`;
+`
 
-// 匹配部分抛出错误，如：throw new Error('something');
-const clearThrowError = /([\s;(){}])throw\s.+\(.+?\);/g;
-module.exports = (output) => {
-    return through.obj((file, encoding, callback) => {
-        let content = file.contents.toString();
-        // const filename = file.path.replace(/.+[\\|/](\w+)\.js$/,'$1');
+module.exports = () => {
+  return through.obj((file, encoding, callback) => {
+    let content = file.contents.toString()
+    // const filename = file.path.replace(/.+[\\|/](\w+)\.js$/,'$1');
 
-        if (file.path.indexOf('jparticles.js') !== -1) {
-            content = UMDHeader + content + UMDFooter;
-        } else {
-            content = `+function () { ${content} }();`;
-        }
+    if (file.path.indexOf('jparticles.js') !== -1) {
+      content = UMDHeader + content + UMDFooter
+    } else {
+      content = `+function () { ${content} }();`
+    }
 
-        if (output === 'production') {
-            content = content.replace(clearThrowError, '$1');
-        }
+    file.contents = new Buffer(content)
 
-        file.contents = new Buffer(content);
-
-        callback(null, file);
-    });
-};
+    callback(null, file)
+  })
+}

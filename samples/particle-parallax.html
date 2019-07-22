@@ -89,12 +89,12 @@
         </div>
     </div>
 
-    <script src="../production/jparticles.js"></script>
-    <script src="../production/particle.js"></script>
+    <script src="../dist/jparticles.js"></script>
+    <script src="../dist/particle.js"></script>
     <script src="js/event.js"></script>
     <script>
         bind('#instance', function () {
-            return new JParticles.particle('#instance .demo', {
+            return new JParticles.Particle('#instance .demo', {
                 color: '#5cbdaa',
                 range: 2000,
                 proximity: 100,
@@ -103,7 +103,7 @@
         });
 
         bind('#instance2', function () {
-            return new JParticles.particle('#instance2 .demo', {
+            return new JParticles.Particle('#instance2 .demo', {
                 parallax: true,
                 parallaxStrength: 1,
 
@@ -114,7 +114,7 @@
 
         // 固定定位测试
         bind('#instance3', function () {
-            return new JParticles.particle('#instance3 .demo', {
+            return new JParticles.Particle('#instance3 .demo', {
                 lineShape: 'cube',
                 range: 120,
                 parallax: true,

@@ -71,15 +71,15 @@
         </div>
     </div>
 
-    <script src="../production/jparticles.js"></script>
-    <script src="../production/wave_loading.js"></script>
+    <script src="../dist/jparticles.js"></script>
+    <script src="../dist/wave-loading.js"></script>
     <script src="js/event.js"></script>
     <script>
         (function () {
             var instance = document.getElementById('instance');
             var btn = instance.querySelector('.btn');
             var demo = instance.querySelector('.demo');
-            var loading = new JParticles.waveLoading(demo, {
+            var loading = new JParticles.WaveLoading(demo, {
 
                 // [font style][font weight][font size][font family]
                 // 文本样式，同css一样，必须包含 [font size] 和 [font family]
@@ -148,7 +148,7 @@
             var instance = document.getElementById('instance2');
             var btn = instance.querySelector('.btn');
             var demo = instance.querySelector('.demo');
-            var loading = new JParticles.waveLoading(demo, {
+            var loading = new JParticles.WaveLoading(demo, {
                 crestHeight: 8,
                 rippleNum: 2
             });
@@ -182,7 +182,7 @@
             var instance = document.getElementById('instance3');
             var btn = instance.querySelector('.btn');
             var demo = instance.querySelector('.demo');
-            var loading = new JParticles.waveLoading(demo);
+            var loading = new JParticles.WaveLoading(demo);
 
             loading.onProgress(function (progress) {
 

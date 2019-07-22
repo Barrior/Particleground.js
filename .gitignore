@@ -1,7 +1,21 @@
-.idea/
+.DS_Store
 node_modules/
-npm-debug.log
-/production/maps/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Test related
 coverage
 .nyc_output
 .coveralls.yml
+
+# maps
+/dist/maps/

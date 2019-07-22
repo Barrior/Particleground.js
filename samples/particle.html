@@ -69,19 +69,19 @@
         </div>
     </div>
 
-    <script src="../production/jparticles.js"></script>
-    <script src="../production/particle.js"></script>
+    <script src="../dist/jparticles.js"></script>
+    <script src="../dist/particle.js"></script>
     <script src="js/event.js"></script>
     <script>
         bind('#instance1', function () {
-            return new JParticles.particle('#instance1 .demo', {
+            return new JParticles.Particle('#instance1 .demo', {
                 num: 100
             });
         });
 
         // 无线段测试
         bind('#instance2', function () {
-            return new JParticles.particle('#instance2 .demo', {
+            return new JParticles.Particle('#instance2 .demo', {
 
                 // range为0，不连接线
                 range: 0,
@@ -94,7 +94,7 @@
 
         // 固定定位测试
         bind('#instance3', function () {
-            return new JParticles.particle('#instance3 .demo', {
+            return new JParticles.Particle('#instance3 .demo', {
                 range: 50,
                 proximity: 40
             });
@@ -102,7 +102,7 @@
 
         // 超过首屏及 lineShape API 测试
         bind('#instance4', function () {
-            return new JParticles.particle('#instance4 .demo', {
+            return new JParticles.Particle('#instance4 .demo', {
                 lineShape: 'cube'
             });
         });

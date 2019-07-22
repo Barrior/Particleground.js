@@ -1,0 +1,8 @@
+{
+  "globals": {
+    "JParticles": "readonly",
+    "runtimeSupport": "readonly",
+    "fixture": "readonly",
+    "test": "readonly"
+  }
+}

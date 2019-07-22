@@ -1,29 +1,27 @@
 {
-    "env": {
-        "browser": true,
-        "node": true
-    },
-    "parserOptions": {
-        "ecmaVersion": 7,
-        "sourceType": "module"
-    },
-
-    // http://eslint.cn/docs/rules/
-    // 0 = off, 1 = warn, 2 = error
-    // node_modules/eslint/conf/eslint.json
-    "extends": "eslint:recommended",
-    "rules": {
-        // 禁止条件表达式中出现赋值操作符
-        "no-cond-assign": 0,
-        // 禁止 case 语句落空
-        "no-fallthrough": 0,
-        // 禁止使用 空格 和 tab 混合缩进
-        "no-mixed-spaces-and-tabs": 1,
-        // 禁止使用 var 多次声明同一变量
-        "no-redeclare": 1,
-        // 禁用未声明的变量，除非它们在 /*global*/ 注释中被提到
-        "no-undef": 0,
-        // 禁用未使用的变量
-        "no-unused-vars": 0
-    }
+  "root": true,
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+     "eslint:recommended",
+     "plugin:prettier/recommended"
+  ],
+  "globals": {
+    "JParticles": "readonly",
+    "runtimeSupport": "readonly"
+  },
+  "rules": {
+    "no-console": 1,
+    "no-var": 2,
+    "no-unused-vars": [2, {
+      "varsIgnorePattern": "Particle|Snow|WaveLoading|Wave"
+    }]
+  }
 }
