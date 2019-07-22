@@ -1,6 +1,6 @@
-const { utils, Base } = JParticles
+const { utils, Base, mount } = JParticles
 const { random, abs, PI, floor } = Math
-const twicePI = PI * 2
+const doublePI = PI * 2
 const {
   pInt,
   limitRandom,
@@ -14,7 +14,6 @@ const {
   off,
   orientationSupport,
   resize,
-  mount,
 } = utils
 
 /**
@@ -199,7 +198,7 @@ class Particle extends Base {
       const { x, y, r, parallaxOffsetX, parallaxOffsetY } = dot
       ctx.save()
       ctx.beginPath()
-      ctx.arc(x + parallaxOffsetX, y + parallaxOffsetY, r, 0, twicePI)
+      ctx.arc(x + parallaxOffsetX, y + parallaxOffsetY, r, 0, doublePI)
       ctx.fillStyle = dot.color
       ctx.fill()
       ctx.restore()

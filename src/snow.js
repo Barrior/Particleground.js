@@ -1,7 +1,7 @@
-const { utils, Base } = JParticles
+const { utils, Base, mount } = JParticles
 const { random, abs, PI } = Math
-const twicePI = PI * 2
-const { pInt, limitRandom, calcSpeed, mount } = utils
+const doublePI = PI * 2
+const { pInt, limitRandom, calcSpeed } = utils
 
 @mount('Snow')
 class Snow extends Base {
@@ -60,7 +60,7 @@ class Snow extends Base {
 
       ctx.save()
       ctx.beginPath()
-      ctx.arc(x, y, r, 0, twicePI)
+      ctx.arc(x, y, r, 0, doublePI)
       ctx.fillStyle = dot.color
       ctx.fill()
       ctx.restore()

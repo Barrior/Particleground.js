@@ -1,6 +1,6 @@
-const { utils, Base } = JParticles
+const { utils, Base, mount } = JParticles
 const { random, PI, sin } = Math
-const twicePI = PI * 2
+const doublePI = PI * 2
 const {
   limitRandom,
   scaleValue,
@@ -9,7 +9,6 @@ const {
   isPlainObject,
   isUndefined,
   resize,
-  mount,
 } = utils
 
 // 仅允许 opacity 和以下选项动态设置
@@ -205,7 +204,7 @@ class Wave extends Base {
       const line = (dots[num] = [])
 
       // 点的y轴步进
-      const step = twicePI / rippleLength[num]
+      const step = doublePI / rippleLength[num]
 
       // 创建一条线段所需的点
       for (let i = 0; i <= cw; i++) {

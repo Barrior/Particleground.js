@@ -550,7 +550,6 @@ const utils = {
   resize,
   modifyPrototype,
   defineReadOnlyProperty,
-  mount,
 
   registerListener,
 }
@@ -583,7 +582,7 @@ const easing = {
   },
 }
 
-const JParticles = { utils, Base, easing }
+const JParticles = { utils, Base, easing, mount }
 
 // 设置对外提供的对象的属性及方法
 // 为只读，可枚举，不允许修改及删除。

@@ -1,12 +1,11 @@
-const { utils, Base } = JParticles
+const { utils, Base, mount } = JParticles
 const { PI, sin, ceil } = Math
-const twicePI = PI * 2
+const doublePI = PI * 2
 const {
   scaleValue,
   isPlainObject,
   isUndefined,
   resize,
-  mount,
   registerListener,
 } = utils
 
@@ -85,7 +84,7 @@ class WaveLoading extends Base {
     const rippleLength = cw / this.set.rippleNum
 
     // 点的y轴步进
-    const step = twicePI / rippleLength
+    const step = doublePI / rippleLength
 
     // 一条线段所需的点
     for (let i = 0; i <= cw; i++) {
