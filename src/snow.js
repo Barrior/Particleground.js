@@ -6,7 +6,6 @@ const { pInt, limitRandom, calcSpeed } = utils
 @mount('Snow')
 class Snow extends Base {
   static defaultConfig = {
-    // 雪花颜色
     color: '#fff',
     maxR: 6.5,
     minR: 0.4,
