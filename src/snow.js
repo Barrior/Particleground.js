@@ -1,16 +1,24 @@
 const { utils, Base, mount } = JParticles
-const { random, abs, PI } = Math
+const { random, abs, PI, max } = Math
 const doublePI = PI * 2
 const { pInt, limitRandom, calcSpeed } = utils
 
 @mount('Snow')
 class Snow extends Base {
   static defaultConfig = {
+    // 每次随机创建的雪花数量（最多）
+    num: 6,
     color: '#fff',
     maxR: 6.5,
-    minR: 0.4,
+    minR: 0.5,
     maxSpeed: 0.6,
     minSpeed: 0.1,
+    // 左右摇摆
+    swing: true,
+    // 摇摆时间间隔
+    swingInterval: 2000,
+    // 到达时间间隔后，摇摆几率，[0, 1]
+    swingProbability: 0.06,
   }
 
   constructor(selector, options) {
@@ -36,12 +44,13 @@ class Snow extends Base {
       // r 越大，设置垂直速度越快，这样比较有近快远慢的层次效果
       vy: abs(r * calcSpeed(maxSpeed, minSpeed)),
       color: this.color(),
+      swingAt: Date.now(),
     }
   }
 
   createDots() {
-    // 随机创建 0-6 个雪花
-    let count = pInt(random() * 6)
+    // 随机创建雪花
+    let count = max(0, pInt(random() * this.set.num))
     while (count--) {
       this.dots.push(this.snowShape())
     }
@@ -49,7 +58,7 @@ class Snow extends Base {
 
   draw() {
     const { ctx, cw, ch, paused } = this
-    const { opacity } = this.set
+    const { opacity, maxR, swing, swingInterval, swingProbability } = this.set
 
     ctx.clearRect(0, 0, cw, ch)
     ctx.globalAlpha = opacity
@@ -68,8 +77,14 @@ class Snow extends Base {
         dot.x += dot.vx
         dot.y += dot.vy
 
-        // 雪花反方向飘落
-        if (random() > 0.99 && random() > 0.5) {
+        // 反方向飘落，根据一定的几率
+        if (
+          swing &&
+          Date.now() - dot.swingAt > swingInterval &&
+          // 半径越小，摆动几率越小
+          random() < (r / maxR) * swingProbability
+        ) {
+          dot.swingAt = Date.now()
           dot.vx *= -1
         }
 
