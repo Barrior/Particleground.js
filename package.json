@@ -53,9 +53,6 @@
     "testcafe": "^0.16.2",
     "through2": "^2.0.3"
   },
-  "engines": {
-    "node": ">=10.13"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Barrior/JParticles.git"
