@@ -1,4 +1,6 @@
-[![npm version](https://badge.fury.io/js/jparticles.svg)](https://badge.fury.io/js/jparticles) [![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)](https://www.npmjs.com/package/jparticles) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Barrior/JParticles/blob/master/LICENSE)
+[![npm version](https://badge.fury.io/js/jparticles.svg)](https://badge.fury.io/js/jparticles)
+[![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)](https://www.npmjs.com/package/jparticles)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Barrior/JParticles/blob/master/LICENSE)
 
 
 ### Install
@@ -24,7 +26,7 @@ new JParticles.Particle('#demo')
 
 
 ### Documentation
-[See more details from the API documentation.](https://jparticles.js.org/)
+[See more details via the API documentation.](https://jparticles.js.org/)
 
 
 ### Intro
