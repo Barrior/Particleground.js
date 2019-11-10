@@ -1,15 +1,38 @@
 #!/bin/bash
 
-echo "publish start..."
+print_error() {
+  printf "\e[31m${1} \e[0m"
+}
 
-git checkout master
+print_info() {
+  printf "\e[34m${1} \e[0m"
+}
 
-cat NPMREADME.md > README.md
+echo "✨ $(print_info 'Publishing...')"
 
-npm adduser
+readonly BRANCH_NAME=$(git symbolic-ref HEAD --short)
 
-npm publish
+if [[ BRANCH_NAME != "master" ]]
+  then
+    print_error "error"
+    echo "Publish command running only on the master branch, please checkout it."
+    exit 1
+fi
+
+yarn build
+
+yarn test
+
+if [[ $? != 0 ]]
+  then exit 1
+fi
+
+cat NPM_README.md > README.md
+
+yarn login
+
+yarn publish
 
 git checkout .
 
-echo "publish done."
+print_info "✨ Publish done.\n"
