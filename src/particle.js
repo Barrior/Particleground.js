@@ -13,7 +13,6 @@ const {
   on,
   off,
   orientationSupport,
-  resize,
 } = utils
 
 /**
@@ -360,7 +359,7 @@ class Particle extends Base {
   }
 
   resize() {
-    resize(this, (scaleX, scaleY) => {
+    super.resize((scaleX, scaleY) => {
       if (this.set.range > 0) {
         this.positionX *= scaleX
         this.positionY *= scaleY

@@ -254,76 +254,6 @@ function generateColor(color) {
   return isString(color) ? () => color : colorLength ? recolor : randomColor
 }
 
-// 暂停粒子运动
-function pause(context, callback) {
-  // 没有set表示实例创建失败，防止错误调用报错
-  if (!context.canvasRemoved && context.set && !context.paused) {
-    // 传递 pause 关键字供特殊使用
-    isFunction(callback) && callback.call(context, 'pause')
-    context.paused = true
-  }
-}
-
-// 开启粒子运动
-function open(context, callback) {
-  if (!context.canvasRemoved && context.set && context.paused) {
-    isFunction(callback) && callback.call(context, 'open')
-    context.paused = false
-    context.draw()
-  }
-}
-
-// 自适应窗口，重新计算粒子坐标
-function resize(context, callback) {
-  if (context.set.resize) {
-    context._resizeHandler = function() {
-      const oldCW = context.cw
-      const oldCH = context.ch
-
-      // 重新设置canvas宽高
-      setCanvasWH(context)
-
-      // 计算比例
-      const scaleX = context.cw / oldCW
-      const scaleY = context.ch / oldCH
-
-      // 重新赋值
-      if (isArray(context.dots)) {
-        context.dots.forEach(v => {
-          if (isPlainObject(v)) {
-            v.x *= scaleX
-            v.y *= scaleY
-          }
-        })
-      }
-
-      if (isFunction(callback)) {
-        callback.call(context, scaleX, scaleY)
-      }
-
-      context.paused && context.draw()
-    }
-    on(win, 'resize', context._resizeHandler)
-  }
-}
-
-/**
- * 修改插件原型上的方法
- * 使用：modifyPrototype(Particle.prototype, 'pause', function(){})
- * @param prototype {Object} 原型对象
- * @param names {string} 方法名，多个方法名用逗号隔开
- * @param callback {function} 回调函数
- */
-function modifyPrototype(prototype, names, callback) {
-  trimAll(names)
-    .split(',')
-    .forEach(name => {
-      prototype[name] = function() {
-        utils[name](this, callback)
-      }
-    })
-}
-
 /**
  * 使用此方法挂载插件到 JParticles 对象上，防止被修改。
  * function.name 的兼容性并不高，所以插件需手动传递 name 值。
@@ -359,14 +289,6 @@ function defineReadOnlyProperty(value, name, target = JParticles) {
  */
 function mount(name, target = JParticles) {
   return value => {
-    Object.defineProperty(target, name, {
-      value,
-      writable: false,
-      enumerable: true,
-      configurable: false,
-    })
-    // 兼容旧API，待发大版本时移除
-    name = name.charAt(0).toLowerCase() + name.substring(1)
     Object.defineProperty(target, name, {
       value,
       writable: false,
@@ -419,7 +341,7 @@ class Base {
   observeCanvasRemoved() {
     this.destructionListeners = []
     observeElementRemoved(this.c, () => {
-      // canvas 从DOM中被移除
+      // canvas 从 DOM 中被移除
       // 1、停止 requestAnimationFrame，避免性能损耗
       this.canvasRemoved = true
 
@@ -440,16 +362,57 @@ class Base {
     return registerListener(this, this.destructionListeners, ...arguments)
   }
 
-  pause() {
-    pause(this)
+  // 暂停粒子运动
+  pause(callback) {
+    // 没有 set 表示实例创建失败，防止错误调用报错
+    if (!this.canvasRemoved && this.set && !this.paused) {
+      // 传递 pause 关键字供特殊使用
+      isFunction(callback) && callback.call(this, 'pause')
+      this.paused = true
+    }
   }
 
-  open() {
-    open(this)
+  // 开启粒子运动
+  open(callback) {
+    if (!this.canvasRemoved && this.set && this.paused) {
+      isFunction(callback) && callback.call(this, 'open')
+      this.paused = false
+      this.draw()
+    }
   }
 
-  resize() {
-    resize(this)
+  // 自适应窗口，重新计算粒子坐标
+  resize(callback) {
+    if (this.set.resize) {
+      this._resizeHandler = () => {
+        const oldCW = this.cw
+        const oldCH = this.ch
+
+        // 重新设置canvas宽高
+        setCanvasWH(this)
+
+        // 计算比例
+        const scaleX = this.cw / oldCW
+        const scaleY = this.ch / oldCH
+
+        // 重新赋值
+        if (isArray(this.dots)) {
+          this.dots.forEach(v => {
+            if (isPlainObject(v)) {
+              v.x *= scaleX
+              v.y *= scaleY
+            }
+          })
+        }
+
+        if (isFunction(callback)) {
+          callback.call(this, scaleX, scaleY)
+        }
+
+        this.paused && this.draw()
+      }
+      on(win, 'resize', this._resizeHandler)
+    }
   }
 }
 
@@ -545,10 +508,6 @@ const utils = {
   scaleValue,
   calcSpeed,
 
-  pause,
-  open,
-  resize,
-  modifyPrototype,
   defineReadOnlyProperty,
 
   registerListener,
@@ -596,7 +555,7 @@ const JParticles = { utils, Base, easing, mount }
   }
 })(JParticles)
 
-// commonConfig 可改写
+// 设置 commonConfig 可改写
 JParticles.commonConfig = commonConfig
 
 win.JParticles = JParticles

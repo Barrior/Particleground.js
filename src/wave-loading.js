@@ -1,13 +1,7 @@
 const { utils, Base, mount } = JParticles
 const { PI, sin, ceil } = Math
 const doublePI = PI * 2
-const {
-  scaleValue,
-  isPlainObject,
-  isUndefined,
-  resize,
-  registerListener,
-} = utils
+const { scaleValue, isPlainObject, isUndefined, registerListener } = utils
 
 @mount('WaveLoading')
 class WaveLoading extends Base {
@@ -68,7 +62,8 @@ class WaveLoading extends Base {
   }
 
   attrNormalize() {
-    ;['offsetLeft', 'crestHeight'].forEach(attr => {
+    const attrs = ['offsetLeft', 'crestHeight']
+    attrs.forEach(attr => {
       this.set[attr] = scaleValue(
         this.set[attr],
         attr === 'offsetLeft' ? this.cw : this.ch
@@ -77,18 +72,17 @@ class WaveLoading extends Base {
   }
 
   createDots() {
-    const { cw } = this
-    const dots = (this.dots = [])
+    this.dots = []
 
-    // 线条波长，每个周期(2π)在canvas上的实际长度
-    const rippleLength = cw / this.set.rippleNum
+    // 线条波长，每个周期(2π)在 canvas 上的实际长度
+    const rippleLength = this.cw / this.set.rippleNum
 
     // 点的y轴步进
     const step = doublePI / rippleLength
 
     // 一条线段所需的点
-    for (let i = 0; i <= cw; i++) {
-      dots.push({
+    for (let i = 0; i <= this.cw; i++) {
+      this.dots.push({
         x: i,
         y: i * step,
       })
@@ -235,8 +229,9 @@ class WaveLoading extends Base {
   }
 
   resize() {
-    resize(this, (scaleX, scaleY) => {
-      ;['offsetLeft', 'offsetTop', 'crestHeight'].forEach(option => {
+    super.resize((scaleX, scaleY) => {
+      const options = ['offsetLeft', 'offsetTop', 'crestHeight']
+      options.forEach(option => {
         this.set[option] *= option === 'offsetLeft' ? scaleX : scaleY
       })
       this.halfCH = this.ch / 2

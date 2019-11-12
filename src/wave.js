@@ -8,7 +8,6 @@ const {
   isArray,
   isPlainObject,
   isUndefined,
-  resize,
 } = utils
 
 // 仅允许 opacity 和以下选项动态设置
@@ -123,7 +122,6 @@ class Wave extends Base {
   // 以下为缺省情况，属性对应的默认值
   generateDefaultValue(attr) {
     const { cw, ch } = this
-
     switch (attr) {
       case 'lineColor':
       case 'fillColor':
@@ -198,10 +196,10 @@ class Wave extends Base {
   createDots() {
     const { cw, rippleLength } = this
     let { num } = this.set
-    let dots = (this.dots = [])
+    this.dots = []
 
     while (num--) {
-      const line = (dots[num] = [])
+      const line = (this.dots[num] = [])
 
       // 点的y轴步进
       const step = doublePI / rippleLength[num]
@@ -263,10 +261,11 @@ class Wave extends Base {
   }
 
   resize() {
-    resize(this, (scaleX, scaleY) => {
-      ;['offsetLeft', 'offsetTop', 'crestHeight'].forEach(item => {
-        const scale = item === 'offsetLeft' ? scaleX : scaleY
-        this.set[item].forEach((attr, i, array) => {
+    super.resize((scaleX, scaleY) => {
+      const props = ['offsetLeft', 'offsetTop', 'crestHeight']
+      props.forEach(prop => {
+        const scale = prop === 'offsetLeft' ? scaleX : scaleY
+        this.set[prop].forEach((attr, i, array) => {
           array[i] = attr * scale
         })
       })
