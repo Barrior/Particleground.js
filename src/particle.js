@@ -247,7 +247,7 @@ class Particle extends Base {
       // 防止自适应窗口变化时出现粒子移动
       if (!paused) {
         if (parallax) {
-          // https://github.com/jnicol/particleground
+          // https://github.com/jnicol/particleground/blob/master/jquery.particleground.js#L279-L282
           const divisor = parallaxStrength * dot.parallaxLayer
           dot.parallaxOffsetX += (mouseX / divisor - dot.parallaxOffsetX) / 10
           dot.parallaxOffsetY += (mouseY / divisor - dot.parallaxOffsetY) / 10
@@ -281,7 +281,7 @@ class Particle extends Base {
       this.set.eventElem === document ? null : offset(this.set.eventElem))
   }
 
-  proxyEvent(move, rientation) {
+  proxyEvent(move, orientation) {
     const { eventElem } = this.set
     let orientationHandler = null
 
@@ -290,7 +290,7 @@ class Particle extends Base {
         if (this.paused || isNull(e.beta)) return
 
         // 转换 beta 范围 [-180, 180] 成 [-90, 90]
-        rientation(Math.min(Math.max(e.beta, -90), 90), e.gamma)
+        orientation(Math.min(Math.max(e.beta, -90), 90), e.gamma)
       }
 
       on(window, 'deviceorientation', orientationHandler)
@@ -327,14 +327,13 @@ class Particle extends Base {
     // 性能优化
     if (range > this.cw && range > this.ch) return
 
-    // 鼠标移动事件
     this.proxyEvent(
+      // 鼠标移动事件
       (left, top) => {
         this.positionX = left
         this.positionY = top
-
-        // 陀螺仪事件
       },
+      // 陀螺仪事件
       (beta, gamma) => {
         this.positionY = (-(beta - 90) / 180) * this.ch
         this.positionX = (-(gamma - 90) / 180) * this.cw
