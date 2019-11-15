@@ -341,7 +341,7 @@ class Base {
   observeCanvasRemoved() {
     this.destructionListeners = []
     observeElementRemoved(this.c, () => {
-      // canvas 从 DOM 中被移除
+      // 当 Canvas 从 DOM 中被移除
       // 1、停止 requestAnimationFrame，避免性能损耗
       this.canvasRemoved = true
 
@@ -388,14 +388,14 @@ class Base {
         const oldCW = this.cw
         const oldCH = this.ch
 
-        // 重新设置canvas宽高
+        // 重新设置 Canvas 宽高
         setCanvasWH(this)
 
         // 计算比例
         const scaleX = this.cw / oldCW
         const scaleY = this.ch / oldCH
 
-        // 重新赋值
+        // 坐标重新赋值，对于常规逻辑
         if (isArray(this.dots)) {
           this.dots.forEach(v => {
             if (isPlainObject(v)) {
@@ -405,6 +405,7 @@ class Base {
           })
         }
 
+        // 自定义逻辑
         if (isFunction(callback)) {
           callback.call(this, scaleX, scaleY)
         }
