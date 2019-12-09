@@ -1,6 +1,6 @@
 <p align="center">
    <a href="https://jparticles.js.org/" target="_blank" rel="noopener noreferrer">
-      <img width="300" src="./logo/logo_temp.svg" alt="JParticles logo">
+      <img width="300" src="./logo/logo-horizontal.png" alt="JParticles logo">
    </a>
 </p>
 
@@ -18,7 +18,7 @@
     <img src="https://img.shields.io/badge/dependencies-none-brightgreen.svg" alt="dependencies">
   </a>
   <a href="https://github.com/Barrior/JParticles/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license:MIT">
   </a>
 </p>
 
