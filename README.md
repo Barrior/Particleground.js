@@ -1,28 +1,21 @@
-<p align="center">
-   <a href="https://jparticles.js.org/" target="_blank" rel="noopener noreferrer">
-      <img width="300" src="./logo/logo-horizontal.png" alt="JParticles logo">
-   </a>
-</p>
-
-<p align="center">
+<h1>
+  JParticles ·
   <a href="https://circleci.com/gh/Barrior/JParticles">
-    <img src="https://circleci.com/gh/Barrior/JParticles.svg?style=shield" alt="CircleCI">
+    <img src="https://circleci.com/gh/Barrior/JParticles.svg?style=shield" alt="Circle CI">
   </a>
   <a href="https://coveralls.io/github/Barrior/JParticles?branch=master">
     <img src="https://coveralls.io/repos/github/Barrior/JParticles/badge.svg?branch=master" alt="Coverage Status">
   </a>
   <a href="https://badge.fury.io/js/jparticles">
-    <img src="https://badge.fury.io/js/jparticles.svg" alt="npm version">
+    <img src="https://badge.fury.io/js/jparticles.svg" alt="NPM version">
   </a>
   <a href="https://www.npmjs.com/package/jparticles">
-    <img src="https://img.shields.io/badge/dependencies-none-brightgreen.svg" alt="dependencies">
+    <img src="https://img.shields.io/badge/dependencies-none-brightgreen.svg" alt="Dependencies">
   </a>
   <a href="https://github.com/Barrior/JParticles/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license:MIT">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
   </a>
-</p>
-
----
+</h1>
 
 > 中文 | [English](./README_en.md)
 
