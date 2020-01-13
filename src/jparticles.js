@@ -276,6 +276,10 @@ function defineReadOnlyProperty(value, name, target = JParticles) {
   })
 }
 
+function degreeToRadian(degree) {
+  return (degree * Math.PI) / 180
+}
+
 /**
  * 挂载特效到 JParticles 对象上
  * defineReadOnlyProperty 的 decorator 写法，目前仅限用于类
@@ -499,6 +503,7 @@ const utils = {
   isUndefined,
   isNull,
   isElement,
+  degreeToRadian,
 
   observeElementRemoved,
   getCss,

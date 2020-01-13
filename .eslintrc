@@ -21,7 +21,7 @@
     "no-console": 1,
     "no-var": 2,
     "no-unused-vars": [2, {
-      "varsIgnorePattern": "Particle|Snow|WaveLoading|Wave"
+      "varsIgnorePattern": "Particle|Snow|WaveLoading|Wave|Line"
     }]
   }
 }
