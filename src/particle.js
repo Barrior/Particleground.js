@@ -6,7 +6,7 @@ const {
   limitRandom,
   calcSpeed,
   scaleValue,
-  getCss,
+  // getCss,
   offset,
   isElement,
   isNull,
@@ -22,14 +22,14 @@ const {
  * @param value {string} css属性值
  * @returns {boolean}
  */
-function checkParentsProperty(elem, property, value) {
-  while ((elem = elem.offsetParent)) {
-    if (getCss(elem, property) === value) {
-      return true
-    }
-  }
-  return false
-}
+// function checkParentsProperty(elem, property, value) {
+//   while ((elem = elem.offsetParent)) {
+//     if (getCss(elem, property) === value) {
+//       return true
+//     }
+//   }
+//   return false
+// }
 
 // 挂载特效到 JParticles 对象上
 @mount('Particle')
@@ -303,10 +303,10 @@ class Particle extends Base {
 
       if (this.setElemOffset()) {
         // 动态判断祖先节点是否具有固定定位，有则使用 client 计算
-        if (checkParentsProperty(eventElem, 'position', 'fixed')) {
-          left = e.clientX
-          top = e.clientY
-        }
+        // if (checkParentsProperty(eventElem, 'position', 'fixed')) {
+        //   left = e.clientX
+        //   top = e.clientY
+        // }
         left -= this.elemOffset.left
         top -= this.elemOffset.top
       }
