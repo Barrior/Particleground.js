@@ -23,10 +23,10 @@
 
 ### List of Effects
 
-[Particle Motion](https://jparticles.js.org/#/en/examples/particle)  
-[Wave Motion](https://jparticles.js.org/#/en/examples/wave)  
-[Wave Loading](https://jparticles.js.org/#/en/examples/wave_loading)  
-[Snow](https://jparticles.js.org/#/en/examples/snow)  
+- [Particle Motion](https://jparticles.js.org/#/en/examples/particle)
+- [Wave Motion](https://jparticles.js.org/#/en/examples/wave)
+- [Wave Loading](https://jparticles.js.org/#/en/examples/wave_loading)
+- [Snow](https://jparticles.js.org/#/en/examples/snow)
 
 ### Intro
 
