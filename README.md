@@ -23,10 +23,10 @@
 
 ### 特效列表
 
-[粒子运动](https://jparticles.js.org/#/examples/particle)  
-[波浪运动](https://jparticles.js.org/#/examples/wave)  
-[波纹进度条](https://jparticles.js.org/#/examples/wave_loading)  
-[雪花飘落](https://jparticles.js.org/#/examples/snow)  
+- [粒子运动](https://jparticles.js.org/#/examples/particle)
+- [波浪运动](https://jparticles.js.org/#/examples/wave)
+- [波纹进度条](https://jparticles.js.org/#/examples/wave_loading)
+- [雪花飘落](https://jparticles.js.org/#/examples/snow)
 
 
 ### 介绍
