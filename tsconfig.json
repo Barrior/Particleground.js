@@ -29,8 +29,6 @@
     /* Experimental Options */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-
-    "listFiles": true
   },
   "include": [
     "src/**/*"
