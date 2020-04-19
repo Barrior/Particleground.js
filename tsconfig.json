@@ -29,6 +29,9 @@
     /* Experimental Options */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+
+    /* Advanced Options */
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*"
