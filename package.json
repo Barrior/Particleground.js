@@ -4,13 +4,13 @@
   "version": "2.1.0",
   "main": "dist/jparticles.all.js",
   "scripts": {
-    "dev": "gulp --gulpfile ./bin/gulpfile.dev.js",
+    "dev": "webpack-dev-server --color",
     "build": "gulp --gulpfile ./bin/gulpfile.build.js",
     "test": "yarn test:unit",
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint --fix",
+    "lint": "tslint --fix",
     "publish": "./bin/npm-publish.sh"
   },
   "husky": {
@@ -20,45 +20,31 @@
   },
   "lint-staged": {
     "*.js": [
-      "npm run lint",
+      "yarn lint",
       "git add"
     ]
   },
   "devDependencies": {
-    "ava": "^0.20.0",
-    "babel-eslint": "^10.0.2",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.24.0",
-    "babel-preset-stage-0": "^6.22.0",
-    "browser-sync": "^2.18.8",
-    "canvas": "^2.5.0",
-    "coveralls": "^2.13.1",
-    "eslint": "^6.0.1",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-changed": "^2.0.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^2.5.0",
-    "gulp-uglify": "^2.1.2",
-    "gulp-zip": "^4.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "html-webpack-plugin": "^4.2.0",
     "husky": "^3.0.1",
-    "jsdom": "^15.1.1",
     "lint-staged": "^9.2.0",
-    "nyc": "^11.0.3",
     "prettier": "^1.18.2",
-    "testcafe": "^0.16.2",
-    "through2": "^2.0.3"
+    "ts-loader": "^7.0.0",
+    "tslint": "^6.1.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typescript": "^3.9.0-dev.20200419",
+    "webpack": "^5.0.0-beta.14",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
+  "author": "Barrior",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Barrior/JParticles.git"
   },
-  "author": "Barrior",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Barrior/JParticles/issues"
   },
