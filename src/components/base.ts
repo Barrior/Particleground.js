@@ -1,4 +1,4 @@
-export default class Base {
+export default abstract class Base {
   public elements: any[]
 
   constructor(
@@ -13,5 +13,6 @@ export default class Base {
     console.log('constructor: ', constructor)
   }
 
-  public init() {}
+  abstract init(): void
 }
+
