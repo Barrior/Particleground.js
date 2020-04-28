@@ -1,6 +1,10 @@
 const { utils, Base, mount } = JParticles
 const { limitRandom, calcSpeed, offset, isUndefined, degreeToRadian } = utils
 
+function toFixed(number, digits = 0) {
+  return parseFloat(Number(number).toFixed(digits))
+}
+
 function calcHypotenuse(a, b) {
   return Math.sqrt(a * a + b * b)
 }
@@ -69,7 +73,7 @@ class Line extends Base {
         speed: calcSpeed(maxSpeed, minSpeed),
 
         // 限制角度取值范围为 [-180, 180]
-        degree: limitRandom(maxDegree, minDegree) % 180,
+        degree: toFixed(limitRandom(maxDegree, minDegree) % 180),
       })
     }
   }
