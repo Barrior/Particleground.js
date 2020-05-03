@@ -5,3 +5,7 @@ export const regExp = {
   trimAll: /\s/g,
   styleValue: /^\d+(\.\d+)?[a-z]+$/i,
 }
+export const funcToString = Function.prototype.toString
+export const objectCtorString = funcToString.call(Object)
+export const defaultCanvasWidth = 485
+export const defaultCanvasHeight = 300

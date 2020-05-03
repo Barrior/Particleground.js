@@ -9,8 +9,9 @@ const JParticles = (window.JParticles = {})
  *
  * @param name 属性名称
  */
-export function mount(name: string): (val: object) => void {
-  return (value: object) => {
+export function mount(name: string) {
+  // tslint:disable-next-line:ban-types
+  return (value: Function) => {
     Object.defineProperty(JParticles, name, {
       value,
       writable: false,

@@ -1,6 +1,6 @@
 export default {
   // 画布全局透明度 {number}
-  // 取值范围：[0-1]
+  // 取值范围：[0, 1]
   opacity: 1,
 
   // 粒子颜色 {string|array}
