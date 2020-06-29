@@ -2,7 +2,7 @@ export default abstract class Base {
   public elements: any[]
 
   constructor(
-    constructor: object,
+    constructor: new (selector: string | HTMLElement, options: object) => void,
     selector: string | HTMLElement,
     options?: object
   ) {
@@ -15,4 +15,3 @@ export default abstract class Base {
 
   abstract init(): void
 }
-
