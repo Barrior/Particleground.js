@@ -1,5 +1,7 @@
 export default abstract class Base {
-  public elements: any[]
+  public elements: object[] | object[][]
+  private canvasRemoved = false
+  private paused = false
 
   constructor(
     constructor: new (selector: string | HTMLElement, options: object) => void,
@@ -14,4 +16,12 @@ export default abstract class Base {
   }
 
   abstract init(): void
+
+  abstract draw(): void
+
+  requestAnimationFrame() {
+    if (!this.canvasRemoved && !this.paused) {
+      window.requestAnimationFrame(this.draw.bind(this))
+    }
+  }
 }
