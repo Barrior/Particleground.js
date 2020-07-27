@@ -1,3 +1,4 @@
 interface Window {
-  JParticles: object
+  mozRequestAnimationFrame?: (...fn: unknown[]) => void
+  JParticles: { [effectName: string]: unknown }
 }

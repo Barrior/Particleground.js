@@ -1,5 +1,17 @@
 const JParticles = (window.JParticles = {})
 
+// requestAnimationFrame 兼容处理
+window.requestAnimationFrame = ((win) => {
+  return (
+    win.requestAnimationFrame ||
+    win.webkitRequestAnimationFrame ||
+    win.mozRequestAnimationFrame ||
+    function (fn: Function) {
+      win.setTimeout(fn, 1000 / 60)
+    }
+  )
+})(window)
+
 /**
  * 挂载特效到 JParticles 对象上
  *
@@ -10,7 +22,6 @@ const JParticles = (window.JParticles = {})
  * @param name 属性名称
  */
 export function mount(name: string) {
-  // tslint:disable-next-line:ban-types
   return (value: Function) => {
     Object.defineProperty(JParticles, name, {
       value,
