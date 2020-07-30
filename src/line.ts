@@ -33,7 +33,9 @@ export default class Line extends Base {
     reservedLines: 6,
   }
 
-  constructor(selector: string | HTMLElement, options?: object) {
+  public elements: JSONObject[] = []
+
+  constructor(selector: string | HTMLElement, options?: JSONObject) {
     super(Line, selector, options)
   }
 
@@ -43,4 +45,6 @@ export default class Line extends Base {
       y: 0,
     })
   }
+
+  draw() {}
 }

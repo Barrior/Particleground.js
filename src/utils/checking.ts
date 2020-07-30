@@ -1,65 +1,4 @@
-import { funcToString, objectCtorString, piBy180, regExp } from './consts'
-
-/**
- * 包装原生 parseInt，确保输出十进制数值
- */
-export function pInt(str: string) {
-  return parseInt(str, 10)
-}
-
-/**
- * 包装原生 toFixed，确保输出数字而不是字符串
- */
-export function toFixed(num: number | string, digits: number) {
-  return parseFloat(Number(num).toFixed(digits))
-}
-
-/**
- * 移除字符串内所有空白，包括空格、空行、制表符
- */
-export function trimAll(str: string) {
-  return str.replace(regExp.trimAll, '')
-}
-
-/**
- * 角度转弧度
- */
-export function degreesToRadians(degrees: number) {
-  return degrees * piBy180
-}
-
-/**
- * 弧度转角度
- */
-export function radiansToDegrees(radians: number) {
-  return radians / piBy180
-}
-
-/**
- * 在指定范围内获取随机数
- */
-export function randomInRange(max: number, min: number) {
-  return max === min ? max : Math.random() * (max - min) + min
-}
-
-/**
- * 获取随机速度，取最大或最小速度之间的随机值，并随机赋予正负值
- */
-export function randomSpeed(maxSpeed: number, minSpeed: number) {
-  return (
-    (randomInRange(maxSpeed, minSpeed) || maxSpeed) *
-    (Math.random() > 0.5 ? 1 : -1)
-  )
-}
-
-/**
- * 获取随机颜色值，返回 16 进制色值
- */
-export function randomColor() {
-  // http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-  // prettier-ignore
-  return `#${Math.random().toString(16).slice(-6)}`
-}
+import { funcToString, objectCtorString } from '~src/components/constants'
 
 /**
  * 类型检测
@@ -113,6 +52,13 @@ export function isString(value: any) {
 }
 
 /**
+ * 检测 value 是否为数值
+ */
+export function isNumber(value: any) {
+  return typeof value === 'number'
+}
+
+/**
  * 检测 value 是否为布尔值
  */
 export function isBoolean(value: any) {
@@ -144,8 +90,8 @@ export function isNil(value: any) {
  * 检测 value 是否为 DOM 元素
  */
 export function isElement(value: any) {
-  // 1、document(nodeType: 9) 元素不能判断为 element，因为它没有很多 element 该有的属性
-  // 如用 getComputedStyle 获取不到它的宽高，就会报错。
+  // 1、document(nodeType: 9) 元素不能判断为 element，因为它没有很多 element 该有的属性，
+  // 比如：getComputedStyle 获取不到它的宽高，就会报错。
   // 2、当传入 0 的时候，不加 !! 会返回 0，而不是 Boolean 值
   return !!(value && value.nodeType === 1)
 }

@@ -6,7 +6,6 @@ const easing = {
     return easing.easeInOutQuad(x, t, b, c, d)
   },
   easeInOutQuad(_x: number, t: number, b: number, c: number, d: number) {
-    // tslint:disable-next-line:no-conditional-assignment
     if ((t /= d / 2) < 1) return (c / 2) * t * t + b
     return (-c / 2) * (--t * (t - 2) - 1) + b
   },
