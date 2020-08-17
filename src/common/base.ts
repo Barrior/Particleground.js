@@ -1,19 +1,17 @@
-import commonConfig from './common-config'
 import {
-  merge,
-  isElement,
-  randomColor,
-  isString,
-  isFunction,
   getNumericalStyleValue,
-  on,
-  off,
+  isElement,
+  isFunction,
   isPlainObject,
+  isString,
+  merge,
+  off,
+  on,
+  randomColor,
 } from '~/src/utils'
-import {
-  defaultCanvasHeight,
-  defaultCanvasWidth,
-} from '~src/components/constants'
+import { defaultCanvasHeight, defaultCanvasWidth } from '~src/common/constants'
+
+import commonConfig from './config'
 
 /**
  * 规定：
