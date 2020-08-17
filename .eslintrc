@@ -12,7 +12,8 @@
     "node": true
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "simple-import-sort"
   ],
   "extends": [
     "eslint:recommended",
@@ -24,6 +25,7 @@
   ],
   "rules": {
     "no-console": "warn",
+    "simple-import-sort/sort": "error",
     "@typescript-eslint/ban-types": [
       "error",
       {
