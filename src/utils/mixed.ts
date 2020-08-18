@@ -1,4 +1,4 @@
-import { piBy180, regExp } from '~src/components/constants'
+import { piBy180, regExp } from '~src/common/constants'
 
 /**
  * 包装原生 parseInt，确保输出十进制数值
@@ -62,17 +62,17 @@ export function randomColor() {
 }
 
 /**
- * 延展数值
+ * 获取延展数值
  * @param value  原始值，(0, 1)表示范围值的倍数，0 & [1, +∞)表示具体数值
  * @param range  范围值
  */
-export function extendValue(value: number, range: number) {
+export function calcExtendedValue(value: number, range: number) {
   return value > 0 && value < 1 ? value * range : value
 }
 
 /**
  * 深拷贝，浅拷贝请使用 Object.assign 或 ECMAScript 扩展运算符
  */
-export function merge(...objects: (JSONObject | undefined)[]): JSONObject {
-  return objects[0] as JSONObject
+export function merge(...objects: any[]) {
+  return objects[0]
 }

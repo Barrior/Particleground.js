@@ -1,3 +1,9 @@
+export interface CommonConfig {
+  opacity: number
+  color: string | string[]
+  resize: boolean
+}
+
 /**
  * 效果公共默认配置参数
  */
@@ -14,4 +20,4 @@ export default {
 
   // 自适应窗口尺寸变化 {boolean}
   resize: true,
-}
+} as CommonConfig

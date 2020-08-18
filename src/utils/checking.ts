@@ -1,12 +1,11 @@
-import { funcToString, objectCtorString } from '~src/components/constants'
+import { funcToString, objectCtorString } from '~src/common/constants'
 
 /**
  * 类型检测
- * @param value {*} 目标值
- * @param type {string} 预期类型
- * @returns {boolean}
+ * @param value 目标值
+ * @param type 预期类型
  */
-export function typeChecking(value: any, type: string) {
+export function typeChecking(value: any, type: string): boolean {
   // 直接使用 toString.call(value) 在 ie 会下报错
   return Object.prototype.toString.call(value) === type
 }
