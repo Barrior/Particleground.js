@@ -22,23 +22,29 @@
 官网：[jparticles.js.org](https://jparticles.js.org/)
 
 
+### 特效列表
+
+- [粒子运动](https://jparticles.js.org/#/examples/particle)
+- [波浪运动](https://jparticles.js.org/#/examples/wave)
+- [波纹进度条](https://jparticles.js.org/#/examples/wave_loading)
+- [雪花飘落](https://jparticles.js.org/#/examples/snow)
+
+
 ### 介绍
 
-- `JParticles`（JavaScript particles的缩写）是一款基于 `Canvas` 的不依赖于其他库的轻量级 `JavaScript` 粒子运动特效库。提供一些比较绚丽、实用的特效应用于 `WEB` 界面，希望能达到锦上添花的作用，给用户带来些许惊喜。
+- `JParticles`（JavaScript Particles 的缩写）是一款基于 `Canvas` 的不依赖于其他库的轻量级 `JavaScript` 粒子运动特效库。提供一些比较绚丽、实用的特效应用于 `WEB` 界面，希望能达到锦上添花的作用，给用户带来些许惊喜。
 
-- `JParticles` 的特效多数来源于他人分享，`JParticles` 像搬运工一样把它们汇集在一起，做一些细节或功能上的改进，在此，感谢原作者的创意或代码。
+- `JParticles` 的部分创意或代码来源于开源项目源码或他人分享，在此感谢原作者。
 
 
 ### 理念
 
-- `API` 设计理念信仰 `"The Write Less, Do More"` 和 `"Keep It Simple And Stupid"` ，希望插件使用起来非常的简单便捷，五分钟上手，立竿见影，因为工具是帮助人们更快捷的实现想要的功能，而不是占用人们更多的时间去了解学习和理解，简而言之：既要强大，易扩展，又要简单！
-
-- 希望代码封装得简洁，并且高效。 感谢市面上缤纷的开源项目或其他，因为 `JParticles` 无疑克隆（借鉴/参考/站在巨人的肩膀之上）了你们优秀的代码或思想。
+- `API` 与源码设计理念信仰 `"Write Less, Do More"` 和 `"Keep It Simple, Stupid"`。针对于用户开发者：易于使用、简单、高效；针对于源码贡献者：塑造更好的可持续维护性。
 
 
 ### 兼容性
 
-以下是浏览器对 `JParticles` 的支持情况（源于[此兼容性表](./docs/compatibility_table.md)），对于不支持的浏览器则会静默地失败：
+以下是浏览器对 `JParticles` 的支持情况（源于此[兼容性表](./docs/compatibility_table.md)），对于不支持的浏览器则会静默地失败：
 
 - IE 9+
 - Safari 6+
