@@ -1,2 +1,4 @@
 /dist/
-/**/*.js
+/samples/
+/src-bak/
+/test/

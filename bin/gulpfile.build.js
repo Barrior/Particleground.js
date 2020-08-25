@@ -39,7 +39,7 @@ gulp.task('packing', ['compile'], () => {
 
   files = files.join(' ').replace(excludedFiles, '')
   files = ('jparticles.js ' + files).split(' ')
-  files = files.map(filename => {
+  files = files.map((filename) => {
     return distPath + filename
   })
 

@@ -3,6 +3,7 @@ const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
+// eslint-disable-next-line unused-imports/no-unused-vars-ts
 const srcDir = path.resolve(__dirname, 'src')
 const distDir = path.resolve(__dirname, 'dist')
 const samplesDir = path.resolve(__dirname, 'samples')
@@ -10,7 +11,7 @@ const samplesDir = path.resolve(__dirname, 'samples')
 const htmlPages = []
 const indexHtmlContent = []
 
-fs.readdirSync(samplesDir).forEach(filename => {
+fs.readdirSync(samplesDir).forEach((filename) => {
   if (/\.html$/i.test(filename)) {
     indexHtmlContent.push(`<li><a href="${filename}">${filename}</a></li>`)
     htmlPages.push(

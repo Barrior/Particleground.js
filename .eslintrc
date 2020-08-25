@@ -27,6 +27,7 @@
   "rules": {
     "no-console": "warn",
     "simple-import-sort/sort": "error",
+    "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/ban-types": [
       "error",
       {
