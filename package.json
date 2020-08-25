@@ -10,7 +10,6 @@
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint --fix && prettier --write",
     "publish": "./bin/npm-publish.sh"
   },
   "husky": {
@@ -20,8 +19,7 @@
   },
   "lint-staged": {
     "*.ts": [
-      "yarn lint",
-      "git add"
+      "eslint --fix"
     ]
   },
   "devDependencies": {
