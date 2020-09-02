@@ -27,6 +27,24 @@
   "rules": {
     "no-console": "warn",
     "lines-between-class-members": ["error", "always"],
+
+    // Comments
+    "no-inline-comments": "error",
+    "line-comment-position": ["error", { "position": "above" }],
+    "lines-around-comment": [
+      "error",
+      {
+        "beforeBlockComment": true,
+        "beforeLineComment": false,
+        "allowBlockStart": true,
+        "allowClassStart": true,
+        "allowObjectStart": true,
+        "allowArrayStart": true
+      }
+    ],
+    "multiline-comment-style": ["error", "separate-lines"],
+    "spaced-comment": ["error", "always", { "block": { "balanced": true } }],
+
     "eqeqeq": ["error", "always"],
     "simple-import-sort/sort": "error",
     "@typescript-eslint/no-var-requires": "off",
