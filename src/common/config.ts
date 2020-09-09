@@ -1,8 +1,4 @@
-export interface CommonConfig {
-  opacity: number
-  color: string | string[]
-  resize: boolean
-}
+import { CommonConfig } from '~src/@types/common/config'
 
 /**
  * 效果公共默认配置参数

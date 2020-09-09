@@ -24,7 +24,7 @@ export function getNumericalStyleValue(
  * 获取 DOM 元素距离页面的 top、left 值
  * @param elem  DOM 元素
  */
-export function offset(elem: HTMLElement) {
+export function offset(elem: HTMLElement): { left: number; top: number } {
   const bounding = elem.getBoundingClientRect()
   return {
     left: window.pageXOffset + bounding.left,
@@ -98,7 +98,7 @@ export function on(
   elem: HTMLElement | Window | Document,
   evtName: EventListener[0],
   handler: EventListener[1]
-) {
+): void {
   elem.addEventListener(evtName, handler)
 }
 
@@ -109,6 +109,6 @@ export function off(
   elem: HTMLElement | Window | Document,
   evtName: EventListener[0],
   handler: EventListener[1]
-) {
+): void {
   elem.removeEventListener(evtName, handler)
 }

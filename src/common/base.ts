@@ -8,9 +8,10 @@ import {
   on,
   randomColor,
 } from '~/src/utils'
+import { CommonConfig } from '~src/@types/common/config'
 import { defaultCanvasHeight, defaultCanvasWidth } from '~src/common/constants'
 
-import commonConfig, { CommonConfig } from './config'
+import commonConfig from './config'
 
 export default abstract class Base<Options> {
   // 所有参数
@@ -83,7 +84,7 @@ export default abstract class Base<Options> {
   /**
    * 生成 "getColor" 函数
    */
-  protected makeColorMethod() {
+  protected makeColorMethod(): () => string {
     const { color } = this.options
     const colorLength = Array.isArray(color) ? color.length : 0
 
@@ -101,12 +102,12 @@ export default abstract class Base<Options> {
   /**
    * 设置设备分辨率
    */
-  protected setDpr() {}
+  protected setDpr(): void {}
 
   /**
    * 设置画布尺寸
    */
-  protected setCanvasDimension() {
+  protected setCanvasDimension(): void {
     this.cw = this.canvas.width =
       getNumericalStyleValue(this.container!, 'width') || defaultCanvasWidth
     this.ch = this.canvas.height =
@@ -121,7 +122,7 @@ export default abstract class Base<Options> {
   /**
    * 简单包装 window.requestAnimationFrame
    */
-  protected requestAnimationFrame() {
+  protected requestAnimationFrame(): void {
     if (!this.isPaused && !this.isCanvasRemoved) {
       window.requestAnimationFrame(this.draw.bind(this))
     }
@@ -164,7 +165,7 @@ export default abstract class Base<Options> {
    */
   protected resize(
     callback?: (this: this, scaleX: number, scaleY: number) => void
-  ) {
+  ): void {
     if (this.options.resize) {
       on(window, 'resize', this.resizeHandler.bind(this, callback))
     }
@@ -173,7 +174,7 @@ export default abstract class Base<Options> {
   /**
    * 暂停运动
    */
-  pause(callback?: (this: this, type: 'pause') => void) {
+  pause(callback?: (this: this, type: 'pause') => void): void {
     // 没有 container 表示实例创建失败，防止错误调用报错
     if (!this.isCanvasRemoved && !this.isPaused && this.container) {
       // 传递类型关键字（pause）供特殊使用
@@ -185,7 +186,7 @@ export default abstract class Base<Options> {
   /**
    * 开启运动
    */
-  open(callback?: (this: this, type: 'open') => void) {
+  open(callback?: (this: this, type: 'open') => void): void {
     if (!this.isCanvasRemoved && !this.isPaused && this.container) {
       isFunction(callback) && callback!.call(this, 'open')
       this.isPaused = false
