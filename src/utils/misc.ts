@@ -62,11 +62,11 @@ export function randomColor(): string {
 }
 
 /**
- * 获取延展数值
+ * 根据范围值计算数值
  * @param value  原始值，(0, 1)表示范围值的倍数，0 & [1, +∞)表示具体数值
  * @param range  范围值
  */
-export function calcExtendedValue(value: number, range: number): number {
+export function calcNumberValue(value: number, range: number): number {
   return value > 0 && value < 1 ? value * range : value
 }
 

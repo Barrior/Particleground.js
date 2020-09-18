@@ -3,17 +3,14 @@ import { CommonConfig } from './common/config'
 export interface Options extends Partial<CommonConfig> {
   // 线条数量
   num: number
-
   // 最大宽度
   maxWidth: number
   // 最小宽度
   minWidth: number
-
   // 最大速度
   maxSpeed: number
   // 最小速度
   minSpeed: number
-
   // 线条最大倾斜角度 [0, 180], 逆时针表示
   // 3 点钟方向表示 0 度，12 点钟方向表示 90 度（即垂直），9 点钟方向表示 180 度。
   maxDegree: number

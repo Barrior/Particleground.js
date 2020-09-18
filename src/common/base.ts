@@ -77,7 +77,7 @@ export default abstract class Base<Options> {
   abstract init(): void
 
   /**
-   * 绘图函数
+   * 绘图入口
    */
   abstract draw(): void
 
@@ -192,5 +192,11 @@ export default abstract class Base<Options> {
       this.isPaused = false
       this.draw()
     }
+  }
+
+  onDestroy(...args: (() => void)[]): this {
+    return this
+    // 让事件支持链式操作
+    // return registerListener(this, this.destructionListeners, ...args)
   }
 }
