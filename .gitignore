@@ -17,5 +17,5 @@ coverage
 .nyc_output
 .coveralls.yml
 
-# maps
-/dist/maps/
+# Output directory
+/dist/
