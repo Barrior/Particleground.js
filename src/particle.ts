@@ -1,4 +1,4 @@
-import { Element, Options } from './@types/particle'
+import { IElement, Options } from './@types/particle'
 import Base from './common/base'
 import { doublePi, orientationSupport } from './common/constants'
 import { mount } from './common/jparticles'
@@ -68,7 +68,7 @@ export default class Particle extends Base<Partial<Options>> {
     parallaxStrength: 3,
   }
 
-  public elements: Element[] = []
+  public elements: IElement[] = []
 
   // 定位点坐标 X
   private positionX?: number
@@ -344,14 +344,6 @@ export default class Particle extends Base<Partial<Options>> {
       window.addEventListener('deviceorientation', orientationHandler)
       on(window, 'deviceorientation', orientationHandler)
     }
-
-    //
-    // this.$on(eventElem!, 'mousemove.a', () => {
-    // // ...
-    // })
-    //
-    // this.$off(eventElem!, 'mousemove.a')
-    //
 
     const moveHandler = (e: MouseEvent) => {
       if (this.isPaused) return

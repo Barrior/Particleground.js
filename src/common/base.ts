@@ -5,20 +5,27 @@ import {
   isPlainObject,
   isString,
   merge,
+  observeElementRemoved,
+  off,
   on,
   randomColor,
 } from '~/src/utils'
 import { CommonConfig } from '~src/@types/common/config'
-import { defaultCanvasHeight, defaultCanvasWidth } from '~src/common/constants'
+import {
+  defaultCanvasHeight,
+  defaultCanvasWidth,
+  isRuntimeSupported,
+} from '~src/common/constants'
 
 import commonConfig from './config'
 
+// Base<Options, Selector extends Element | string>
 export default abstract class Base<Options> {
   // 所有参数
   protected readonly options!: Required<Options> & CommonConfig
 
   // 包裹 canvas 的容器
-  protected readonly container: HTMLElement | null
+  protected readonly container?: HTMLElement | null
 
   // 画布
   protected readonly canvas!: HTMLCanvasElement
@@ -44,14 +51,28 @@ export default abstract class Base<Options> {
   // 是否暂停运动了
   protected isPaused = false
 
+  // 事件监听器
+  protected listeners: {
+    destroy: Function[]
+  } = {
+    // onDestroy 事件
+    destroy: [],
+  }
+
+  // 窗口尺寸改变处理函数，对应调整（粒子）位置
+  protected resizeHandler?: () => void
+
   protected constructor(
     defaultConfig: Options,
     selector: string | HTMLElement,
     options?: Partial<Options>
   ) {
+    // 对于不支持运行特效的浏览器（如 IE8）将不支持创建特效
+    if (!isRuntimeSupported) return
+
     this.container = isElement(selector)
       ? (selector as HTMLElement)
-      : document.querySelector(selector as string)
+      : document.querySelector<HTMLElement>(selector as string)
 
     if (this.container) {
       this.options = merge({}, commonConfig, defaultConfig, options)
@@ -100,24 +121,45 @@ export default abstract class Base<Options> {
   }
 
   /**
-   * 设置设备分辨率
-   */
-  protected setDpr(): void {}
-
-  /**
    * 设置画布尺寸
    */
   protected setCanvasDimension(): void {
-    this.cw = this.canvas.width =
+    const dpr = window.devicePixelRatio
+    const width =
       getNumericalStyleValue(this.container!, 'width') || defaultCanvasWidth
-    this.ch = this.canvas.height =
+    const height =
       getNumericalStyleValue(this.container!, 'height') || defaultCanvasHeight
+
+    this.cw = width
+    this.ch = height
+
+    // 设置设备分辨率，防止在高清屏显示模糊（Mac OS）
+    this.canvas.width = width * dpr
+    this.canvas.height = height * dpr
+
+    this.ctx.scale(dpr, dpr)
   }
 
   /**
    * 监听画布从 DOM 中被移除时，做后期清理操作，如销毁事件等
    */
-  protected observeCanvasRemoved() {}
+  protected observeCanvasRemoved() {
+    observeElementRemoved(this.canvas, () => {
+      // 当 Canvas 从 DOM 中被移除
+      // 1、停止 requestAnimationFrame，避免性能损耗
+      this.isCanvasRemoved = true
+
+      // 2、移除外在事件
+      if (this.resizeHandler) {
+        off(window, 'resize', this.resizeHandler)
+      }
+
+      // 3、触发销毁回调事件
+      this.listeners.destroy.forEach((callback) => {
+        callback()
+      })
+    })
+  }
 
   /**
    * 简单包装 window.requestAnimationFrame
@@ -129,46 +171,60 @@ export default abstract class Base<Options> {
   }
 
   /**
-   * 窗口尺寸改变处理函数，对应调整（粒子）位置
-   */
-  protected resizeHandler = (
-    callback?: (this: this, scaleX: number, scaleY: number) => void
-  ) => {
-    const preCW = this.cw
-    const preCH = this.ch
-
-    // 重设画布尺寸
-    this.setCanvasDimension()
-
-    // 缩放比例
-    const scaleX = this.cw / preCW
-    const scaleY = this.ch / preCH
-
-    // 自定义处理逻辑
-    if (isFunction(callback)) {
-      callback!.call(this, scaleX, scaleY)
-    } else {
-      // 通用处理逻辑，重新计算粒子坐标
-      this.elements.forEach((element) => {
-        if (isPlainObject(element)) {
-          element.x *= scaleX
-          element.y *= scaleY
-        }
-      })
-    }
-
-    this.isPaused && this.draw()
-  }
-
-  /**
    * 自适应窗口尺寸改变
    */
   protected resize(
     callback?: (this: this, scaleX: number, scaleY: number) => void
   ): void {
     if (this.options.resize) {
-      on(window, 'resize', this.resizeHandler.bind(this, callback))
+      // 窗口尺寸改变处理函数，对应调整（粒子）位置
+      this.resizeHandler = () => {
+        const preCW = this.cw
+        const preCH = this.ch
+
+        // 重设画布尺寸
+        this.setCanvasDimension()
+
+        // 缩放比例
+        const scaleX = this.cw / preCW
+        const scaleY = this.ch / preCH
+
+        // 自定义处理逻辑
+        if (isFunction(callback)) {
+          callback!.call(this, scaleX, scaleY)
+        } else {
+          // 通用处理逻辑，重新计算粒子坐标
+          this.elements.forEach((element) => {
+            if (isPlainObject(element)) {
+              element.x *= scaleX
+              element.y *= scaleY
+            }
+          })
+        }
+
+        this.isPaused && this.draw()
+      }
+      on(window, 'resize', this.resizeHandler)
     }
+  }
+
+  /**
+   * 代理监听器事件，统一过滤非函数参数，返回 this
+   * @param listener  监听器
+   * @param args  参数集合
+   */
+  protected pushCallbackToListener(
+    listener: Function[],
+    args: Function[]
+  ): this {
+    for (const callback of args) {
+      if (isFunction(callback)) {
+        listener.push(callback)
+      }
+    }
+
+    // 让事件支持链式操作
+    return this
   }
 
   /**
@@ -176,7 +232,7 @@ export default abstract class Base<Options> {
    */
   pause(callback?: (this: this, type: 'pause') => void): void {
     // 没有 container 表示实例创建失败，防止错误调用报错
-    if (!this.isCanvasRemoved && !this.isPaused && this.container) {
+    if (this.container && !this.isPaused && !this.isCanvasRemoved) {
       // 传递类型关键字（pause）供特殊使用
       isFunction(callback) && callback!.call(this, 'pause')
       this.isPaused = true
@@ -187,16 +243,18 @@ export default abstract class Base<Options> {
    * 开启运动
    */
   open(callback?: (this: this, type: 'open') => void): void {
-    if (!this.isCanvasRemoved && !this.isPaused && this.container) {
+    if (this.container && this.isPaused && !this.isCanvasRemoved) {
       isFunction(callback) && callback!.call(this, 'open')
       this.isPaused = false
       this.draw()
     }
   }
 
-  onDestroy(...args: (() => void)[]): this {
-    return this
-    // 让事件支持链式操作
-    // return registerListener(this, this.destructionListeners, ...args)
+  /**
+   * 当 Canvas 从 DOM 中移除时触发的事件
+   * @param args  参数集合
+   */
+  onDestroy(...args: Function[]): this {
+    return this.pushCallbackToListener(this.listeners.destroy, args)
   }
 }

@@ -5,6 +5,7 @@ export const funcToString = Function.prototype.toString
 export const objectCtorString = funcToString.call(Object)
 export const defaultCanvasWidth = 485
 export const defaultCanvasHeight = 300
+export const isRuntimeSupported = !!Object.defineProperty
 
 export const regExp = {
   trimAll: /\s/g,

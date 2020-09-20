@@ -52,7 +52,7 @@ export interface Options extends Partial<CommonConfig> {
   parallaxStrength: number
 }
 
-export interface Element {
+export interface IElement {
   // 粒子半径
   r: number
   // 粒子 x 坐标

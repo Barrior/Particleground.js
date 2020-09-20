@@ -6,7 +6,7 @@ window.requestAnimationFrame = ((win) => {
     win.requestAnimationFrame ||
     win.webkitRequestAnimationFrame ||
     win.mozRequestAnimationFrame ||
-    function (fn: Function) {
+    function (fn: TimerHandler) {
       win.setTimeout(fn, 1000 / 60)
     }
   )
