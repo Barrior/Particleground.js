@@ -25,8 +25,22 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
+    // Misc lint of ESLint
     "no-console": "warn",
     "lines-between-class-members": ["error", "always"],
+    "eqeqeq": ["error", "always"],
+
+    // Misc lint of Typescript
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "Function": false
+        }
+      }
+    ],
 
     // Comments
     "no-inline-comments": "error",
@@ -45,18 +59,9 @@
     "multiline-comment-style": ["error", "separate-lines"],
     "spaced-comment": ["error", "always", { "block": { "balanced": true } }],
 
-    "eqeqeq": ["error", "always"],
+    // Import sorting and remove unused imports
+    "import/first": "off",
     "simple-import-sort/sort": "error",
-    "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/ban-types": [
-      "error",
-      {
-        "extendDefaults": true,
-        "types":{
-          "Function": false
-        }
-      }
-    ],
     "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports-ts": "error",
     "unused-imports/no-unused-vars-ts": [
