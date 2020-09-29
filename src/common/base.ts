@@ -14,10 +14,12 @@ import { CommonConfig } from '~src/@types/common/config'
 import {
   defaultCanvasHeight,
   defaultCanvasWidth,
+  EVENT_NAMES,
   isRuntimeSupported,
 } from '~src/common/constants'
 
 import commonConfig from './config'
+import Events from './events'
 
 // Base<Options, Selector extends Element | string>
 export default abstract class Base<Options> {
@@ -51,16 +53,11 @@ export default abstract class Base<Options> {
   // 是否暂停运动了
   protected isPaused = false
 
-  // 事件监听器
-  protected listeners: {
-    destroy: Function[]
-  } = {
-    // onDestroy 事件
-    destroy: [],
-  }
-
   // 窗口尺寸改变处理函数，对应调整（粒子）位置
   protected resizeHandler?: () => void
+
+  // 事件中心，文档参考 https://taro-docs.jd.com/taro/docs/apis/about/events/
+  protected eventEmitter!: Events
 
   protected constructor(
     defaultConfig: Options,
@@ -84,6 +81,9 @@ export default abstract class Base<Options> {
 
       // 缓存颜色获取函数，提高性能
       this.getColor = this.makeColorMethod()
+
+      // 创建事件中心
+      this.eventEmitter = new Events()
 
       this.setCanvasDimension()
       this.observeCanvasRemoved()
@@ -143,7 +143,7 @@ export default abstract class Base<Options> {
   /**
    * 监听画布从 DOM 中被移除时，做后期清理操作，如销毁事件等
    */
-  protected observeCanvasRemoved() {
+  protected observeCanvasRemoved(): void {
     observeElementRemoved(this.canvas, () => {
       // 当 Canvas 从 DOM 中被移除
       // 1、停止 requestAnimationFrame，避免性能损耗
@@ -155,9 +155,7 @@ export default abstract class Base<Options> {
       }
 
       // 3、触发销毁回调事件
-      this.listeners.destroy.forEach((callback) => {
-        callback()
-      })
+      this.eventEmitter.trigger(EVENT_NAMES.DESTROY)
     })
   }
 
@@ -209,25 +207,6 @@ export default abstract class Base<Options> {
   }
 
   /**
-   * 代理监听器事件，统一过滤非函数参数，返回 this
-   * @param listener  监听器
-   * @param args  参数集合
-   */
-  protected pushCallbackToListener(
-    listener: Function[],
-    args: Function[]
-  ): this {
-    for (const callback of args) {
-      if (isFunction(callback)) {
-        listener.push(callback)
-      }
-    }
-
-    // 让事件支持链式操作
-    return this
-  }
-
-  /**
    * 暂停运动
    */
   pause(callback?: (this: this, type: 'pause') => void): void {
@@ -255,6 +234,8 @@ export default abstract class Base<Options> {
    * @param args  参数集合
    */
   onDestroy(...args: Function[]): this {
-    return this.pushCallbackToListener(this.listeners.destroy, args)
+    this.eventEmitter.on(EVENT_NAMES.DESTROY, ...args)
+    // 让事件支持链式操作
+    return this
   }
 }

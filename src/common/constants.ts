@@ -7,6 +7,12 @@ export const defaultCanvasWidth = 485
 export const defaultCanvasHeight = 300
 export const isRuntimeSupported = !!Object.defineProperty
 
+// 正则列表
 export const regExp = {
   trimAll: /\s/g,
+}
+
+// 事件名列表
+export enum EVENT_NAMES {
+  DESTROY = 'DESTROY',
 }
