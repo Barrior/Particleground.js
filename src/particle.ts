@@ -1,14 +1,12 @@
 import { IElement, Options } from './@types/particle'
 import Base from './common/base'
 import { doublePi, orientationSupport } from './common/constants'
-import { mount } from './common/jparticles'
+import { mount } from './common/core'
 import {
   calcNumberValue,
   isElement,
   isNull,
-  off,
   offset,
-  on,
   pInt,
   randomInRange,
   randomSpeed,
@@ -331,21 +329,20 @@ export default class Particle extends Base<Partial<Options>> {
     orientation: (beta: number, gamma: number) => void
   ): void {
     const { eventElem } = this.options
-    let orientationHandler: (e: DeviceOrientationEvent) => void
+    let handleOrientation: (e: DeviceOrientationEvent) => void
 
     if (orientationSupport) {
-      orientationHandler = (e) => {
+      handleOrientation = (e) => {
         if (this.isPaused || isNull(e.beta)) return
 
         // 转换 beta 范围 [-180, 180] 成 [-90, 90]
         orientation(Math.min(Math.max(e.beta!, -90), 90), e.gamma!)
       }
 
-      window.addEventListener('deviceorientation', orientationHandler)
-      on(window, 'deviceorientation', orientationHandler)
+      window.addEventListener('deviceorientation', handleOrientation)
     }
 
-    const moveHandler = (e: MouseEvent) => {
+    const handleMove = (e: MouseEvent) => {
       if (this.isPaused) return
 
       let left = e.pageX
@@ -359,11 +356,12 @@ export default class Particle extends Base<Partial<Options>> {
       move(left, top)
     }
 
-    on(eventElem!, 'mousemove', moveHandler)
+    eventElem!.addEventListener('mousemove', handleMove as EventListener)
 
+    // 实例销毁时移除绑定的事件
     this.onDestroy(() => {
-      off(eventElem!, 'mousemove', moveHandler)
-      off(window, 'deviceorientation', orientationHandler)
+      window.removeEventListener('deviceorientation', handleOrientation)
+      eventElem!.removeEventListener('mousemove', handleMove as EventListener)
     })
   }
 
