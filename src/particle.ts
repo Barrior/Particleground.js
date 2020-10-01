@@ -66,7 +66,7 @@ export default class Particle extends Base<Partial<Options>> {
     parallaxStrength: 3,
   }
 
-  public elements: IElement[] = []
+  protected elements: IElement[] = []
 
   // 定位点坐标 X
   private positionX?: number
@@ -101,13 +101,13 @@ export default class Particle extends Base<Partial<Options>> {
   /**
    * 初始化数据和运行程序
    */
-  init(): void {
+  protected init(): void {
     this.optionsNormalize()
 
     if (this.options.range > 0) {
       // 定位点坐标
-      this.positionX = Math.random() * this.cw
-      this.positionY = Math.random() * this.ch
+      this.positionX = Math.random() * this.canvasWidth
+      this.positionY = Math.random() * this.canvasHeight
       this.defineLineShape()
       this.positionEvent()
     }
@@ -125,12 +125,12 @@ export default class Particle extends Base<Partial<Options>> {
    *   num: 0.5  =>  表示 0.5 倍画布宽度  =>  标准化为具体数值，如 100
    *   num: 100  =>  表示具体数值  => 标准化结果还是 100
    */
-  optionsNormalize(): void {
-    const { cw, options } = this
+  private optionsNormalize(): void {
+    const { canvasWidth, options } = this
     const props = ['num', 'proximity', 'range'] as const
 
     props.forEach((prop: ValueOf<typeof props>) => {
-      options[prop] = pInt(calcNumberValue(options[prop], cw))
+      options[prop] = pInt(calcNumberValue(options[prop], canvasWidth))
     })
 
     // 设置触发事件的元素
@@ -140,9 +140,9 @@ export default class Particle extends Base<Partial<Options>> {
   }
 
   /**
-   * 更加配置参数生成对应形状的连线函数
+   * 根据配置参数生成对应形状的连线函数
    */
-  defineLineShape(): void {
+  private defineLineShape(): void {
     const { proximity, range, lineShape } = this.options
     switch (lineShape) {
       case 'cube':
@@ -181,8 +181,8 @@ export default class Particle extends Base<Partial<Options>> {
    * 根据配置参数创建许多粒子（纯数据）
    * 对数据的操作最后通过 draw 函数绘制真实可见的图形
    */
-  createDots(): void {
-    const { cw, ch, getColor } = this
+  private createDots(): void {
+    const { canvasWidth, canvasHeight, getColor } = this
     const { maxR, minR, maxSpeed, minSpeed, parallaxLayer } = this.options
     const layerLength = parallaxLayer.length
     let { num } = this.options
@@ -191,8 +191,8 @@ export default class Particle extends Base<Partial<Options>> {
       const r = randomInRange(maxR, minR)
       this.elements.push({
         r,
-        x: randomInRange(cw - r, r),
-        y: randomInRange(ch - r, r),
+        x: randomInRange(canvasWidth - r, r),
+        y: randomInRange(canvasHeight - r, r),
         vx: randomSpeed(maxSpeed, minSpeed),
         vy: randomSpeed(maxSpeed, minSpeed),
         color: getColor(),
@@ -207,13 +207,16 @@ export default class Particle extends Base<Partial<Options>> {
     }
   }
 
-  draw(): void {
-    const { cw, ch, ctx } = this
+  /**
+   * 绘制粒子
+   */
+  protected draw(): void {
+    const { canvasWidth, canvasHeight, ctx } = this
     const { lineWidth, opacity } = this.options
 
-    ctx.clearRect(0, 0, cw, ch)
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 
-    // 当canvas宽高改变的时候，全局属性需要重新设置
+    // 当 canvas 宽高改变的时候，全局属性需要重新设置
     ctx.lineWidth = lineWidth
     ctx.globalAlpha = opacity
 
@@ -234,13 +237,14 @@ export default class Particle extends Base<Partial<Options>> {
     // 连接粒子
     this.connectDots()
 
+    // 循环绘制
     this.requestAnimationFrame()
   }
 
   /**
    * 连接粒子，绘制线段
    */
-  connectDots(): void {
+  private connectDots(): void {
     // 当连接范围小于 0 时，不连接线段
     if (this.options.range <= 0) return
 
@@ -272,41 +276,41 @@ export default class Particle extends Base<Partial<Options>> {
   /**
    * 更新粒子坐标
    */
-  updateXY(): void {
-    const { isPaused, mouseX, mouseY, cw, ch } = this
+  private updateXY(): void {
+    const { isPaused, mouseX, mouseY, canvasWidth, canvasHeight } = this
     const { parallax, parallaxStrength } = this.options
 
+    // 暂停的时候，vx 和 vy 保持不变，
+    // 防止自适应窗口变化时出现粒子移动
+    if (isPaused) return
+
     this.elements.forEach((dot) => {
-      // 暂停的时候，vx 和 vy 保持不变，
-      // 防止自适应窗口变化时出现粒子移动
-      if (!isPaused) {
-        if (parallax) {
-          // https://github.com/jnicol/particleground/blob/master/jquery.particleground.js#L279-L282
-          const divisor = parallaxStrength * dot.parallaxLayer
-          dot.parallaxOffsetX += (mouseX / divisor - dot.parallaxOffsetX) / 10
-          dot.parallaxOffsetY += (mouseY / divisor - dot.parallaxOffsetY) / 10
-        }
+      if (parallax) {
+        // https://github.com/jnicol/particleground/blob/master/jquery.particleground.js#L279-L282
+        const divisor = parallaxStrength * dot.parallaxLayer
+        dot.parallaxOffsetX += (mouseX / divisor - dot.parallaxOffsetX) / 10
+        dot.parallaxOffsetY += (mouseY / divisor - dot.parallaxOffsetY) / 10
+      }
 
-        dot.x += dot.vx
-        dot.y += dot.vy
+      dot.x += dot.vx
+      dot.y += dot.vy
 
-        const { r, parallaxOffsetX, parallaxOffsetY } = dot
-        let { x, y } = dot
-        x += parallaxOffsetX
-        y += parallaxOffsetY
+      const { r, parallaxOffsetX, parallaxOffsetY } = dot
+      let { x, y } = dot
+      x += parallaxOffsetX
+      y += parallaxOffsetY
 
-        // 自然碰撞反向，视差事件移动反向
-        if (x + r >= cw) {
-          dot.vx = -Math.abs(dot.vx)
-        } else if (x - r <= 0) {
-          dot.vx = Math.abs(dot.vx)
-        }
+      // 自然碰撞反向，视差事件移动反向
+      if (x + r >= canvasWidth) {
+        dot.vx = -Math.abs(dot.vx)
+      } else if (x - r <= 0) {
+        dot.vx = Math.abs(dot.vx)
+      }
 
-        if (y + r >= ch) {
-          dot.vy = -Math.abs(dot.vy)
-        } else if (y - r <= 0) {
-          dot.vy = Math.abs(dot.vy)
-        }
+      if (y + r >= canvasHeight) {
+        dot.vy = -Math.abs(dot.vy)
+      } else if (y - r <= 0) {
+        dot.vy = Math.abs(dot.vy)
       }
     })
   }
@@ -314,17 +318,17 @@ export default class Particle extends Base<Partial<Options>> {
   /**
    * 获取绑定的 DOM 元素（eventElem）的 offset 值
    */
-  getEventElemOffset(): null | { left: number; top: number } {
+  private getEventElemOffset(): null | { left: number; top: number } {
     const { eventElem } = this.options
     return eventElem === document ? null : offset(eventElem as HTMLElement)
   }
 
   /**
-   * 代理事件
+   * 事件代理
    * @param move  移动事件处理函数
    * @param orientation  陀螺仪事件处理函数
    */
-  proxyEvent(
+  private eventProxy(
     move: (left: number, top: number) => void,
     orientation: (beta: number, gamma: number) => void
   ): void {
@@ -365,13 +369,16 @@ export default class Particle extends Base<Partial<Options>> {
     })
   }
 
-  positionEvent(): void {
+  /**
+   * 位置事件，根据鼠标移动的坐标将配置范围内的粒子连接起来
+   */
+  private positionEvent(): void {
     const { range } = this.options
 
     // 性能优化
-    if (range > this.cw && range > this.ch) return
+    if (range > this.canvasWidth && range > this.canvasHeight) return
 
-    this.proxyEvent(
+    this.eventProxy(
       // 鼠标移动事件
       (left, top) => {
         this.positionX = left
@@ -379,31 +386,37 @@ export default class Particle extends Base<Partial<Options>> {
       },
       // 陀螺仪事件
       (beta, gamma) => {
-        this.positionY = (-(beta - 90) / 180) * this.ch
-        this.positionX = (-(gamma - 90) / 180) * this.cw
+        this.positionX = (-(gamma - 90) / 180) * this.canvasWidth
+        this.positionY = (-(beta - 90) / 180) * this.canvasHeight
       }
     )
   }
 
-  parallaxEvent(): void {
+  /**
+   * 视差效果事件
+   */
+  private parallaxEvent(): void {
     if (!this.options.parallax) return
 
-    this.proxyEvent(
+    this.eventProxy(
       (left, top) => {
-        this.mouseX = left - this.cw / 2
-        this.mouseY = top - this.ch / 2
+        this.mouseX = left - this.canvasWidth / 2
+        this.mouseY = top - this.canvasHeight / 2
       },
       (beta, gamma) => {
         // 一半高度或宽度的对应比例值
-        // mouseX: - gamma / 90 * cw / 2;
-        // mouseY: - beta / 90 * ch / 2;
-        this.mouseX = (-gamma * this.cw) / 180
-        this.mouseY = (-beta * this.ch) / 180
+        // mouseX: - gamma / 90 * canvasWidth / 2;
+        // mouseY: - beta / 90 * canvasHeight / 2;
+        this.mouseX = (-gamma * this.canvasWidth) / 180
+        this.mouseY = (-beta * this.canvasHeight) / 180
       }
     )
   }
 
-  resize(): void {
+  /**
+   * 窗口尺寸调整事件
+   */
+  protected resize(): void {
     super.resize((scaleX, scaleY) => {
       if (this.options.range > 0) {
         this.positionX! *= scaleX

@@ -1,5 +1,9 @@
 import { isFunction } from '~src/utils'
 
+/**
+ * 事件机制，类似 NodeJS Events 模块
+ * 使用文档参考 https://taro-docs.jd.com/taro/docs/apis/about/events/
+ */
 export default class Events {
   private listenerMap: {
     [eventName: string]: Function[]
@@ -35,9 +39,12 @@ export default class Events {
   }
 
   trigger(eventName: string, ...args: any[]): this {
-    this.listenerMap[eventName].forEach((listener) => {
-      listener(...args)
-    })
+    const listeners = this.listenerMap[eventName]
+    if (Array.isArray(listeners)) {
+      listeners.forEach((listener) => {
+        listener(...args)
+      })
+    }
     return this
   }
 }

@@ -21,7 +21,6 @@ import {
 import commonConfig from './config'
 import Events from './events'
 
-// Base<Options, Selector extends Element | string>
 export default abstract class Base<Options> {
   // 所有参数
   protected readonly options!: Required<Options> & CommonConfig
@@ -33,10 +32,10 @@ export default abstract class Base<Options> {
   protected readonly canvas!: HTMLCanvasElement
 
   // 画布宽度
-  protected cw!: number
+  protected canvasWidth!: number
 
   // 画布高度
-  protected ch!: number
+  protected canvasHeight!: number
 
   // 绘图环境
   protected readonly ctx!: CanvasRenderingContext2D
@@ -45,7 +44,7 @@ export default abstract class Base<Options> {
   protected readonly getColor!: () => string
 
   // （粒子）数据集
-  protected elements: any[] = []
+  protected elements: unknown[] = []
 
   // Canvas 是否从 DOM 中移除了
   protected isCanvasRemoved = false
@@ -95,12 +94,12 @@ export default abstract class Base<Options> {
   /**
    * 初始化配置或方法调用
    */
-  abstract init(): void
+  protected abstract init(): void
 
   /**
    * 绘图入口
    */
-  abstract draw(): void
+  protected abstract draw(): void
 
   /**
    * 生成 "getColor" 函数
@@ -130,8 +129,8 @@ export default abstract class Base<Options> {
     const height =
       getNumericalStyleValue(this.container!, 'height') || defaultCanvasHeight
 
-    this.cw = width
-    this.ch = height
+    this.canvasWidth = width
+    this.canvasHeight = height
 
     // 设置设备分辨率，防止在高清屏显示模糊（Mac OS）
     this.canvas.width = width * dpr
@@ -177,27 +176,27 @@ export default abstract class Base<Options> {
     if (this.options.resize) {
       // 窗口尺寸改变处理函数，对应调整（粒子）位置
       this.resizeHandler = () => {
-        const preCW = this.cw
-        const preCH = this.ch
+        const preCW = this.canvasWidth
+        const preCH = this.canvasHeight
 
         // 重设画布尺寸
         this.setCanvasDimension()
 
         // 缩放比例
-        const scaleX = this.cw / preCW
-        const scaleY = this.ch / preCH
+        const scaleX = this.canvasWidth / preCW
+        const scaleY = this.canvasHeight / preCH
 
-        // 自定义处理逻辑
+        // 通用处理逻辑，重新计算粒子坐标
+        this.elements.forEach((element) => {
+          if (isPlainObject(element)) {
+            ;(element as CommonElement).x *= scaleX
+            ;(element as CommonElement).y *= scaleY
+          }
+        })
+
+        // 自定义更多逻辑
         if (isFunction(callback)) {
           callback!.call(this, scaleX, scaleY)
-        } else {
-          // 通用处理逻辑，重新计算粒子坐标
-          this.elements.forEach((element) => {
-            if (isPlainObject(element)) {
-              element.x *= scaleX
-              element.y *= scaleY
-            }
-          })
         }
 
         this.isPaused && this.draw()

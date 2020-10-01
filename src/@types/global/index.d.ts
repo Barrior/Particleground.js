@@ -5,25 +5,11 @@
 declare function parseInt(s: string | number, radix?: number): number
 
 /**
- * 定义基础类型集
- * Reference: https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+ * 通用元素数据结构
  */
-type Primitive = string | number | boolean | null | undefined | bigint | symbol
-
-/**
- * 定义 JSON 值
- * Reference: https://github.com/microsoft/TypeScript/issues/3496#issuecomment-128553540
- */
-type JSONValue = Primitive | JSONObject | JSONArray
-
-/**
- * 定义以纯对象开始的 JSON 类型
- */
-interface JSONObject {
-  [key: string]: JSONValue
+interface CommonElement {
+  // x 坐标
+  x: number
+  // y 坐标
+  y: number
 }
-
-/**
- * 定义以数组开始的 JSON 类型
- */
-type JSONArray = Array<JSONValue>
