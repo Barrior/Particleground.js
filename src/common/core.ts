@@ -22,7 +22,7 @@ window.requestAnimationFrame = ((win) => {
  * @param name 属性名称
  */
 export function mount(name: string) {
-  return (value: Function) => {
+  return (value: Function): void => {
     Object.defineProperty(JParticles, name, {
       value,
       writable: false,

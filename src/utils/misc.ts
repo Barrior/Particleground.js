@@ -1,4 +1,5 @@
 import { piBy180, regExp } from '~src/common/constants'
+import { isPlainObject } from '~src/utils/checking'
 
 /**
  * 包装原生 parseInt，确保输出十进制数值
@@ -72,7 +73,34 @@ export function calcNumberValue(value: number, range: number): number {
 
 /**
  * 深拷贝，浅拷贝请使用 Object.assign 或 ECMAScript 扩展运算符
+ * 1、API 参考 jQuery 深拷贝 https://api.jquery.com/jQuery.extend/#jQuery-extend-deep-target-object1-objectN
+ * 2、数组合并采用替换方式，如
+ *   merge({ a: [1, 2, 3] }, { a: [9, 8] }) => { a: [9, 8, 3] }
  */
-export function merge(...objects: any[]): any {
-  return objects[0]
+export function merge<T extends any>(...objects: any[]): T {
+  const length = objects.length
+  const target = objects[0] || {}
+
+  for (let i = 0; i < length; i++) {
+    for (const prop in objects[i]) {
+      const value = objects[i][prop]
+      const copyIsArray = Array.isArray(value)
+
+      if (copyIsArray || isPlainObject(value)) {
+        let src = target[prop]
+
+        if (copyIsArray) {
+          src = Array.isArray(src) ? src : []
+        } else {
+          src = isPlainObject(src) ? src : {}
+        }
+
+        target[prop] = merge(src, value)
+      } else {
+        target[prop] = value
+      }
+    }
+  }
+
+  return target
 }
