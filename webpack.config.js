@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const chokidar = require('chokidar')
 
 // eslint-disable-next-line unused-imports/no-unused-vars-ts
 const srcDir = path.resolve(__dirname, 'src')
@@ -30,6 +31,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    alias: {
+      '~': __dirname,
+      '~src': path.resolve(__dirname, './src/'),
+    },
   },
   output: {
     filename: '[name].[hash:8].js',
@@ -45,6 +50,11 @@ module.exports = {
     ],
   },
   devServer: {
+    before(app, server) {
+      chokidar.watch([samplesDir]).on('all', () => {
+        server.sockWrite(server.sockets, 'content-changed')
+      })
+    },
     contentBase: distDir,
     host: '127.0.0.1',
     port: 9000,
@@ -55,11 +65,13 @@ module.exports = {
     clientLogLevel: 'silent',
   },
   plugins: [
-    new CopyWebpackPlugin([
-      { from: `${samplesDir}/css`, to: `${distDir}/css` },
-      { from: `${samplesDir}/js`, to: `${distDir}/js` },
-      { from: `${samplesDir}/img`, to: `${distDir}/img` },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: `${samplesDir}/css`, to: `${distDir}/css` },
+        { from: `${samplesDir}/js`, to: `${distDir}/js` },
+        { from: `${samplesDir}/img`, to: `${distDir}/img` },
+      ],
+    }),
     new HtmlWebpackPlugin({
       inject: false,
       filename: 'index.html',
