@@ -13,7 +13,7 @@ import {
 } from './utils'
 
 @mount('Particle')
-export default class Particle extends Base<Partial<Options>> {
+export default class Particle extends Base<Options> {
   static defaultConfig: Options = {
     // 粒子个数，默认为容器宽度的 0.12 倍
     // (0, 1) 显示为容器宽度相应倍数的个数，0 & [1, +∞) 显示具体个数
