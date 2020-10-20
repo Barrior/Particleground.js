@@ -89,26 +89,3 @@ export const observeElementRemoved = (() => {
 
   return MutationObserver ? useMutation : useDOMNodeRemoved
 })()
-
-/**
- * 元素绑定事件
- */
-type EventListener = Parameters<HTMLElement['addEventListener']>
-export function on(
-  elem: HTMLElement | Window | Document,
-  evtName: EventListener[0],
-  handler: EventListener[1]
-): void {
-  elem.addEventListener(evtName, handler)
-}
-
-/**
- * 元素移除事件
- */
-export function off(
-  elem: HTMLElement | Window | Document,
-  evtName: EventListener[0],
-  handler: EventListener[1]
-): void {
-  elem.removeEventListener(evtName, handler)
-}
