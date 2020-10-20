@@ -1,6 +1,6 @@
 import { Element, Options } from './@types/line'
 import Base from './common/base'
-import { mount } from './common/jparticles'
+import { mount } from './common/core'
 
 @mount('Line')
 export default class Line extends Base<Partial<Options>> {

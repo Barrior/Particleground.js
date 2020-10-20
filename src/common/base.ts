@@ -1,13 +1,11 @@
 import {
-  getNumericalStyleValue,
+  getNumberValueOfStyle,
   isElement,
   isFunction,
   isPlainObject,
   isString,
   merge,
   observeElementRemoved,
-  off,
-  on,
   randomColor,
 } from '~/src/utils'
 import { CommonConfig } from '~src/@types/common/config'
@@ -87,7 +85,8 @@ export default abstract class Base<Options> {
       this.setCanvasDimension()
       this.observeCanvasRemoved()
       this.init()
-      this.resize()
+      this.resizeEvent()
+      this.draw()
     }
   }
 
@@ -125,9 +124,9 @@ export default abstract class Base<Options> {
   protected setCanvasDimension(): void {
     const dpr = window.devicePixelRatio
     const width =
-      getNumericalStyleValue(this.container!, 'width') || defaultCanvasWidth
+      getNumberValueOfStyle(this.container!, 'width') || defaultCanvasWidth
     const height =
-      getNumericalStyleValue(this.container!, 'height') || defaultCanvasHeight
+      getNumberValueOfStyle(this.container!, 'height') || defaultCanvasHeight
 
     this.canvasWidth = width
     this.canvasHeight = height
@@ -151,9 +150,9 @@ export default abstract class Base<Options> {
       // 1、停止 requestAnimationFrame，避免性能损耗
       this.isCanvasRemoved = true
 
-      // 2、移除外在事件
+      // 2、移除绑定事件
       if (this.resizeHandler) {
-        off(window, 'resize', this.resizeHandler)
+        window.removeEventListener('resize', this.resizeHandler)
       }
 
       // 3、触发销毁回调事件
@@ -171,9 +170,9 @@ export default abstract class Base<Options> {
   }
 
   /**
-   * 自适应窗口尺寸改变
+   * 窗口尺寸调整事件
    */
-  protected resize(
+  protected resizeEvent(
     callback?: (this: this, scaleX: number, scaleY: number) => void
   ): void {
     if (this.options.resize) {
@@ -204,7 +203,7 @@ export default abstract class Base<Options> {
 
         this.isPaused && this.draw()
       }
-      on(window, 'resize', this.resizeHandler)
+      window.addEventListener('resize', this.resizeHandler)
     }
   }
 
@@ -232,8 +231,8 @@ export default abstract class Base<Options> {
   }
 
   /**
-   * 当 Canvas 从 DOM 中移除时触发的事件
-   * @param args  参数集合
+   * 当 Canvas 从 DOM 中移除时触发的销毁回调事件
+   * @param args 参数集合
    */
   onDestroy(...args: Function[]): this {
     this.eventEmitter.on(EVENT_NAMES.DESTROY, ...args)

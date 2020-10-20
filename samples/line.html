@@ -72,26 +72,26 @@
 
 <script src="js/event.js"></script>
 <script>
-  bind('#instance', function () {
+  bind('#instance', function() {
     return new JParticles.Line('#instance .demo', {
       color: ['rgba(0, 190, 112, .5)', 'rgba(0, 190, 112, .7)', 'rgba(0, 190, 112, .9)'],
       reservedLines: 12,
-    });
-  });
+    })
+  })
 
-  bind('#instance2', function () {
+  bind('#instance2', function() {
     return new JParticles.Line('#instance2 .demo', {
       maxDegree: 135,
       minDegree: 0,
-    });
-  });
+    })
+  })
 
-  bind('#instance3', function () {
+  bind('#instance3', function() {
     return new JParticles.Line('#instance3 .demo', {
       numberOfCreations: 1,
       removeOnOverflow: false,
-    });
-  });
+    })
+  })
 </script>
 </body>
 </html>

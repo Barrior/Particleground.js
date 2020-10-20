@@ -6,16 +6,16 @@ import { pInt } from './misc'
  * @param elem  DOM 元素
  * @param attr  CSS 属性
  */
-export function getNumericalStyleValue(
+export function getNumberValueOfStyle(
   elem: HTMLElement,
   attr: keyof CSSStyleDeclaration
 ): number | void {
   const value = window.getComputedStyle(elem)[attr]
   if (isString(value)) {
     // 匹配字符串的数字字符
-    const numericalValue = (value as string).match(/\d+/)
-    if (numericalValue) {
-      return pInt(numericalValue[0])
+    const numberValue = (value as string).match(/\d+/)
+    if (numberValue) {
+      return pInt(numberValue[0])
     }
   }
 }

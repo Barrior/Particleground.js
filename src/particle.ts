@@ -66,7 +66,7 @@ export default class Particle extends Base<Options> {
     parallaxStrength: 3,
   }
 
-  protected elements: IElement[] = []
+  protected elements!: IElement[]
 
   // 定位点坐标 X
   private positionX?: number
@@ -114,9 +114,10 @@ export default class Particle extends Base<Options> {
 
     // 初始化鼠标在视差上的坐标
     this.mouseX = this.mouseY = 0
-    this.createDots()
-    this.draw()
     this.parallaxEvent()
+
+    // 创建粒子
+    this.createDots()
   }
 
   /**
@@ -179,7 +180,7 @@ export default class Particle extends Base<Options> {
 
   /**
    * 根据配置参数创建许多粒子（纯数据）
-   * 对数据的操作最后通过 draw 函数绘制真实可见的图形
+   * 最后通过 draw 函数绘制真实可见的图形
    */
   private createDots(): void {
     const { canvasWidth, canvasHeight, getColor } = this
@@ -370,7 +371,7 @@ export default class Particle extends Base<Options> {
   }
 
   /**
-   * 位置事件，根据鼠标移动的坐标将配置范围内的粒子连接起来
+   * 鼠标位置事件，根据鼠标的坐标将范围内的粒子连接起来
    */
   private positionEvent(): void {
     const { range } = this.options
@@ -416,8 +417,8 @@ export default class Particle extends Base<Options> {
   /**
    * 窗口尺寸调整事件
    */
-  protected resize(): void {
-    super.resize((scaleX, scaleY) => {
+  protected resizeEvent(): void {
+    super.resizeEvent((scaleX, scaleY) => {
       if (this.options.range > 0) {
         this.positionX! *= scaleX
         this.positionY! *= scaleY
