@@ -36,7 +36,15 @@ export interface Options extends Partial<CommonConfig> {
   reservedLines: number
 }
 
-export interface Element {
+export interface IElement {
+  // 线条中心点 x 坐标
   x: number
-  y: number
+  // 线条宽度
+  width: number
+  // 线条颜色
+  color: string
+  // 运动速度
+  speed: number
+  // 线条倾斜角度，取值范围为 [-180, 180]
+  degree: number
 }

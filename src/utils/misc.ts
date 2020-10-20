@@ -11,7 +11,7 @@ export function pInt(s: string | number, radix = 10): number {
 /**
  * 包装原生 toFixed，确保输出数字而不是字符串
  */
-export function toFixed(num: number | string, digits: number): number {
+export function toFixed(num: number | string, digits = 0): number {
   return parseFloat(Number(num).toFixed(digits))
 }
 
