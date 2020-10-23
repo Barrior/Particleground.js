@@ -1,5 +1,5 @@
 import './particle'
 // import './wave'
 // import './wave-loading'
-// import './snow'
+import './snow'
 import './line'

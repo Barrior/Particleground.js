@@ -36,19 +36,17 @@
   </div>
 </div>
 
-<script src="../dist/jparticles.js"></script>
-<script src="../dist/snow.js"></script>
 <script src="js/event.js"></script>
 <script>
-  bind('#instance', function () {
-    return new JParticles.Snow('#instance .demo');
-  });
+  bind('#instance', function() {
+    return new JParticles.Snow('#instance .demo')
+  })
 
-  bind('#instance2', function () {
+  bind('#instance2', function() {
     return new JParticles.Snow('#instance2 .demo', {
       swing: false,
-    });
-  });
+    })
+  })
 </script>
 </body>
 </html>
