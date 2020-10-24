@@ -14,7 +14,9 @@ const indexHtmlContent = []
 
 fs.readdirSync(samplesDir).forEach((filename) => {
   if (/\.html$/i.test(filename)) {
-    indexHtmlContent.push(`<li><a href="${filename}">${filename}</a></li>`)
+    indexHtmlContent.push(
+      `<li><a href="${filename}" target="_blank">${filename}</a></li>`
+    )
     htmlPages.push(
       new HtmlWebpackPlugin({
         filename,
