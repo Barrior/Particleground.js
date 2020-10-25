@@ -10,3 +10,11 @@
 
 - **应该没有影响的改动点：**
     1. 移除每个特效自身的版本
+
+
+### Wave
+
+```bash
+defaultConfig:
+  rippleNum => crestCount
+```

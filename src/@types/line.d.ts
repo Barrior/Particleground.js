@@ -31,8 +31,7 @@ export interface Options extends Partial<CommonConfig> {
   removeOnOverflow: boolean
   // 溢出补偿，让线条溢出容器多点距离（单位PX）, 取值范围：[0, +∞)
   overflowCompensation: number
-  // 保留的线条个数，避免都被移除
-  // removeOnOverflow 为 true 时生效
+  // 保留的线条个数，避免都被移除，removeOnOverflow 为 true 时生效
   reservedLines: number
 }
 
