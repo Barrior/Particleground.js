@@ -38,9 +38,7 @@ export default class Line extends Base<Options> {
   protected init(): void {
     this.specificAngles = [-180, -90, 0, 90, 180]
     this.createLines(this.options.num)
-    if (this.options.createOnClick) {
-      this.createLinesOnClick()
-    }
+    this.createLinesOnClick()
   }
 
   /**
@@ -74,6 +72,8 @@ export default class Line extends Base<Options> {
    * 点击的时候创建线条
    */
   private createLinesOnClick(): void {
+    if (!this.options.createOnClick) return
+
     const handleClick = (event: MouseEvent) => {
       if (this.isPaused) return
       const x = event.pageX - offset(this.canvas).left

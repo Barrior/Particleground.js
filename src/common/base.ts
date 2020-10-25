@@ -91,7 +91,8 @@ export default abstract class Base<Options> {
   }
 
   /**
-   * 初始化配置或方法调用
+   * 初始化数据或方法调用
+   * 注意数据都应该在这里被定义，而不是在子类的 constructor 中
    */
   protected abstract init(): void
 
