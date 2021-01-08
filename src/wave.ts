@@ -1,8 +1,9 @@
-import { IElement, Options } from './@types/wave'
+import { IElement, Options, StdOptions } from './@types/wave'
 import Base from './common/base'
-import { doublePi } from './common/constants'
 import { mount } from './common/core'
-import { pInt, randomColor, randomInRange, randomSpeed } from './utils'
+import { calcQuantity, isPlainObject, isUndefined, randomColor, randomInRange } from './utils'
+import { doublePi } from '~src/common/constants'
+import { CommonConfig } from '~src/@types/common/config'
 
 // 仅允许 opacity 和以下选项动态设置
 const dynamicOptions = [
@@ -17,18 +18,9 @@ const dynamicOptions = [
   'speed',
 ] as const
 
-const optionsName = [
-  'fill',
-  'fillColor',
-  'line',
-  'lineColor',
-  'lineWidth',
-  'offsetLeft',
-  'offsetTop',
-  'crestHeight',
-  'crestCount',
-  'speed',
-] as const
+type DynamicOptions = ValueOf<typeof dynamicOptions>
+
+const stdProperties = [...dynamicOptions, 'crestCount'] as const
 
 @mount('Wave')
 export default class Wave extends Base<Options> {
@@ -69,12 +61,15 @@ export default class Wave extends Base<Options> {
     speed: [],
   }
 
-  protected elements!: IElement[]
+  protected elements!: IElement[][]
 
   // 波长，每个周期(2π)在 Canvas 上的实际长度
-  private waveLength!: any[]
+  private waveLength!: number[]
 
-  constructor(selector: string | HTMLElement, options?: Partial<Options>) {
+  constructor(
+    selector: string | HTMLElement,
+    options?: Omit<Partial<Options>, 'color'>
+  ) {
     super(Wave.defaultConfig, selector, options)
   }
 
@@ -88,83 +83,47 @@ export default class Wave extends Base<Options> {
    * 标准化配置项
    */
   private optionsNormalize(): void {
-    optionsName.forEach((property) => {
+    stdProperties.forEach((property) => {
       let num = this.options.num
 
-      // value: 选项原始值
-      // stdValue: 选项标准值
-      let stdValue = (value = this.options[property])
+      // 选项原始值
+      const rawValue = this.options[property]
 
-      let scale =
+      // 选项标准值
+      const stdValue: ValueOf<StdOptions> = []
+
+      // 比例范围
+      const scaleRange =
         property === 'offsetLeft' ? this.canvasWidth : this.canvasHeight
 
-      if (!Array.isArray(value)) {
-        stdValue = this.options[property] = []
-      }
-
-      // 将数组、字符串、数字、布尔类型属性标准化，利于内部代码编写
+      // 将数组、字符串、数字、布尔类型等属性标准化，利于内部代码编写
       //
       // 例如 num = 3 时，
-      //   crestHeight: []或[2]或[2, 2], 将标准化成: [2, 2, 2]
-      //   crestHeight: 2, 将标准化成: [2, 2, 2]
-      //
-      // 注意：(0, 1)表示容器高度的倍数，0 & [1, +∞)表示具体数值，其他属性同理
-      // scaleValue 用于处理属性值为 (0, 1) 或 0 & [1, +∞) 这样的情况，返回计算好的数值。
+      //   crestHeight: 2或[]或[2]或[2, 2], 将标准化成: [2, 2, 2]
+      //   crestHeight: 没有传值时则使用默认值，将标准化成: [x, x, x], x表示默认值
       while (num--) {
-        const val = isArray(attrValue) ? attrValue[num] : attrValue
+        const value = Array.isArray(rawValue) ? rawValue[num] : rawValue
 
-        stdValue[num] = isUndefined(val)
-          ? this.getOptionDefaultValue(attr)
-          : this.scaleValue(attr, val, scale)
+        stdValue[num] = isUndefined(value)
+          ? this.getOptionDefaultValue(property)
+          : Wave.getOptionProcessedValue(property, value, scaleRange)
 
-        if (attr === 'rippleNum') {
-          this.rippleLength[num] = this.cw / stdValue[num]
+        if (property === 'crestCount') {
+          this.waveLength[num] = this.canvasWidth / (stdValue[num] as number)
         }
       }
+
+      this.options[property] = stdValue as never
     })
   }
 
   /**
-   * 标准化配置项 - 处理程序
-   */
-  private optionProcessor(option): void {
-    let num = this.options.num
-    let attrValue = this.options[option]
-    let stdValue = attrValue
-    let scale = attr === 'offsetLeft' ? this.cw : this.ch
-
-    if (!isArray(attrValue)) {
-      stdValue = this.set[attr] = []
-    }
-
-    // 将数组、字符串、数字、布尔类型属性标准化，利于内部代码编写
-    //
-    // 例如 num = 3 时，
-    //   crestHeight: []或[2]或[2, 2], 将标准化成: [2, 2, 2]
-    //   crestHeight: 2, 将标准化成: [2, 2, 2]
-    //
-    // 注意：(0, 1)表示容器高度的倍数，0 & [1, +∞)表示具体数值，其他属性同理
-    // scaleValue 用于处理属性值为 (0, 1) 或 0 & [1, +∞) 这样的情况，返回计算好的数值。
-    while (num--) {
-      const val = isArray(attrValue) ? attrValue[num] : attrValue
-
-      stdValue[num] = isUndefined(val)
-        ? this.getOptionDefaultValue(attr)
-        : this.scaleValue(attr, val, scale)
-
-      if (attr === 'rippleNum') {
-        this.rippleLength[num] = this.cw / stdValue[num]
-      }
-    }
-  }
-
-  /**
    * 配置项缺省情况下对应的默认值
-   * @param option 配置项
+   * @param property 配置项属性
    */
-  private getOptionDefaultValue(option: keyof Options) {
+  private getOptionDefaultValue(property: ValueOf<typeof stdProperties>) {
     const { canvasWidth, canvasHeight } = this
-    switch (option) {
+    switch (property) {
       case 'lineColor':
       case 'fillColor':
         return randomColor()
@@ -183,27 +142,136 @@ export default class Wave extends Base<Options> {
         return false
       case 'line':
         return true
-      default:
-        return undefined
     }
   }
 
-  scaleValue(attr, value, scale) {
+  /**
+   * 获取配置项计算数值
+   * @param property 属性
+   * @param value 原始值
+   * @param range 范围值
+   */
+  private static getOptionProcessedValue(
+    property: ValueOf<typeof stdProperties>,
+    value: string | number | boolean,
+    range: number
+  ) {
     if (
-      attr === 'offsetTop' ||
-      attr === 'offsetLeft' ||
-      attr === 'crestHeight'
+      property === 'offsetTop' ||
+      property === 'offsetLeft' ||
+      property === 'crestHeight'
     ) {
-      return scaleValue(value, scale)
+      return calcQuantity(value as number, range)
     }
     return value
   }
 
-  dynamicProcessor(name, newValue) {
-    const scale = name === 'offsetLeft' ? this.cw : this.ch
-    const isArrayType = isArray(newValue)
+  /**
+   * 创建波浪线条像素点
+   */
+  private createDots() {
+    const { canvasWidth, waveLength } = this
+    let { num } = this.options
 
-    this.set[name].forEach((curValue, i, array) => {
+    while (num--) {
+      const line = []
+
+      // 点的 y 轴步进
+      const step = doublePi / waveLength[num]
+
+      // 创建一条线段所需的点
+      for (let i = 0; i <= canvasWidth; i++) {
+        line.push({
+          x: i,
+          y: i * step,
+        })
+      }
+
+      this.elements[num] = line
+    }
+  }
+
+  /**
+   * 绘图
+   */
+  protected draw(): void {
+    const { ctx, canvasWidth, canvasHeight, isPaused } = this
+    const options = this.options as StdOptions & CommonConfig
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+    ctx.globalAlpha = options.opacity
+
+    this.elements.forEach((lines, i) => {
+      const crestHeight = options.crestHeight[i]
+      const offsetLeft = options.offsetLeft[i]
+      const offsetTop = options.offsetTop[i]
+      const speed = options.speed[i]
+
+      ctx.save()
+      ctx.beginPath()
+
+      lines.forEach((dot, j) => {
+        ctx[j ? 'lineTo' : 'moveTo'](
+          dot.x,
+          // y = A sin ( ωx + φ ) + h
+          crestHeight * Math.sin(dot.y + offsetLeft) + offsetTop
+        )
+        !isPaused && (dot.y -= speed)
+      })
+
+      // 填充
+      if (options.fill[i]) {
+        ctx.lineTo(canvasWidth, canvasHeight)
+        ctx.lineTo(0, canvasHeight)
+        ctx.closePath()
+        ctx.fillStyle = options.fillColor[i]
+        ctx.fill()
+      }
+
+      // 绘制线条边框
+      if (options.line[i]) {
+        ctx.lineWidth = options.lineWidth[i]
+        ctx.strokeStyle = options.lineColor[i]
+        ctx.stroke()
+      }
+
+      ctx.restore()
+    })
+
+    this.requestAnimationFrame()
+  }
+
+  /**
+   * 窗口尺寸调整事件
+   */
+  protected resizeEvent(): void {
+    const props = ['offsetLeft', 'offsetTop', 'crestHeight'] as const
+    const options = this.options as StdOptions
+
+    super.resizeEvent((scaleX, scaleY) => {
+      // 调整选项缩放后的值
+      props.forEach((prop) => {
+        const scale = prop === 'offsetLeft' ? scaleX : scaleY
+        options[prop].forEach((value, i, array) => {
+          array[i] = value * scale
+        })
+      })
+
+      // 调整点的坐标
+      this.elements.forEach((lines) => {
+        lines.forEach((dot) => {
+          dot.x *= scaleX
+          dot.y *= scaleY
+        })
+      })
+    })
+  }
+
+  private dynamicProcessor(name: DynamicOptions, newValue: any) {
+    const scale = name === 'offsetLeft' ? this.canvasWidth : this.canvasHeight
+    const isArrayType = Array.isArray(newValue)
+
+    this.options[name].forEach((curValue, i, array) => {
       let value = isArrayType ? newValue[i] : newValue
       value = this.scaleValue(name, value, scale)
 
@@ -216,100 +284,17 @@ export default class Wave extends Base<Options> {
     })
   }
 
-  setOptions(newOptions) {
-    if (this.set && isPlainObject(newOptions)) {
+  setOptions(newOptions: Partial<Pick<Options, DynamicOptions | 'opacity'>>) {
+    if (this.options && isPlainObject(newOptions)) {
       for (const name in newOptions) {
-        if (name === 'opacity') {
-          this.set.opacity = newOptions[name]
-        } else if (dynamicOptions.indexOf(name) !== -1) {
-          this.dynamicProcessor(name, newOptions[name])
+        if (Object.hasOwnProperty.call(newOptions, name)) {
+          if (name === 'opacity') {
+            this.options.opacity = newOptions[name] ?? 1
+          } else if (dynamicOptions.indexOf(name as DynamicOptions) !== -1) {
+            this.dynamicProcessor(name as DynamicOptions, newOptions[name])
+          }
         }
       }
     }
-  }
-
-  createDots() {
-    const { cw, rippleLength } = this
-    let { num } = this.set
-    this.dots = []
-
-    while (num--) {
-      const line = (this.dots[num] = [])
-
-      // 点的y轴步进
-      const step = doublePI / rippleLength[num]
-
-      // 创建一条线段所需的点
-      for (let i = 0; i <= cw; i++) {
-        line.push({
-          x: i,
-          y: i * step,
-        })
-      }
-    }
-  }
-
-  draw() {
-    const { ctx, cw, ch, paused, set } = this
-    const { opacity } = set
-
-    ctx.clearRect(0, 0, cw, ch)
-    ctx.globalAlpha = opacity
-
-    this.dots.forEach((line, i) => {
-      const crestHeight = set.crestHeight[i]
-      const offsetLeft = set.offsetLeft[i]
-      const offsetTop = set.offsetTop[i]
-      const speed = set.speed[i]
-
-      ctx.save()
-      ctx.beginPath()
-
-      line.forEach((dot, j) => {
-        ctx[j ? 'lineTo' : 'moveTo'](
-          dot.x,
-
-          // y = A sin ( ωx + φ ) + h
-          crestHeight * sin(dot.y + offsetLeft) + offsetTop
-        )
-        !paused && (dot.y -= speed)
-      })
-
-      if (set.fill[i]) {
-        ctx.lineTo(cw, ch)
-        ctx.lineTo(0, ch)
-        ctx.closePath()
-        ctx.fillStyle = set.fillColor[i]
-        ctx.fill()
-      }
-
-      if (set.line[i]) {
-        ctx.lineWidth = set.lineWidth[i]
-        ctx.strokeStyle = set.lineColor[i]
-        ctx.stroke()
-      }
-
-      ctx.restore()
-    })
-
-    this.requestAnimationFrame()
-  }
-
-  resize() {
-    super.resize((scaleX, scaleY) => {
-      const props = ['offsetLeft', 'offsetTop', 'crestHeight']
-      props.forEach(prop => {
-        const scale = prop === 'offsetLeft' ? scaleX : scaleY
-        this.set[prop].forEach((attr, i, array) => {
-          array[i] = attr * scale
-        })
-      })
-      this.dots.forEach(line => {
-        line.forEach(dot => {
-          dot.x *= scaleX
-          dot.y *= scaleY
-        })
-      })
-    })
   }
 }
