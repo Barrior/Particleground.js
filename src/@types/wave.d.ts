@@ -49,3 +49,5 @@ export interface IElement {
   // y 坐标
   y: number
 }
+
+export type StrNumBool = string | number | boolean

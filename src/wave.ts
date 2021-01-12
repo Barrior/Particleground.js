@@ -1,9 +1,16 @@
-import { IElement, Options, StdOptions } from './@types/wave'
+import { CommonConfig } from '~src/@types/common/config'
+import { doublePi } from '~src/common/constants'
+
+import { IElement, Options, StdOptions, StrNumBool } from './@types/wave'
 import Base from './common/base'
 import { mount } from './common/core'
-import { calcQuantity, isPlainObject, isUndefined, randomColor, randomInRange } from './utils'
-import { doublePi } from '~src/common/constants'
-import { CommonConfig } from '~src/@types/common/config'
+import {
+  calcQuantity,
+  isPlainObject,
+  isUndefined,
+  randomColor,
+  randomInRange,
+} from './utils'
 
 // 仅允许 opacity 和以下选项动态设置
 const dynamicOptions = [
@@ -153,7 +160,7 @@ export default class Wave extends Base<Options> {
    */
   private static getOptionProcessedValue(
     property: ValueOf<typeof stdProperties>,
-    value: string | number | boolean,
+    value: StrNumBool,
     range: number
   ) {
     if (
@@ -267,32 +274,61 @@ export default class Wave extends Base<Options> {
     })
   }
 
-  private dynamicProcessor(name: DynamicOptions, newValue: any) {
-    const scale = name === 'offsetLeft' ? this.canvasWidth : this.canvasHeight
+  /**
+   * 更新选项值
+   * @param property 选项属性
+   * @param newValue 新值
+   */
+  private updateOptions(
+    property: DynamicOptions,
+    newValue?: ValueOf<Pick<Options, DynamicOptions>>
+  ) {
+    if (!newValue) return
+
+    const scaleRange =
+      property === 'offsetLeft' ? this.canvasWidth : this.canvasHeight
+    const options = this.options as StdOptions & CommonConfig
     const isArrayType = Array.isArray(newValue)
 
-    this.options[name].forEach((curValue, i, array) => {
-      let value = isArrayType ? newValue[i] : newValue
-      value = this.scaleValue(name, value, scale)
+    options[property].forEach(
+      (curValue: StrNumBool, i: number, array: StrNumBool[]) => {
+        let value = isArrayType ? (newValue as StrNumBool[])[i] : newValue
 
-      // 未定义部分保持原有值
-      if (isUndefined(value)) {
-        value = curValue
+        value = Wave.getOptionProcessedValue(
+          property,
+          value as StrNumBool,
+          scaleRange
+        )
+
+        // 未定义部分保持原有值
+        if (isUndefined(value)) {
+          value = curValue
+        }
+
+        array[i] = value
       }
-
-      array[i] = value
-    })
+    )
   }
 
-  setOptions(newOptions: Partial<Pick<Options, DynamicOptions | 'opacity'>>) {
-    if (this.options && isPlainObject(newOptions)) {
-      for (const name in newOptions) {
-        if (Object.hasOwnProperty.call(newOptions, name)) {
-          if (name === 'opacity') {
-            this.options.opacity = newOptions[name] ?? 1
-          } else if (dynamicOptions.indexOf(name as DynamicOptions) !== -1) {
-            this.dynamicProcessor(name as DynamicOptions, newOptions[name])
-          }
+  /**
+   * 动态设置 options 选项值
+   */
+  setOptions(
+    newOptions: Partial<Pick<Options, DynamicOptions | 'opacity'>>
+  ): void {
+    if (!this.options || !isPlainObject(newOptions)) {
+      return
+    }
+
+    for (const property in newOptions) {
+      if (Object.hasOwnProperty.call(newOptions, property)) {
+        if (property === 'opacity') {
+          this.options.opacity = newOptions[property] ?? 1
+        } else if (dynamicOptions.indexOf(property as never) !== -1) {
+          this.updateOptions(
+            property as DynamicOptions,
+            newOptions[property as DynamicOptions]
+          )
         }
       }
     }

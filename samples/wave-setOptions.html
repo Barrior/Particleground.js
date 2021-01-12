@@ -125,9 +125,9 @@
     var btnPause = instance.querySelector('.btn[data-pause]')
     var elemHeight = parseInt(getCss(demo, 'height')) - 8
     var originOffsetTop = [elemHeight, elemHeight + 8, elemHeight + 16]
-    var progress = JParticles.utils.extend([], originOffsetTop)
+    var progress = Object.assign([], originOffsetTop)
     var originOffsetLeft = [2, 1, 0]
-    var offsetLeft = JParticles.utils.extend([], originOffsetLeft)
+    var offsetLeft = Object.assign([], originOffsetLeft)
     var timer = null
 
     // 多条和多参数设置
@@ -169,8 +169,8 @@
 
     btnOpen.addEventListener('click', function() {
       if (progress[1] <= 0) {
-        progress = JParticles.utils.extend([], originOffsetTop)
-        offsetLeft = JParticles.utils.extend([], originOffsetLeft)
+        progress = Object.assign([], originOffsetTop)
+        offsetLeft = Object.assign([], originOffsetLeft)
       }
       clearInterval(timer)
       timer = setInterval(function() {
