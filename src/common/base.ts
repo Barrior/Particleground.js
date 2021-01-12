@@ -21,7 +21,7 @@ import Events from './events'
 
 export default abstract class Base<Options> {
   // 所有参数
-  protected readonly options!: Required<Options> & CommonConfig
+  protected readonly options!: Options & CommonConfig
 
   // 包裹 canvas 的容器
   protected readonly container?: HTMLElement | null

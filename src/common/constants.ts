@@ -10,6 +10,7 @@ export const isRuntimeSupported = !!Object.defineProperty
 // 正则列表
 export const regExp = {
   trimAll: /\s/g,
+  http: /^https?/i,
 }
 
 // 事件名列表

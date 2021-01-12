@@ -32,6 +32,9 @@ export interface ComOptions {
 
   // 运动速度，默认随机 [.1, .4)
   speed: number | number[]
+
+  // 图形遮罩，以 https? 开头的 URL
+  mask?: string
 }
 
 export interface Options extends ComOptions, Partial<CommonConfig> {

@@ -106,3 +106,26 @@ export function merge<T extends any>(...objects: any[]): T {
 
   return target
 }
+
+/**
+ * 检查参数是否是以 http(s) 开头的 URL
+ */
+export function isHttpUrl(url: string): boolean {
+  return regExp.http.test(url)
+}
+
+/**
+ * 加载图像
+ * @param url 图像地址
+ * @param callback 加载完成后的回调函数
+ */
+export function loadImage(
+  url: string,
+  callback: (image: HTMLImageElement) => void
+): void {
+  if (!isHttpUrl(url)) return
+
+  const image = new Image()
+  image.addEventListener('load', () => callback(image))
+  image.src = url
+}

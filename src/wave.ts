@@ -8,6 +8,7 @@ import {
   calcQuantity,
   isPlainObject,
   isUndefined,
+  loadImage,
   randomColor,
   randomInRange,
 } from './utils'
@@ -73,6 +74,9 @@ export default class Wave extends Base<Options> {
   // 波长，每个周期(2π)在 Canvas 上的实际长度
   private waveLength!: number[]
 
+  // 遮罩图像
+  private maskImage?: HTMLImageElement
+
   constructor(
     selector: string | HTMLElement,
     options?: Omit<Partial<Options>, 'color'>
@@ -83,6 +87,7 @@ export default class Wave extends Base<Options> {
   protected init(): void {
     this.waveLength = []
     this.optionsNormalize()
+    this.loadMask()
     this.createDots()
   }
 
@@ -202,11 +207,73 @@ export default class Wave extends Base<Options> {
    * 绘图
    */
   protected draw(): void {
-    const { ctx, canvasWidth, canvasHeight, isPaused } = this
-    const options = this.options as StdOptions & CommonConfig
+    const { ctx, canvasWidth, canvasHeight } = this
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-    ctx.globalAlpha = options.opacity
+    ctx.globalAlpha = this.options.opacity
+
+    ctx.save()
+
+    if (this.maskImage) {
+      // 绘制遮罩
+      this.drawMask()
+
+      // 设置图形组合模式，将波浪效果置于遮罩
+      ctx.globalCompositeOperation = 'source-atop'
+    }
+
+    // 绘制波浪效果
+    this.drawWaves()
+
+    ctx.restore()
+
+    this.requestAnimationFrame()
+  }
+
+  /**
+   * 绘制遮罩，遮罩图像填充模式为 contain 且居中
+   */
+  private drawMask() {
+    if (!this.maskImage) return
+
+    const { ctx, canvasWidth, canvasHeight, maskImage } = this
+    const imgWidth = maskImage.naturalWidth
+    const imgHeight = maskImage.naturalHeight
+    const imgScale = imgWidth / imgHeight
+
+    // 图像 contain 填充模式算法
+    let width = imgWidth > canvasWidth ? canvasWidth : imgWidth
+    let height = imgHeight > canvasHeight ? canvasHeight : imgHeight
+
+    if (imgWidth > imgHeight) {
+      height = width / imgScale
+    } else {
+      width = height * imgScale
+    }
+
+    // 居中处理
+    const x = (canvasWidth - width) / 2
+    const y = (canvasHeight - height) / 2
+
+    ctx.drawImage(
+      this.maskImage,
+      0,
+      0,
+      imgWidth,
+      imgHeight,
+      x,
+      y,
+      width,
+      height
+    )
+  }
+
+  /**
+   * 绘制波浪效果
+   */
+  private drawWaves() {
+    const { ctx, canvasWidth, canvasHeight, isPaused } = this
+    const options = this.options as StdOptions & CommonConfig
 
     this.elements.forEach((lines, i) => {
       const crestHeight = options.crestHeight[i]
@@ -244,8 +311,18 @@ export default class Wave extends Base<Options> {
 
       ctx.restore()
     })
+  }
 
-    this.requestAnimationFrame()
+  /**
+   * 加载遮罩图像
+   * @TODO 加载错误重试
+   */
+  private loadMask() {
+    if (!this.options.mask) return
+
+    loadImage(this.options.mask!, (image) => {
+      this.maskImage = image
+    })
   }
 
   /**
