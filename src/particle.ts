@@ -3,7 +3,7 @@ import Base from './common/base'
 import { doublePi, orientationSupport } from './common/constants'
 import { mount } from './common/core'
 import {
-  calcNumberValue,
+  calcQuantity,
   isElement,
   isNull,
   offset,
@@ -121,7 +121,7 @@ export default class Particle extends Base<Options> {
   }
 
   /**
-   * 标准化配置参数，参考 calcNumberValue 方法描述。
+   * 标准化配置参数，参考 calcQuantity 方法描述。
    * 如:
    *   num: 0.5  =>  表示 0.5 倍画布宽度  =>  标准化为具体数值，如 100
    *   num: 100  =>  表示具体数值  => 标准化结果还是 100
@@ -131,7 +131,7 @@ export default class Particle extends Base<Options> {
     const props = ['num', 'proximity', 'range'] as const
 
     props.forEach((prop: ValueOf<typeof props>) => {
-      options[prop] = pInt(calcNumberValue(options[prop], canvasWidth))
+      options[prop] = pInt(calcQuantity(options[prop], canvasWidth))
     })
 
     // 设置触发事件的元素
