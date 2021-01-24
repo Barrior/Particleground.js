@@ -9,6 +9,11 @@ export default class Events {
     [eventName: string]: Function[]
   } = {}
 
+  /**
+   * 绑定事件
+   * @param eventName 事件名称
+   * @param listeners 监听函数
+   */
   on(eventName: string, ...listeners: Function[]): this {
     if (!this.listenerMap[eventName]) {
       this.listenerMap[eventName] = []
@@ -23,6 +28,11 @@ export default class Events {
     return this
   }
 
+  /**
+   * 取消事件
+   * @param eventName 事件名称
+   * @param listener 监听函数
+   */
   off(eventName?: string, listener?: Function): this {
     if (!eventName) {
       this.listenerMap = {}
@@ -38,6 +48,11 @@ export default class Events {
     return this
   }
 
+  /**
+   * 触发事件
+   * @param eventName 事件名称
+   * @param args 参数
+   */
   trigger(eventName: string, ...args: any[]): this {
     const listeners = this.listenerMap[eventName]
     if (Array.isArray(listeners)) {

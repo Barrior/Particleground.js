@@ -17,3 +17,9 @@ export const regExp = {
 export enum EVENT_NAMES {
   DESTROY = 'DESTROY',
 }
+
+// 事件名列表
+export enum EVENT_NAMES_WAVE_LOADING {
+  PROGRESS = 'PROGRESS',
+  FINISHED = 'FINISHED',
+}
