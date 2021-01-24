@@ -26,7 +26,7 @@ const dynamicOptions = [
   'speed',
 ] as const
 
-type DynamicOptions = ValueOf<typeof dynamicOptions>
+export type DynamicOptions = ValueOf<typeof dynamicOptions>
 
 const stdProperties = [...dynamicOptions, 'crestCount'] as const
 
