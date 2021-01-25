@@ -203,7 +203,7 @@ export default class Wave extends Mask<Options> {
    * 绘图
    */
   protected draw(): void {
-    this.clearCanvas()
+    this.clearCanvasAndSetGlobalAttrs()
 
     this.ctx.save()
     this.drawMask()

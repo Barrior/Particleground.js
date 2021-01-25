@@ -64,16 +64,9 @@ export default class Snow extends Base<Options> {
    */
   protected draw(): void {
     const { ctx, canvasWidth, canvasHeight, isPaused } = this
-    const {
-      opacity,
-      maxR,
-      swing,
-      swingInterval,
-      swingProbability,
-    } = this.options
+    const { maxR, swing, swingInterval, swingProbability } = this.options
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-    ctx.globalAlpha = opacity
+    this.clearCanvasAndSetGlobalAttrs()
 
     this.elements.forEach((snowflake, i, array) => {
       const { x, y, r } = snowflake

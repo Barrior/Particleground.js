@@ -212,14 +212,13 @@ export default class Particle extends Base<Options> {
    * 绘制粒子
    */
   protected draw(): void {
-    const { canvasWidth, canvasHeight, ctx } = this
-    const { lineWidth, opacity } = this.options
+    const { ctx } = this
+    const { lineWidth } = this.options
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+    this.clearCanvasAndSetGlobalAttrs()
 
     // 当 canvas 宽高改变的时候，全局属性需要重新设置
     ctx.lineWidth = lineWidth
-    ctx.globalAlpha = opacity
 
     // 更新粒子坐标
     this.updateXY()

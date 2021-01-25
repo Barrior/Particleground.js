@@ -90,14 +90,12 @@ export default class Line extends Base<Options> {
   protected draw(): void {
     const { ctx, canvasWidth, canvasHeight } = this
     const {
-      opacity,
       removeOnOverflow,
       overflowCompensation,
       reservedLines,
     } = this.options
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-    ctx.globalAlpha = opacity
+    this.clearCanvasAndSetGlobalAttrs()
 
     // 以 Canvas 三角形计算出来的最长边的 10 倍长度作为线段的半长
     const hypotenuse = Math.hypot(canvasWidth, canvasHeight)

@@ -149,7 +149,7 @@ class WaveLoading extends Mask<InputOptions> {
    */
   private drawingCore() {
     this.calcOffsetTop()
-    this.clearCanvas()
+    this.clearCanvasAndSetGlobalAttrs()
 
     this.ctx.save()
     this.drawMask()

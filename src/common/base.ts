@@ -104,7 +104,7 @@ export default abstract class Base<Options> {
   /**
    * 清除整个画布
    */
-  protected clearCanvas(): void {
+  protected clearCanvasAndSetGlobalAttrs(): void {
     const { ctx, canvasWidth, canvasHeight } = this
     ctx.clearRect(0, 0, canvasWidth, canvasHeight)
     ctx.globalAlpha = this.options.opacity
