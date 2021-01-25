@@ -1,9 +1,9 @@
 import { CommonConfig } from './@types/common/config'
 import { IElement, InputOptions, Options } from './@types/wave-loading'
-import Base from './common/base'
 import { doublePi, EVENT_NAMES_WAVE_LOADING } from './common/constants'
 import { mount } from './common/core'
 import easing from './common/easing'
+import Mask from './common/mask'
 import { calcQuantity, isPlainObject } from './utils'
 
 // 仅允许 opacity 和以下选项动态设置
@@ -22,7 +22,7 @@ const dynamicOptions = [
 export type DynamicOptions = ValueOf<typeof dynamicOptions>
 
 @mount('WaveLoading')
-class WaveLoading extends Base<InputOptions> {
+class WaveLoading extends Mask<InputOptions> {
   static defaultConfig: InputOptions = {
     // [font style][font weight][font size][font family]
     // 文本样式，同css一样，必须包含 [font size] 和 [font family]
@@ -36,6 +36,9 @@ class WaveLoading extends Base<InputOptions> {
 
     // 填充的背景色
     fillColor: '#27C9E5',
+
+    // 画布外边框圆角
+    borderRadius: '50%',
 
     // 线条横向偏移值，距离canvas画布左边的偏移值
     // (0, 1)表示容器宽度的倍数，0 & [1, +∞)表示具体数值
@@ -78,21 +81,18 @@ class WaveLoading extends Base<InputOptions> {
   // easing 动画开始时间
   private startTime?: number
 
-  // 遮罩图像
-  // private maskImage?: HTMLImageElement
-
   constructor(selector: string | HTMLElement, options?: Partial<InputOptions>) {
     super(WaveLoading.defaultConfig, selector, options)
   }
 
   protected init() {
-    this.canvas.style.borderRadius = '50%'
+    this.canvas.style.borderRadius = this.options.borderRadius
     this.progress = 0
     this.options.offsetTop = this.canvasHeight
     this.halfCH = this.canvasHeight / 2
     this.optionsNormalize()
     this.createDots()
-    this.draw()
+    this.loadMaskImage()
   }
 
   /**
@@ -128,24 +128,34 @@ class WaveLoading extends Base<InputOptions> {
   }
 
   /**
-   * 绘制
+   * 计算进度，绘制
    */
   protected draw() {
     this.eventEmitter.trigger(EVENT_NAMES_WAVE_LOADING.PROGRESS, this.progress)
     this.calcProgress()
 
     if (this.progress < 100) {
-      this.calcOffsetTop()
-      this.drawWave()
-      this.drawText()
+      this.drawingCore()
       this.requestAnimationFrame()
     } else {
       this.progress = 100
-      this.calcOffsetTop()
-      this.drawWave()
-      this.drawText()
+      this.drawingCore()
       this.eventEmitter.trigger(EVENT_NAMES_WAVE_LOADING.FINISHED)
     }
+  }
+
+  /**
+   * 绘制图案
+   */
+  private drawingCore() {
+    this.calcOffsetTop()
+    this.clearCanvas()
+
+    this.ctx.save()
+    this.drawMask()
+    this.drawWave()
+    this.drawText()
+    this.ctx.restore()
   }
 
   /**
@@ -154,7 +164,6 @@ class WaveLoading extends Base<InputOptions> {
   private drawWave() {
     const { ctx, canvasWidth, canvasHeight } = this
     const {
-      opacity,
       crestHeight,
       offsetLeft,
       offsetTop,
@@ -162,8 +171,6 @@ class WaveLoading extends Base<InputOptions> {
       speed,
     } = this.options
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-    ctx.globalAlpha = opacity
     ctx.save()
 
     ctx.beginPath()
@@ -252,7 +259,7 @@ class WaveLoading extends Base<InputOptions> {
   }
 
   /**
-   * 计算 offsetTop 值
+   * 根据进度计算波纹 offsetTop 值
    */
   private calcOffsetTop() {
     // 退出以提高性能
@@ -299,10 +306,10 @@ class WaveLoading extends Base<InputOptions> {
         Object.hasOwnProperty.call(newOptions, prop) &&
         dynamicOptions.indexOf(prop) !== -1
       ) {
+        this.options[prop] = newOptions[prop] as never
+
         if (prop === 'mask') {
-          // this.loadImage()
-        } else {
-          this.options[prop] = newOptions[prop] as never
+          this.loadMaskImage()
         }
       }
     }

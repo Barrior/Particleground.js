@@ -14,6 +14,9 @@ export interface Options extends Partial<CommonConfig> {
   // 填充的背景色
   fillColor: string
 
+  // 画布外边框圆角
+  borderRadius: string
+
   // 线条横向偏移值，距离canvas画布左边的偏移值
   // (0, 1)表示容器宽度的倍数，0 & [1, +∞)表示具体数值
   offsetLeft: number

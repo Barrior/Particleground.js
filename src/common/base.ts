@@ -102,6 +102,15 @@ export default abstract class Base<Options> {
   protected abstract draw(): void
 
   /**
+   * 清除整个画布
+   */
+  protected clearCanvas(): void {
+    const { ctx, canvasWidth, canvasHeight } = this
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+    ctx.globalAlpha = this.options.opacity
+  }
+
+  /**
    * 生成 "getColor" 函数
    */
   protected makeColorMethod(): () => string {

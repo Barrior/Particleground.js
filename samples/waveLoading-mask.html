@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    #instance {
+      padding-top: 100px;
+    }
+    .demo {
+      width: 200px;
+      height: 167px;
+    }
+  </style>
+</head>
+<body>
+<div id="instance">
+  <div class="demo"></div>
+  <div class="btn-box">
+    <button class="btn btn-primary" type="button" data-open>
+      done
+    </button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const instance = document.querySelector('#instance')
+    const demo = instance.querySelector('.demo')
+    const btn = instance.querySelector('.btn')
+    const loading = new JParticles.WaveLoading(demo, {
+      font: 'normal 900 18px Arial',
+      formatter: '%d%',
+      color: '#fff',
+      speed: 0.13,
+      crestHeight: 10,
+      duration: 8000,
+      resize: false,
+      borderRadius: '',
+      mask: 'https://github.githubassets.com/images/modules/logos_page/Octocat.png',
+    })
+
+    loading
+      .onProgress(function(progress) {
+        if (progress >= 30 && progress <= 70) {
+          loading.setOptions({
+            mask: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Octicons-logo-github.svg'
+          })
+        } else {
+          loading.setOptions({
+            mask: 'https://github.githubassets.com/images/modules/logos_page/Octocat.png'
+          })
+        }
+      })
+
+    btn.onclick = function() {
+      loading.done()
+    }
+  })()
+</script>
+</body>
+</html>
