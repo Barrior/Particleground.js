@@ -1,3 +1,10 @@
+import { CommonConfig } from '../@types/common/config'
+import {
+  defaultCanvasHeight,
+  defaultCanvasWidth,
+  EVENT_NAMES,
+  isRuntimeSupported,
+} from '../common/constants'
 import {
   getNumberValueOfStyle,
   isElement,
@@ -7,17 +14,21 @@ import {
   merge,
   observeElementRemoved,
   randomColor,
-} from '~/src/utils'
-import { CommonConfig } from '~src/@types/common/config'
-import {
-  defaultCanvasHeight,
-  defaultCanvasWidth,
-  EVENT_NAMES,
-  isRuntimeSupported,
-} from '~src/common/constants'
-
+} from '../utils'
 import commonConfig from './config'
 import Events from './events'
+
+// requestAnimationFrame 兼容处理
+window.requestAnimationFrame = ((win) => {
+  return (
+    win.requestAnimationFrame ||
+    win.webkitRequestAnimationFrame ||
+    win.mozRequestAnimationFrame ||
+    function (fn: TimerHandler) {
+      win.setTimeout(fn, 1000 / 60)
+    }
+  )
+})(window)
 
 export default abstract class Base<Options> {
   // 所有参数

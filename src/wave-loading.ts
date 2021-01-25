@@ -1,7 +1,6 @@
 import { CommonConfig } from './@types/common/config'
 import { IElement, InputOptions, Options } from './@types/wave-loading'
 import { doublePi, EVENT_NAMES_WAVE_LOADING } from './common/constants'
-import { mount } from './common/core'
 import easing from './common/easing'
 import Mask from './common/mask'
 import { calcQuantity, isPlainObject } from './utils'
@@ -21,8 +20,7 @@ const dynamicOptions = [
 
 export type DynamicOptions = ValueOf<typeof dynamicOptions>
 
-@mount('WaveLoading')
-class WaveLoading extends Mask<InputOptions> {
+export default class WaveLoading extends Mask<InputOptions> {
   static defaultConfig: InputOptions = {
     // [font style][font weight][font size][font family]
     // 文本样式，同css一样，必须包含 [font size] 和 [font family]

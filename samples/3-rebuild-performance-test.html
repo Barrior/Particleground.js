@@ -48,12 +48,13 @@
 <script src="js/event.js"></script>
 <script>
   // 暂停的时候被摧毁不触发 onDestroy 事件
-  var i = 0
+  let i = 0
 
   function build() {
-    console.log(++i)
+    console.log('build times: ', ++i)
+
     bind('#instance', function() {
-      var effect = new JParticles.Particle('#instance .demo')
+      const effect = new JParticles.Particle('#instance .demo')
 
       effect.onDestroy(function() {
         console.log('1 - Canvas has been removed!!!')

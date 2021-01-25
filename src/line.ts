@@ -1,6 +1,5 @@
 import { IElement, Options } from './@types/line'
 import Base from './common/base'
-import { mount } from './common/core'
 import {
   degreesToRadians,
   offset,
@@ -9,7 +8,6 @@ import {
   toFixed,
 } from './utils'
 
-@mount('Line')
 export default class Line extends Base<Options> {
   static defaultConfig: Options = {
     num: 6,

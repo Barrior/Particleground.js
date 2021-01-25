@@ -29,7 +29,7 @@ fs.readdirSync(samplesDir).forEach((filename) => {
 
 module.exports = {
   entry: {
-    jparticles: './src/index.ts',
+    jparticles: './src/index.browser.ts',
   },
   resolve: {
     extensions: ['.ts', '.js'],

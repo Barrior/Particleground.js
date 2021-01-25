@@ -1,10 +1,8 @@
 import { IElement, Options } from './@types/snow'
 import Base from './common/base'
 import { doublePi } from './common/constants'
-import { mount } from './common/core'
 import { pInt, randomInRange, randomSpeed } from './utils'
 
-@mount('Snow')
 export default class Snow extends Base<Options> {
   static defaultConfig: Options = {
     num: 6,

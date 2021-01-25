@@ -3,7 +3,6 @@ import { doublePi } from '~src/common/constants'
 import Mask from '~src/common/mask'
 
 import { IElement, Options, StdOptions, StrNumBool } from './@types/wave'
-import { mount } from './common/core'
 import {
   calcQuantity,
   isPlainObject,
@@ -29,7 +28,6 @@ export type DynamicOptions = ValueOf<typeof dynamicOptions>
 
 const stdProperties = [...dynamicOptions, 'crestCount'] as const
 
-@mount('Wave')
 export default class Wave extends Mask<Options> {
   static defaultConfig: Options = {
     // 波纹个数

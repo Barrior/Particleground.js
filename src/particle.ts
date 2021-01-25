@@ -1,7 +1,6 @@
 import { IElement, Options } from './@types/particle'
 import Base from './common/base'
 import { doublePi, orientationSupport } from './common/constants'
-import { mount } from './common/core'
 import {
   calcQuantity,
   isElement,
@@ -12,7 +11,6 @@ import {
   randomSpeed,
 } from './utils'
 
-@mount('Particle')
 export default class Particle extends Base<Options> {
   static defaultConfig: Options = {
     // 粒子个数，默认为容器宽度的 0.12 倍
