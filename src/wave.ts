@@ -1,19 +1,18 @@
 import { CommonConfig } from '~src/@types/common/config'
 import { doublePi } from '~src/common/constants'
+import Mask from '~src/common/mask'
 
 import { IElement, Options, StdOptions, StrNumBool } from './@types/wave'
-import Base from './common/base'
 import { mount } from './common/core'
 import {
   calcQuantity,
   isPlainObject,
   isUndefined,
-  loadImage,
   randomColor,
   randomInRange,
 } from './utils'
 
-// 仅允许 opacity 和以下选项动态设置
+// 仅允许 opacity、mask 及以下选项动态设置
 const dynamicOptions = [
   'fill',
   'fillColor',
@@ -31,7 +30,7 @@ export type DynamicOptions = ValueOf<typeof dynamicOptions>
 const stdProperties = [...dynamicOptions, 'crestCount'] as const
 
 @mount('Wave')
-export default class Wave extends Base<Options> {
+export default class Wave extends Mask<Options> {
   static defaultConfig: Options = {
     // 波纹个数
     num: 3,
@@ -74,9 +73,6 @@ export default class Wave extends Base<Options> {
   // 波长，每个周期(2π)在 Canvas 上的实际长度
   private waveLength!: number[]
 
-  // 遮罩图像
-  private maskImage?: HTMLImageElement
-
   constructor(
     selector: string | HTMLElement,
     options?: Omit<Partial<Options>, 'color'>
@@ -87,7 +83,7 @@ export default class Wave extends Base<Options> {
   protected init(): void {
     this.waveLength = []
     this.optionsNormalize()
-    this.loadMask()
+    this.loadMaskImage()
     this.createDots()
   }
 
@@ -207,65 +203,14 @@ export default class Wave extends Base<Options> {
    * 绘图
    */
   protected draw(): void {
-    const { ctx, canvasWidth, canvasHeight } = this
+    this.clearCanvas()
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-    ctx.globalAlpha = this.options.opacity
-
-    ctx.save()
-
-    if (this.maskImage) {
-      // 绘制遮罩
-      this.drawMask()
-
-      // 设置图形组合模式，将波浪效果置于遮罩
-      ctx.globalCompositeOperation = 'source-atop'
-    }
-
-    // 绘制波浪效果
+    this.ctx.save()
+    this.drawMask()
     this.drawWaves()
-
-    ctx.restore()
+    this.ctx.restore()
 
     this.requestAnimationFrame()
-  }
-
-  /**
-   * 绘制遮罩，遮罩图像填充模式为 contain 且居中
-   */
-  private drawMask() {
-    if (!this.maskImage) return
-
-    const { ctx, canvasWidth, canvasHeight, maskImage } = this
-    const imgWidth = maskImage.naturalWidth
-    const imgHeight = maskImage.naturalHeight
-    const imgScale = imgWidth / imgHeight
-
-    // 图像 contain 填充模式算法
-    let width = imgWidth > canvasWidth ? canvasWidth : imgWidth
-    let height = imgHeight > canvasHeight ? canvasHeight : imgHeight
-
-    if (imgWidth > imgHeight) {
-      height = width / imgScale
-    } else {
-      width = height * imgScale
-    }
-
-    // 居中处理
-    const x = (canvasWidth - width) / 2
-    const y = (canvasHeight - height) / 2
-
-    ctx.drawImage(
-      this.maskImage,
-      0,
-      0,
-      imgWidth,
-      imgHeight,
-      x,
-      y,
-      width,
-      height
-    )
   }
 
   /**
@@ -310,18 +255,6 @@ export default class Wave extends Base<Options> {
       }
 
       ctx.restore()
-    })
-  }
-
-  /**
-   * 加载遮罩图像
-   * @TODO 加载错误重试
-   */
-  private loadMask() {
-    if (!this.options.mask) return
-
-    loadImage(this.options.mask!, (image) => {
-      this.maskImage = image
     })
   }
 
@@ -391,7 +324,7 @@ export default class Wave extends Base<Options> {
    * 动态设置 options 选项值
    */
   setOptions(
-    newOptions: Partial<Pick<Options, DynamicOptions | 'opacity'>>
+    newOptions: Partial<Pick<Options, DynamicOptions | 'opacity' | 'mask'>>
   ): void {
     if (!this.options || !isPlainObject(newOptions)) {
       return
@@ -399,8 +332,11 @@ export default class Wave extends Base<Options> {
 
     for (const property in newOptions) {
       if (Object.hasOwnProperty.call(newOptions, property)) {
-        if (property === 'opacity') {
-          this.options.opacity = newOptions[property] ?? 1
+        if (property === 'opacity' || property === 'mask') {
+          this.options[property] = newOptions[property] as never
+          if (property === 'mask') {
+            this.loadMaskImage()
+          }
         } else if (dynamicOptions.indexOf(property as never) !== -1) {
           this.updateOptions(
             property as DynamicOptions,
