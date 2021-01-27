@@ -29,18 +29,19 @@ fs.readdirSync(samplesDir).forEach((filename) => {
 
 module.exports = {
   entry: {
-    jparticles: './src/index.browser.ts',
-  },
-  resolve: {
-    extensions: ['.ts', '.js'],
-    alias: {
-      '~': __dirname,
-      '~src': path.resolve(__dirname, './src/'),
-    },
+    jparticles: './src/index.ts',
   },
   output: {
     filename: '[name].[hash:8].js',
     path: distDir,
+    library: 'JParticles',
+  },
+  resolve: {
+    extensions: ['.ts'],
+    alias: {
+      '~': __dirname,
+      '~src': path.resolve(__dirname, './src/'),
+    },
   },
   module: {
     rules: [
