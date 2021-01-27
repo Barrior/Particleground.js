@@ -2,15 +2,17 @@
   "name": "jparticles",
   "description": "A succinct, efficient, and lightweight Canvas library for building some cool particle effects.",
   "version": "2.1.0",
-  "main": "dist/jparticles.all.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
   "scripts": {
-    "dev": "webpack-dev-server --color",
-    "build": "gulp --gulpfile ./bin/gulpfile.build.js",
+    "dev": "webpack-dev-server --color ./build/webpack.config.js",
+    "build": "rollup -c ./build/rollup.config.js",
     "test": "yarn test:unit",
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "publish": "./bin/npm-publish.sh"
+    "release": "./build/release.sh"
   },
   "husky": {
     "hooks": {
