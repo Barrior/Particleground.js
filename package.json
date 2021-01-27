@@ -1,10 +1,13 @@
 {
   "name": "jparticles",
   "description": "A succinct, efficient, and lightweight Canvas library for building some cool particle effects.",
-  "version": "2.1.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "version": "3.0.0-beta.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "global"
+  ],
   "scripts": {
     "dev": "webpack-dev-server --color ./build/webpack.config.js",
     "build": "rollup -c ./build/rollup.config.js",
@@ -12,7 +15,7 @@
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "release": "./build/release.sh"
+    "release": "./build/release.sh --tag"
   },
   "husky": {
     "hooks": {
@@ -28,6 +31,7 @@
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^9.1.2",
+    "@rollup/plugin-node-resolve": "^11.1.0",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
     "chokidar": "^3.4.2",
@@ -41,9 +45,12 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
+    "rollup": "^2.38.0",
+    "rollup-plugin-license": "^2.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0",
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7",
-    "utility-types": "^3.10.0",
     "webpack": "^4.44.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"

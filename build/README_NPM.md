@@ -5,25 +5,35 @@
 
 ### Install
 
-```
+```bash
 npm install jparticles --save
 ```
 
 ### Usage
 
-```
+```javascript
 import JParticles from 'jparticles'
 new JParticles.Particle('#demo')
 ```
 
+### On-Demand Usage (Tree-shaking required)
+
+```javascript
+import { Particle, Snow } from 'jparticles'
+
+new Particle('#demo')
+new Snow('#demo2')
+```
+
 ### On-Demand Usage
 
-```
-import JParticles from 'jparticles/dist/jparticles'
-import 'jparticles/dist/particle'
-new JParticles.Particle('#demo')
-```
+```javascript
+import Particle from 'jparticles/lib/particle'
+import Snow from 'jparticles/lib/snow'
 
+new Particle('#demo')
+new Snow('#demo2')
+```
 
 ### Documentation
 [See more details via the API documentation.](https://jparticles.js.org/)

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "CommonJS",
+    "module": "commonjs",
     "outDir": "./dist/",
     "rootDir": "./src/",
     "declaration": true,
@@ -34,8 +34,9 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src/**/*"
-    // "test/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
+  "exclude": ["browser", "lib"],
   "compileOnSave": true
 }
