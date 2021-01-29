@@ -34,8 +34,7 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src/**/*",
-    "test/**/*"
+    "src/**/*"
   ],
   "exclude": ["browser", "lib"],
   "compileOnSave": true

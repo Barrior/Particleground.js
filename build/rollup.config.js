@@ -17,31 +17,56 @@ const Base = path.resolve(__dirname, '../src/common/base.ts')
 const Mask = path.resolve(__dirname, '../src/common/mask.ts')
 const events = path.resolve(__dirname, '../src/common/events.ts')
 const easing = path.resolve(__dirname, '../src/common/easing.ts')
-const comExternal = [Base, Mask, utils, events, easing]
-const comGlobals = {
-  [Base]: 'JParticles.Base',
-  [Mask]: 'JParticles.Mask',
-  [utils]: 'JParticles.utils',
-  [events]: 'JParticles.events',
-  [easing]: 'JParticles.easing',
+
+const common = {
+  external: [Base, Mask, utils, events, easing],
+  globals: {
+    [Base]: 'JParticles.Base',
+    [Mask]: 'JParticles.Mask',
+    [utils]: 'JParticles.utils',
+    [events]: 'JParticles.events',
+    [easing]: 'JParticles.easing',
+  },
+  plugins: [
+    typescript({
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration: false,
+          module: 'ESNext',
+        },
+      },
+    }),
+    nodeResolve(),
+    // terser({
+    //   output: {
+    //     comments: false,
+    //   },
+    // }),
+  ],
 }
 
-const commonPlugins = [
-  typescript({
-    tsconfigOverride: {
-      compilerOptions: {
-        declaration: false,
-        module: 'ESNext',
-      },
-    },
-  }),
-  nodeResolve(),
-  // terser({
-  //   output: {
-  //     comments: false,
-  //   },
-  // }),
+const effects = [
+  { filename: 'line', effectName: 'Line' },
+  { filename: 'particle', effectName: 'Particle' },
+  { filename: 'snow', effectName: 'Snow' },
+  { filename: 'wave', effectName: 'Wave' },
+  { filename: 'wave-loading', effectName: 'WaveLoading' },
 ]
+
+const inputs = effects.map(({ filename, effectName }) => {
+  return {
+    input: path.resolve(__dirname, `../src/${filename}.ts`),
+    external: common.external,
+    output: {
+      file: `browser/${filename}.js`,
+      format: 'iife',
+      esModule: false,
+      name: `JParticles.${effectName}`,
+      globals: common.globals,
+    },
+    plugins: [...common.plugins],
+  }
+})
 
 export default [
   {
@@ -54,18 +79,7 @@ export default [
       exports: 'named',
       banner: versionInfo.trim(),
     },
-    plugins: [...commonPlugins],
+    plugins: [...common.plugins],
   },
-  {
-    input: path.resolve(__dirname, '../src/line.ts'),
-    external: comExternal,
-    output: {
-      file: 'browser/line.js',
-      format: 'iife',
-      esModule: false,
-      name: 'JParticles.Line',
-      globals: comGlobals,
-    },
-    plugins: [...commonPlugins],
-  },
+  ...inputs,
 ]
