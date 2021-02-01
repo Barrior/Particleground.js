@@ -17,7 +17,7 @@
 │   │   ├── particle.js
 │   │   ├── snow.js
 │   │   └── ...
-│   ├── @types
+│   ├── types
 │   │   ├── particle.d.ts
 │   │   ├── snow.d.ts
 │   │   └── ...

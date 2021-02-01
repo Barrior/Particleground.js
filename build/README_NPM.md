@@ -16,13 +16,13 @@ import JParticles from 'jparticles'
 new JParticles.Particle('#demo')
 ```
 
-### On-Demand Usage (Tree-shaking required)
+### On-Demand Usage (Tree-shaking required, recommended)
 
 ```javascript
 import { Particle, Snow } from 'jparticles'
 
 new Particle('#demo')
-new Snow('#demo2')
+new Snow('#demo-snow')
 ```
 
 ### On-Demand Usage
@@ -32,7 +32,7 @@ import Particle from 'jparticles/lib/particle'
 import Snow from 'jparticles/lib/snow'
 
 new Particle('#demo')
-new Snow('#demo2')
+new Snow('#demo-snow')
 ```
 
 ### Documentation
