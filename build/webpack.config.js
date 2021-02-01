@@ -39,8 +39,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts'],
     alias: {
-      '~': __dirname,
-      '~src': path.resolve(__dirname, './src/'),
+      '@': __dirname,
+      '@src': path.resolve(__dirname, './src/'),
     },
   },
   module: {

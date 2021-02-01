@@ -1,7 +1,7 @@
-import { IElement, Options } from './@types/snow'
-import Base from './common/base'
-import { doublePi } from './common/constants'
-import { pInt, randomInRange, randomSpeed } from './utils'
+import Base from '@src/common/base'
+import { doublePi } from '@src/common/constants'
+import { IElement, Options } from '@src/types/snow'
+import { pInt, randomInRange, randomSpeed } from '@src/utils'
 
 export default class Snow extends Base<Options> {
   static defaultConfig: Options = {

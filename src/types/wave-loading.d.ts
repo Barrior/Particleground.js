@@ -1,4 +1,4 @@
-import { CommonConfig } from './common/config'
+import CommonConfig from './common-config'
 
 export interface Options extends Partial<CommonConfig> {
   // [font style][font weight][font size][font family]

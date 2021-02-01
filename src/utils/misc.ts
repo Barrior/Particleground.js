@@ -1,5 +1,5 @@
-import { piBy180, regExp } from '~src/common/constants'
-import { isPlainObject } from '~src/utils/checking'
+import { piBy180, regExp } from '@src/common/constants'
+import { isPlainObject } from '@src/utils/checking'
 
 /**
  * 包装原生 parseInt，确保输出十进制数值

@@ -1,4 +1,4 @@
-import { CommonConfig } from '~src/@types/common/config'
+import CommonConfig from '@src/types/common-config'
 
 /**
  * 效果公共默认配置参数

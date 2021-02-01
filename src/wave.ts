@@ -1,15 +1,14 @@
-import { CommonConfig } from '~src/@types/common/config'
-import { doublePi } from '~src/common/constants'
-import Mask from '~src/common/mask'
-
-import { IElement, Options, StdOptions, StrNumBool } from './@types/wave'
+import { doublePi } from '@src/common/constants'
+import Mask from '@src/common/mask'
+import CommonConfig from '@src/types/common-config'
+import { IElement, Options, StdOptions, StrNumBool } from '@src/types/wave'
 import {
   calcQuantity,
   isPlainObject,
   isUndefined,
   randomColor,
   randomInRange,
-} from './utils'
+} from '@src/utils'
 
 // 仅允许 opacity、mask 及以下选项动态设置
 const dynamicOptions = [

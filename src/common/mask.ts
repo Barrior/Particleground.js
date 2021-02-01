@@ -1,5 +1,5 @@
-import { loadImage } from '../utils'
-import Base from './base'
+import Base from '@src/common/base'
+import { loadImage } from '@src/utils'
 
 export default abstract class Mask<Options> extends Base<Options> {
   // 遮罩图像对象

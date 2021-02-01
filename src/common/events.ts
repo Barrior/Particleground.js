@@ -1,4 +1,4 @@
-import { isFunction } from '~src/utils'
+import { isFunction } from '@src/utils'
 
 /**
  * 事件机制，类似 NodeJS Events 模块

@@ -1,12 +1,12 @@
-import { IElement, Options } from './@types/line'
-import Base from './common/base'
+import Base from '@src/common/base'
+import { IElement, Options } from '@src/types/line'
 import {
   degreesToRadians,
   offset,
   randomInRange,
   randomSpeed,
   toFixed,
-} from './utils'
+} from '@src/utils'
 
 export default class Line extends Base<Options> {
   static defaultConfig: Options = {

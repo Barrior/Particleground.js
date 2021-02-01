@@ -1,6 +1,6 @@
-import { IElement, Options } from './@types/particle'
-import Base from './common/base'
-import { doublePi, orientationSupport } from './common/constants'
+import Base from '@src/common/base'
+import { doublePi, orientationSupport } from '@src/common/constants'
+import { IElement, Options } from '@src/types/particle'
 import {
   calcQuantity,
   isElement,
@@ -9,7 +9,7 @@ import {
   pInt,
   randomInRange,
   randomSpeed,
-} from './utils'
+} from '@src/utils'
 
 export default class Particle extends Base<Options> {
   static defaultConfig: Options = {

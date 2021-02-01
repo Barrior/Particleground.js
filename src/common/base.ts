@@ -1,10 +1,12 @@
-import { CommonConfig } from '../@types/common/config'
+import commonConfig from '@src/common/config'
 import {
   defaultCanvasHeight,
   defaultCanvasWidth,
   EVENT_NAMES,
   isRuntimeSupported,
-} from '../common/constants'
+} from '@src/common/constants'
+import Events from '@src/common/events'
+import CommonConfig from '@src/types/common-config'
 import {
   getNumberValueOfStyle,
   isElement,
@@ -14,9 +16,12 @@ import {
   merge,
   observeElementRemoved,
   randomColor,
-} from '../utils'
-import commonConfig from './config'
-import Events from './events'
+} from '@src/utils'
+
+export interface GeneralElement {
+  x: number
+  y: number
+}
 
 // requestAnimationFrame 兼容处理
 window.requestAnimationFrame = ((win) => {
@@ -212,8 +217,8 @@ export default abstract class Base<Options> {
         // 通用处理逻辑，重新计算粒子坐标
         this.elements.forEach((element) => {
           if (isPlainObject(element)) {
-            ;(element as CommonElement).x *= scaleX
-            ;(element as CommonElement).y *= scaleY
+            ;(element as GeneralElement).x *= scaleX
+            ;(element as GeneralElement).y *= scaleY
           }
         })
 

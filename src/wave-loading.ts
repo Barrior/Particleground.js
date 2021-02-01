@@ -1,9 +1,9 @@
-import { CommonConfig } from './@types/common/config'
-import { IElement, InputOptions, Options } from './@types/wave-loading'
-import { doublePi, EVENT_NAMES_WAVE_LOADING } from './common/constants'
-import easing from './common/easing'
-import Mask from './common/mask'
-import { calcQuantity, isPlainObject } from './utils'
+import { doublePi, EVENT_NAMES_WAVE_LOADING } from '@src/common/constants'
+import easing from '@src/common/easing'
+import Mask from '@src/common/mask'
+import CommonConfig from '@src/types/common-config'
+import { IElement, InputOptions, Options } from '@src/types/wave-loading'
+import { calcQuantity, isPlainObject } from '@src/utils'
 
 // 仅允许 opacity 和以下选项动态设置
 const dynamicOptions = [

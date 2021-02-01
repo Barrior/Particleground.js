@@ -1,4 +1,4 @@
-export interface CommonConfig {
+export default interface CommonConfig {
   // 画布全局透明度，取值范围：[0, 1]
   opacity: number
 

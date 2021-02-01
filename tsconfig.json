@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "outDir": "./dist/",
+    "outDir": "./lib/",
     "rootDir": "./src/",
     "declaration": true,
 
@@ -10,8 +10,8 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"],
-      "~src/*": ["./src/*"]
+      "@/*": ["./*"],
+      "@src/*": ["./src/*"]
     },
 
     /* Source Maps */

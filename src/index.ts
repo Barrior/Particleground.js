@@ -1,7 +1,7 @@
-import commonConfig from '~src/common/config'
-import easing from '~src/common/easing'
-import Events from '~src/common/events'
-import * as utils from '~src/utils'
+import commonConfig from '@src/common/config'
+import easing from '@src/common/easing'
+import Events from '@src/common/events'
+import * as utils from '@src/utils'
 
 import Line from './line'
 import Particle from './particle'

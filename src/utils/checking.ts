@@ -1,4 +1,4 @@
-import { funcToString, objectCtorString } from '~src/common/constants'
+import { funcToString, objectCtorString } from '@src/common/constants'
 
 /**
  * 类型检测
