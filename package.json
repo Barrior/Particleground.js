@@ -9,7 +9,7 @@
     "global"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --color ./build/webpack.config.js",
+    "dev": "webpack-dev-server --config ./build/webpack.config.js --color",
     "build": "./build/build.sh",
     "test": "yarn test:unit",
     "test:unit": "nyc ava --verbose",

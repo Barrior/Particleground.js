@@ -4,10 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const chokidar = require('chokidar')
 
-// eslint-disable-next-line unused-imports/no-unused-vars-ts
-const srcDir = path.resolve(__dirname, 'src')
-const distDir = path.resolve(__dirname, 'dist')
-const samplesDir = path.resolve(__dirname, 'samples')
+const rootDir = path.resolve(__dirname, '..')
+const srcDir = path.resolve(rootDir, 'src')
+const distDir = path.resolve(rootDir, 'dist')
+const samplesDir = path.resolve(rootDir, 'samples')
 
 const htmlPages = []
 const indexHtmlContent = []
@@ -29,7 +29,7 @@ fs.readdirSync(samplesDir).forEach((filename) => {
 
 module.exports = {
   entry: {
-    jparticles: './src/index.ts',
+    jparticles: path.resolve(srcDir, 'index.ts'),
   },
   output: {
     filename: '[name].[hash:8].js',
@@ -37,10 +37,10 @@ module.exports = {
     library: 'JParticles',
   },
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.ts', '.js'],
     alias: {
-      '@': __dirname,
-      '@src': path.resolve(__dirname, './src/'),
+      '@': rootDir,
+      '@src': srcDir,
     },
   },
   module: {
@@ -48,7 +48,6 @@ module.exports = {
       {
         test: /\.ts$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
       },
     ],
   },
