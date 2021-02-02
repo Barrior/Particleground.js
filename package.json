@@ -1,6 +1,6 @@
 {
   "name": "jparticles",
-  "description": "A succinct, efficient, and lightweight Canvas library for building some cool particle effects.",
+  "description": "A concise, efficient, and lightweight Canvas library for building some cool particle effects.",
   "version": "3.0.0-beta.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config ./build/webpack.config.js --color",
     "build": "./build/build.sh",
-    "test": "yarn test:unit",
+    "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",

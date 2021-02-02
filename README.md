@@ -39,12 +39,12 @@
 
 ### 理念
 
-- `API` 与源码设计理念信仰 `"Write Less, Do More"` 和 `"Keep It Simple, Stupid"`。针对于用户开发者：易于使用、简单、高效；针对于源码贡献者：塑造更好的可持续维护性。
+- `API` 与源码设计理念信仰 `"Write Less, Do More"` 和 `"Keep It Simple, Stupid"`。对于开发者：易于使用、简单、高效；对于源码贡献者：塑造更好的可持续维护性。
 
 
 ### 兼容性
 
-以下是浏览器对 `JParticles` 的支持情况（源于此[兼容性表](./docs/compatibility_table.md)），对于不支持的浏览器则会静默地失败：
+以下是浏览器对库的支持情况（源于此[兼容性表](./docs/compatibility_table.md)），对于不支持的浏览器则会静默地失败：
 
 - IE 9+
 - Safari 6+
@@ -55,7 +55,7 @@
 
 ### 交流
 
-如果您遇到问题，或者好的建议，欢迎提交到 [issues](https://github.com/Barrior/JParticles/issues) （建议）或 [QQ群](http://shang.qq.com/wpa/qunwpa?idkey=f548e3f94e0040a2ac5adfe4fec6915ef67c8c1b6ba5784ff6d5049c6135a759) 交流；万分感谢，帮助 `JParticles` 改进。
+如果您遇到问题或者好的建议，欢迎提交到 [issues](https://github.com/Barrior/JParticles/issues) （建议）或 [QQ群](http://shang.qq.com/wpa/qunwpa?idkey=f548e3f94e0040a2ac5adfe4fec6915ef67c8c1b6ba5784ff6d5049c6135a759) 交流，万分感谢。
 
 
 ### 更新日志
