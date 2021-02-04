@@ -58,7 +58,7 @@ export default {
 ```jsx
 import { Particle } from 'jparticles'
 
-export default class Example extends React.Component {
+class Example extends React.Component {
   componentDidMount() {
     new Particle('#demo')
   }
