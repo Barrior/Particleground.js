@@ -43,29 +43,28 @@ const common = {
     nodeResolve(),
     terser({
       output: {
-        comments: false,
+        comments: /JParticles v/,
       },
     }),
   ],
 }
 
 const effects = [
-  { filename: 'line', effectName: 'Line' },
-  { filename: 'particle', effectName: 'Particle' },
-  { filename: 'snow', effectName: 'Snow' },
-  { filename: 'wave', effectName: 'Wave' },
-  { filename: 'wave-loading', effectName: 'WaveLoading' },
+  { filename: 'line', className: 'Line' },
+  { filename: 'particle', className: 'Particle' },
+  { filename: 'snow', className: 'Snow' },
+  { filename: 'wave', className: 'Wave' },
+  { filename: 'wave-loading', className: 'WaveLoading' },
 ]
 
-const effectInputs = effects.map(({ filename, effectName }) => {
+const effectInputs = effects.map(({ filename, className }) => {
   return {
     input: path.resolve(__dirname, `../src/${filename}.ts`),
     external: common.external,
     output: {
       file: `browser/${filename}.js`,
       format: 'iife',
-      esModule: false,
-      name: `JParticles.${effectName}`,
+      name: `JParticles.${className}`,
       globals: common.globals,
     },
     plugins: [...common.plugins],
