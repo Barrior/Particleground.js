@@ -46,12 +46,12 @@ The library should work fine on the following browsers (because of [this compati
 - Firefox 21+
 - Chrome 23+
 
-For not support browsers it will failed quietly.
+For not support browsers it will fail quietly.
 
 
 ### Communication
 
-If you have any questions or ideas to help JParticles make progress, you are welcome to put forward your views to [issues](https://github.com/Barrior/JParticles/issues) or tell us via [QQ group](http://shang.qq.com/wpa/qunwpa?idkey=f548e3f94e0040a2ac5adfe4fec6915ef67c8c1b6ba5784ff6d5049c6135a759). Thanks.
+If you have any questions or ideas to help JParticles make progress, you are welcome to put forward your views to [issues](https://github.com/Barrior/JParticles/issues) or [discussions](https://github.com/Barrior/JParticles/discussions). Thanks.
 
 
 ### Changelog

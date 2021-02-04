@@ -35,6 +35,40 @@ new Particle('#demo')
 new Snow('#demo-snow')
 ```
 
+### Use in Vue project
+
+```vue
+<template>
+  <div id="demo"></div>
+</template>
+
+<script>
+import { Particle } from 'jparticles'
+
+export default {
+  mounted() {
+    new Particle('#demo')
+  }
+}
+</script>
+```
+
+### Use in React project
+
+```jsx
+import { Particle } from 'jparticles'
+
+export default class Example extends React.Component {
+  componentDidMount() {
+    new Particle('#demo')
+  }
+
+  render() {
+    return <div id="demo"></div>
+  }
+}
+```
+
 ### Documentation
 [See more details via the API documentation.](https://jparticles.js.org/)
 
