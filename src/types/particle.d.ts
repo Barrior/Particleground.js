@@ -1,4 +1,4 @@
-import CommonConfig from './common-config'
+import { CommonConfig } from './common-config'
 
 export interface Options extends Partial<CommonConfig> {
   // 粒子个数，默认为容器宽度的 0.12 倍

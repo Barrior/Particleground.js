@@ -6,7 +6,7 @@ import {
   isRuntimeSupported,
 } from '@src/common/constants'
 import Events from '@src/common/events'
-import CommonConfig from '@src/types/common-config'
+import { CommonConfig } from '@src/types/common-config'
 import {
   getNumberValueOfStyle,
   isElement,

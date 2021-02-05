@@ -1,4 +1,4 @@
-import CommonConfig from './common-config'
+import { CommonConfig } from './common-config'
 
 export interface Options extends Partial<CommonConfig> {
   // 每次随机创建的雪花数量（最多）

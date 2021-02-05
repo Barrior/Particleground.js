@@ -1,7 +1,7 @@
 import { doublePi, EVENT_NAMES_WAVE_LOADING } from '@src/common/constants'
 import easing from '@src/common/easing'
 import Mask from '@src/common/mask'
-import CommonConfig from '@src/types/common-config'
+import { CommonConfig } from '@src/types/common-config'
 import { IElement, InputOptions, Options } from '@src/types/wave-loading'
 import { calcQuantity, isPlainObject } from '@src/utils'
 

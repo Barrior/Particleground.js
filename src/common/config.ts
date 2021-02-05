@@ -1,5 +1,3 @@
-import CommonConfig from '@src/types/common-config'
-
 /**
  * 效果公共默认配置参数
  */
@@ -16,4 +14,4 @@ export default {
 
   // 自适应窗口尺寸变化 {boolean}
   resize: true,
-} as CommonConfig
+}
