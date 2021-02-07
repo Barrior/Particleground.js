@@ -9,14 +9,14 @@
     "browser"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --config ./build/webpack.config.js --color",
-    "build": "./build/build.sh",
+    "dev": "webpack-dev-server --config build/webpack.config.js --color",
+    "build": "bash build/build.sh",
     "lint": "eslint . --ext .js,.ts",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "release": "./build/release.sh --tag"
+    "release": "node --experimental-top-level-await build/release.mjs"
   },
   "husky": {
     "hooks": {
@@ -28,6 +28,9 @@
     "*.{ts,js}": [
       "eslint --fix"
     ]
+  },
+  "devEngines": {
+    "node": ">=14.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
@@ -42,9 +45,12 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-simple-import-sort": "^5.0.3",
     "eslint-plugin-unused-imports": "^0.1.3",
+    "execa": "^5.0.0",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
+    "pino": "^6.11.0",
+    "pino-pretty": "^4.5.0",
     "prettier": "^2.0.5",
     "rollup": "^2.38.0",
     "rollup-plugin-terser": "^7.0.2",
