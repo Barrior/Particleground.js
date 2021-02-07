@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "webpack-dev-server --config ./build/webpack.config.js --color",
     "build": "./build/build.sh",
-    "test": "yarn test:unit && yarn test:e2e",
+    "lint": "eslint . --ext .js,.ts",
+    "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:unit": "nyc ava --verbose",
     "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
