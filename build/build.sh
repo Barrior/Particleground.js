@@ -17,3 +17,8 @@ npx ttsc -p $DIRNAME/../tsconfig.build.json
 
 # copy types directory
 cp -r $DIR_TYPES $DIR_LIB
+
+# insert global type declaration into index.d.ts
+REF_TYPE="/// <reference path=\"types/global.d.ts\" />"
+
+sed -i '' -e '1i\'$'\n'"$REF_TYPE" $DIR_LIB/index.d.ts
