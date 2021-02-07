@@ -22,18 +22,24 @@
 [Official Site & API Documentation](https://jparticles.js.org/)
 
 
-### Intro
+### Animation Effects
 
-- JParticles(abbreviation for JavaScript particles) is a lightweight JavaScript library for build some cool particle effects in WEB page base on the Canvas.
+- [Particle](https://jparticles.js.org/#/examples/particle)
+- [Wave](https://jparticles.js.org/#/examples/wave)
+- [Wave Loading](https://jparticles.js.org/#/examples/wave_loading)
+- [Snow](https://jparticles.js.org/#/examples/snow)
 
-- JParticles effects are mostly shared by others, but it collect them together like a porter and improve some details or functions. Thanks for the original author's ideas or codes.
+
+### Introduction
+
+- JParticles(abbreviation for JavaScript particles) is a lightweight JavaScript library for build some cool particle effects in WEB page base on Canvas.
+
+- Some of the ideas or codes of JParticles are derived from the source code of open source projects or shared by others. Thanks to the original author.
 
 
-### Concept
+### Ideas
 
-- API design concepts: `"The Write Less, Do More"` and `"Keep It Simple And Stupid"`. I hope the library is easy to use because a tool is to help peoples achieve their desired functions more quickly, rather than spend too much time to know and learn. In short, it should be both powerful and easy to extend and simple.
-
-- I hope that codes are succinct and high performance. Thanks for colorful open source projects and something else, because JParticles has been referenced(standing on the shoulders of giants) your excellent codes or thoughts.
+- The main ideas of API design are: `"The Write Less, Do More"` and `"Keep It Simple And Stupid"`. Hope the library is easy-to-use, high performance and easy-to-maintain.
 
 
 ### Compatibility
