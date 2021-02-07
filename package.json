@@ -13,9 +13,11 @@
     "build": "bash build/build.sh",
     "lint": "eslint . --ext .js,.ts",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
-    "test:unit": "nyc ava --verbose",
-    "test:e2e": "testcafe chrome test/e2e/*.ts --speed 0.7",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test:unit": "jest --verbose --maxWorkers 4",
+    "test:unit-watch": "yarn test --watch",
+    "test:e2e": "cypress run",
+    "coverage": "yarn test --coverage",
+    "coverage:report": "yarn coverage --coverageReporters=text-lcov | coveralls",
     "release": "node --experimental-top-level-await build/release.mjs"
   },
   "husky": {

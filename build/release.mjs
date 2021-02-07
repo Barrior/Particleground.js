@@ -25,7 +25,7 @@ if (BRANCH_NAME !== 'master') {
 }
 
 // run auto testing
-const pTest = execa.command('yarn test')
+const pTest = execa.command('yarn test --verbose=false')
 pTest.stdout.pipe(process.stdout)
 pTest.stderr.pipe(process.stderr)
 await pTest
