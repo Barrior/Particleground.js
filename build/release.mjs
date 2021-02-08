@@ -39,6 +39,9 @@ fs.writeFileSync(
   fs.readFileSync(path.resolve(buildDir, 'README_NPM.md'))
 )
 
+// info Current version: 3.0.0-beta.0
+// New version(optional):
+// Set tag(optional):
 // @todo input version
 // @todo generate changelog
 
