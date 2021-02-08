@@ -1,19 +1,13 @@
 import execa from 'execa'
 import fs from 'fs'
 import path from 'path'
-import pino from 'pino'
 import { fileURLToPath } from 'url'
+
+import logger from './logger'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
 const buildDir = path.resolve(__dirname)
-
-const logger = pino({
-  prettyPrint: {
-    translateTime: 'SYS:HH:MM:ss',
-    colorize: true,
-  },
-})
 
 // check publish branch
 const BRANCH_NAME = execa.commandSync('git symbolic-ref HEAD --short')
