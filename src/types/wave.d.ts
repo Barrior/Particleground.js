@@ -35,7 +35,12 @@ export interface ComOptions {
 
   // 图形遮罩，以 https? 开头的 URL
   mask?: string
+
+  // 遮罩模式，默认 normal
+  maskMode: 'normal' | 'ghost'
 }
+
+export type modeMethods = 'modeNormal' | 'modeGhost'
 
 export interface Options extends ComOptions, Partial<CommonConfig> {
   // 波纹个数
@@ -43,7 +48,9 @@ export interface Options extends ComOptions, Partial<CommonConfig> {
 }
 
 export type StdOptions = {
-  [K in keyof ComOptions]: Extract<ComOptions[K], unknown[]>
+  [K in keyof ComOptions]: K extends 'maskMode'
+    ? ComOptions[K]
+    : Extract<ComOptions[K], unknown[]>
 }
 
 export interface IElement {

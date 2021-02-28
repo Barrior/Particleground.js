@@ -37,8 +37,16 @@ export default abstract class Mask<Options> extends Base<Options> {
   protected drawMask(): void {
     if (!this.maskImage) return
 
+    this.ctx.save()
+    this.ctx.filter = 'grayscale(100%)'
+
     // 绘制遮罩图案
     this.drawMaskImage()
+    this.ctx.restore()
+
+    // if (this.options.maskMode === 'shadow') {
+
+    // }
 
     // 设置图形组合模式，将效果映射到遮罩内
     this.ctx.globalCompositeOperation = 'source-atop'
@@ -47,7 +55,7 @@ export default abstract class Mask<Options> extends Base<Options> {
   /**
    * 绘制遮罩图案，遮罩图像填充模式为 contain 且居中
    */
-  private drawMaskImage(): void {
+  protected drawMaskImage(): void {
     if (!this.maskImage) return
 
     const { ctx, canvasWidth, canvasHeight, maskImage } = this

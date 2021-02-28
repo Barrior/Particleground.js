@@ -11,8 +11,13 @@
     }
 
     #instance2 .demo {
-      width: 400px;
-      height: 332px;
+      width: 492px;
+      height: 480px;
+    }
+
+    #instance3 .demo {
+      width: 600px;
+      height: 300px;
     }
   </style>
 </head>
@@ -44,6 +49,18 @@
   </div>
 </div>
 
+<div id="instance3">
+  <div class="demo"></div>
+  <div class="btn-box">
+    <button class="btn btn-primary" type="button" data-open>
+      open
+    </button>
+    <button class="btn btn-danger" type="button" data-pause>
+      pause
+    </button>
+  </div>
+</div>
+
 <script src="js/event.js"></script>
 <script>
   bind('#instance1', function() {
@@ -69,14 +86,16 @@
 
     const effect = new JParticles.Wave('#instance2 .demo', {
       num: 2,
+      fillColor: 'rgba(0, 0, 0, 0.15)',
       crestHeight: 8,
       offsetTop,
-      offsetLeft: [0, 0.5],
+      offsetLeft: [0, 1.5],
       crestCount: 2,
       fill: true,
       line: false,
       speed: 0.2,
-      mask: 'https://github.githubassets.com/images/modules/logos_page/Octocat.png',
+      mask: 'https://img20.360buyimg.com/ling/jfs/t1/171417/27/9991/212205/60433cc3E4d2daac2/bc52ead60a2f5cc4.png',
+      maskMode: 'ghost'
     })
 
     let isLoading = false
@@ -102,6 +121,23 @@
     }
 
     return effect
+  })
+
+  bind('#instance3', function() {
+    return new JParticles.Wave('#instance3 .demo', {
+      num: 1,
+      fillColor: 'rgba(20, 200, 255, 1)',
+      crestHeight: 8,
+      offsetTop: 0.5,
+      crestCount: 2,
+      fill: true,
+      line: false,
+      speed: 0.1,
+
+      // 遮罩
+      mask: 'https://img30.360buyimg.com/ling/jfs/t1/92499/15/4615/9505/5de86318E776b30d4/dd02ceff50fcbe7f.png',
+      maskMode: 'ghost'
+    })
   })
 </script>
 </body>

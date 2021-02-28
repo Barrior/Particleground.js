@@ -23,6 +23,13 @@ export function trimAll(str: string): string {
 }
 
 /**
+ * 将字符串首字母转换成大写
+ */
+export function upperFirst(str: string): string {
+  return str[0].toUpperCase() + str.substring(1)
+}
+
+/**
  * 角度转弧度
  */
 export function degreesToRadians(degrees: number): number {
