@@ -183,6 +183,9 @@ export default abstract class Base<Options> {
 
       // 3、触发销毁回调事件
       this.eventEmitter.trigger(EVENT_NAMES.DESTROY)
+
+      // 4、移除所有事件
+      this.eventEmitter.off()
     })
   }
 

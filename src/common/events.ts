@@ -35,16 +35,24 @@ export default class Events {
    */
   off(eventName?: string, listener?: Function): this {
     if (!eventName) {
+      // 移除所有事件
       this.listenerMap = {}
-    } else if (!listener) {
-      this.listenerMap[eventName] = []
-    } else {
-      const container = this.listenerMap[eventName]
-      const index = container.indexOf(listener)
-      if (index !== -1) {
-        container.splice(index, 1)
-      }
+      return
     }
+
+    if (!listener) {
+      // 移除事件名称所有事件
+      this.listenerMap[eventName] = []
+      return
+    }
+
+    // 移除事件名称特定事件
+    const container = this.listenerMap[eventName]
+    const index = container.indexOf(listener)
+    if (index !== -1) {
+      container.splice(index, 1)
+    }
+
     return this
   }
 
