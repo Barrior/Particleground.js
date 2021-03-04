@@ -20,10 +20,11 @@ export default class Snow extends Base<Options> {
 
   constructor(selector: string | HTMLElement, options?: Partial<Options>) {
     super(Snow.defaultConfig, selector, options)
+    this.bootstrap()
   }
 
   /**
-   * 初始化
+   * 初始化数据和运行程序
    */
   protected init(): void {
     this.createSnowflakes()

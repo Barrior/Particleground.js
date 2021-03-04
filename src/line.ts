@@ -27,14 +27,17 @@ export default class Line extends Base<Options> {
   protected elements!: IElement[]
 
   // 特殊角度
-  private specificAngles!: number[]
+  private specificAngles = [-180, -90, 0, 90, 180]
 
   constructor(selector: string | HTMLElement, options?: Partial<Options>) {
     super(Line.defaultConfig, selector, options)
+    this.bootstrap()
   }
 
+  /**
+   * 初始化数据和运行程序
+   */
   protected init(): void {
-    this.specificAngles = [-180, -90, 0, 90, 180]
     this.createLines(this.options.num)
     this.createLinesOnClick()
   }

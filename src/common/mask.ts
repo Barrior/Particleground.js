@@ -6,9 +6,9 @@ export default abstract class Mask<Options> extends Base<Options> {
   protected maskImage?: HTMLImageElement
 
   // 已经加载成功的图像列表
-  private completedMap!: {
+  private completedMap: {
     [key: string]: HTMLImageElement
-  }
+  } = {}
 
   /**
    * 加载遮罩图像
@@ -18,11 +18,6 @@ export default abstract class Mask<Options> extends Base<Options> {
     const maskUrl = (this.options as { mask?: string }).mask
 
     if (!maskUrl) return
-
-    // 初始化 completedMap 对象
-    if (!this.completedMap) {
-      this.completedMap = {}
-    }
 
     // 取缓存图像
     if (this.completedMap[maskUrl]) {

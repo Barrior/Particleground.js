@@ -1,3 +1,5 @@
+import './polyfill'
+
 import commonConfig from '@src/common/config'
 import {
   defaultCanvasHeight,
@@ -22,18 +24,6 @@ export interface GeneralElement {
   x: number
   y: number
 }
-
-// requestAnimationFrame 兼容处理
-window.requestAnimationFrame = ((win) => {
-  return (
-    win.requestAnimationFrame ||
-    win.webkitRequestAnimationFrame ||
-    win.mozRequestAnimationFrame ||
-    function (fn: TimerHandler) {
-      win.setTimeout(fn, 1000 / 60)
-    }
-  )
-})(window)
 
 export default abstract class Base<Options> {
   // 所有参数
@@ -70,7 +60,10 @@ export default abstract class Base<Options> {
   protected resizeHandler?: () => void
 
   // 事件中心，文档参考 https://taro-docs.jd.com/taro/docs/apis/about/events/
-  protected eventEmitter!: Events
+  protected eventEmitter = new Events()
+
+  // 特效是否支持运行
+  protected isRunningSupported = false
 
   protected constructor(
     defaultConfig: Options,
@@ -84,6 +77,8 @@ export default abstract class Base<Options> {
       ? (selector as HTMLElement)
       : document.querySelector<HTMLElement>(selector as string)
 
+    this.isRunningSupported = !!this.container
+
     if (this.container) {
       this.options = merge({}, commonConfig, defaultConfig, options)
       this.canvas = document.createElement('canvas')
@@ -94,21 +89,24 @@ export default abstract class Base<Options> {
 
       // 缓存颜色获取函数，提高性能
       this.getColor = this.makeColorMethod()
+    }
+  }
 
-      // 创建事件中心
-      this.eventEmitter = new Events()
-
+  /**
+   * 引导程序
+   */
+  protected bootstrap(): void {
+    if (this.isRunningSupported) {
       this.setCanvasDimension()
       this.observeCanvasRemoved()
-      this.init()
       this.resizeEvent()
+      this.init()
       this.draw()
     }
   }
 
   /**
    * 初始化数据或方法调用
-   * 注意数据都应该在这里被定义，而不是在子类的 constructor 中
    */
   protected abstract init(): void
 
@@ -240,8 +238,7 @@ export default abstract class Base<Options> {
    * 暂停运动
    */
   pause(callback?: (this: this, type: 'pause') => void): void {
-    // 没有 container 表示实例创建失败，防止错误调用报错
-    if (this.container && !this.isPaused && !this.isCanvasRemoved) {
+    if (this.isRunningSupported && !this.isCanvasRemoved && !this.isPaused) {
       // 传递类型关键字（pause）供特殊使用
       isFunction(callback) && callback!.call(this, 'pause')
       this.isPaused = true
@@ -252,7 +249,7 @@ export default abstract class Base<Options> {
    * 开启运动
    */
   open(callback?: (this: this, type: 'open') => void): void {
-    if (this.container && this.isPaused && !this.isCanvasRemoved) {
+    if (this.isRunningSupported && !this.isCanvasRemoved && this.isPaused) {
       isFunction(callback) && callback!.call(this, 'open')
       this.isPaused = false
       this.draw()

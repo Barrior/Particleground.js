@@ -37,13 +37,13 @@ export default class Events {
     if (!eventName) {
       // 移除所有事件
       this.listenerMap = {}
-      return
+      return this
     }
 
     if (!listener) {
       // 移除事件名称所有事件
       this.listenerMap[eventName] = []
-      return
+      return this
     }
 
     // 移除事件名称特定事件

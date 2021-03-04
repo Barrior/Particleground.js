@@ -73,10 +73,10 @@ export default class Particle extends Base<Options> {
   private positionY?: number
 
   // 鼠标坐标 X
-  private mouseX!: number
+  private mouseX = 0
 
   // 鼠标坐标 Y
-  private mouseY!: number
+  private mouseY = 0
 
   // 线条形状生成器
   private lineShapeMaker?: (
@@ -94,6 +94,7 @@ export default class Particle extends Base<Options> {
 
   constructor(selector: string | HTMLElement, options?: Partial<Options>) {
     super(Particle.defaultConfig, selector, options)
+    this.bootstrap()
   }
 
   /**

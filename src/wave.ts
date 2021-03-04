@@ -68,17 +68,20 @@ export default class Wave extends Mask<Options> {
   protected elements!: IElement[][]
 
   // 波长，每个周期(2π)在 Canvas 上的实际长度
-  private waveLength!: number[]
+  private waveLength: number[] = []
 
   constructor(
     selector: string | HTMLElement,
     options?: Omit<Partial<Options>, 'color'>
   ) {
     super(Wave.defaultConfig, selector, options)
+    this.bootstrap()
   }
 
+  /**
+   * 初始化数据和运行程序
+   */
   protected init(): void {
-    this.waveLength = []
     this.optionsNormalize()
     this.loadMaskImage()
     this.createDots()

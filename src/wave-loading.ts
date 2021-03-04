@@ -65,7 +65,7 @@ export default class WaveLoading extends Mask<InputOptions> {
   protected elements!: IElement[]
 
   // 当前进度
-  private progress!: number
+  private progress = 0
 
   // 画布半高
   private halfCH!: number
@@ -81,11 +81,14 @@ export default class WaveLoading extends Mask<InputOptions> {
 
   constructor(selector: string | HTMLElement, options?: Partial<InputOptions>) {
     super(WaveLoading.defaultConfig, selector, options)
+    this.bootstrap()
   }
 
-  protected init() {
+  /**
+   * 初始化数据和运行程序
+   */
+  protected init(): void {
     this.canvas.style.borderRadius = this.options.borderRadius
-    this.progress = 0
     this.options.offsetTop = this.canvasHeight
     this.halfCH = this.canvasHeight / 2
     this.optionsNormalize()
@@ -128,7 +131,7 @@ export default class WaveLoading extends Mask<InputOptions> {
   /**
    * 计算进度，绘制
    */
-  protected draw() {
+  protected draw(): void {
     this.eventEmitter.trigger(EVENT_NAMES_WAVE_LOADING.PROGRESS, this.progress)
     this.calcProgress()
 
@@ -276,7 +279,7 @@ export default class WaveLoading extends Mask<InputOptions> {
   /**
    * 窗口尺寸调整事件
    */
-  protected resizeEvent() {
+  protected resizeEvent(): void {
     super.resizeEvent((scaleX, scaleY) => {
       const options = ['offsetLeft', 'offsetTop', 'crestHeight'] as const
       options.forEach((option) => {
@@ -293,7 +296,7 @@ export default class WaveLoading extends Mask<InputOptions> {
   /**
    * 方法：动态设置属性值
    */
-  setOptions(newOptions: Partial<Pick<Options, DynamicOptions>>) {
+  setOptions(newOptions: Partial<Pick<Options, DynamicOptions>>): void {
     if (!this.options || !isPlainObject(newOptions)) {
       return
     }
@@ -318,7 +321,7 @@ export default class WaveLoading extends Mask<InputOptions> {
   /**
    * 方法：让进度立即加载完成
    */
-  done() {
+  done(): void {
     if (this.options && !this.isCompletedImmediately) {
       this.isCompletedImmediately = true
     }
@@ -327,7 +330,7 @@ export default class WaveLoading extends Mask<InputOptions> {
   /**
    * 事件：进度每次改变的时候触发
    */
-  onProgress(...args: Array<(progress: number) => void>) {
+  onProgress(...args: Array<(progress: number) => void>): this {
     this.eventEmitter.on(EVENT_NAMES_WAVE_LOADING.PROGRESS, ...args)
     return this
   }
@@ -335,7 +338,7 @@ export default class WaveLoading extends Mask<InputOptions> {
   /**
    * 事件：进度加载到 100% 后触发
    */
-  onFinished(...args: Array<() => void>) {
+  onFinished(...args: Array<() => void>): this {
     this.eventEmitter.on(EVENT_NAMES_WAVE_LOADING.FINISHED, ...args)
     return this
   }
