@@ -34,12 +34,10 @@
 
 - `JParticles`（JavaScript Particles 的缩写）是一款基于 `Canvas` 的不依赖于其他库的轻量级 `JavaScript` 粒子运动特效库。提供一些比较绚丽、实用的特效应用于 `WEB` 界面，希望能达到锦上添花的作用，给用户带来些许惊喜。
 
-- `JParticles` 的部分创意或代码来源于开源项目源码或他人分享，在此感谢原作者。
-
 
 ### 理念
 
-- `API` 与源码设计理念信仰 `"Write Less, Do More"` 和 `"Keep It Simple, Stupid"`，希望项目是：易于使用的、性能高效的、易于维护的。
+- `API` 与源码设计理念信仰 `Write Less, Do More` 和 `Keep It Simple, Stupid`，希望项目是：易于使用的、性能高效的、易于维护的。
 
 
 ### 兼容性

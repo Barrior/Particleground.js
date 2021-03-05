@@ -34,12 +34,10 @@
 
 - JParticles(abbreviation for JavaScript particles) is a lightweight JavaScript library for build some cool particle effects in WEB page base on Canvas.
 
-- Some of the ideas or codes of JParticles are derived from the source code of open source projects or shared by others. Thanks to the original author.
 
+### Concept
 
-### Ideas
-
-- The main ideas of API design are: `"The Write Less, Do More"` and `"Keep It Simple And Stupid"`. Hope the library is easy-to-use, high performance and easy-to-maintain.
+- The main Concept of API design are: `The Write Less, Do More` and `Keep It Simple And Stupid`. Hope the library is easy-to-use, high performance and easy-to-maintain.
 
 
 ### Compatibility
