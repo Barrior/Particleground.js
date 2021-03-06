@@ -259,7 +259,7 @@ export default class Particle extends Base<Options> {
         const sx = sibDot.x + sibDot.parallaxOffsetX
         const sy = sibDot.y + sibDot.parallaxOffsetY
 
-        lineShapeMaker!(x, y, sx, sy, () => {
+        lineShapeMaker?.(x, y, sx, sy, () => {
           ctx.save()
           ctx.beginPath()
           ctx.moveTo(x, y)
