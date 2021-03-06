@@ -44,6 +44,9 @@ export interface Options extends Partial<CommonConfig> {
 
   // 图形遮罩，以 https? 开头的 URL
   mask?: string
+
+  // 遮罩模式，默认 normal
+  maskMode?: 'normal' | 'ghost'
 }
 
 export type InputOptions = Omit<Options, 'offsetTop'>

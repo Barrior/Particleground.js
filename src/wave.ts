@@ -1,20 +1,13 @@
 import { doublePi } from '@src/common/constants'
 import Mask from '@src/common/mask'
 import { CommonConfig } from '@src/types/common-config'
-import {
-  IElement,
-  modeMethods,
-  Options,
-  StdOptions,
-  StrNumBool,
-} from '@src/types/wave'
+import { IElement, Options, StdOptions, StrNumBool } from '@src/types/wave'
 import {
   calcQuantity,
   isPlainObject,
   isUndefined,
   randomColor,
   randomInRange,
-  upperFirst,
 } from '@src/utils'
 
 // 仅允许 opacity、mask 及以下选项动态设置
@@ -70,9 +63,6 @@ export default class Wave extends Mask<Options> {
 
     // 运动速度，默认随机 [.1, .4)
     speed: [],
-
-    // 遮罩模式
-    maskMode: 'normal',
   }
 
   protected elements!: IElement[][]
@@ -215,44 +205,11 @@ export default class Wave extends Mask<Options> {
   protected draw(): void {
     this.clearCanvasAndSetGlobalAttrs()
 
-    this.ctx.save()
-    this[`mode${upperFirst(this.options.maskMode)}` as modeMethods]()
-    this.ctx.restore()
+    this.renderMaskMode(() => {
+      this.drawWaves()
+    })
 
     this.requestAnimationFrame()
-  }
-
-  /**
-   * 常规遮罩或无遮罩模式
-   */
-  private modeNormal() {
-    this.drawMaskImage()
-
-    // 设置图形组合模式，将波纹映射到遮罩内
-    this.ctx.globalCompositeOperation = 'source-atop'
-
-    this.drawWaves()
-  }
-
-  /**
-   * 幽灵遮罩模式：
-   *   1、用遮罩图片生成灰色背景
-   *   2、用波纹 clip 出原始遮罩图片
-   */
-  private modeGhost() {
-    // 绘制灰色背景
-    this.ctx.save()
-    this.ctx.filter = 'grayscale(100%)'
-    this.drawMaskImage()
-    this.ctx.restore()
-
-    // 设置图形组合模式，将效果映射到遮罩内
-    this.ctx.globalCompositeOperation = 'source-atop'
-
-    // 绘制原始图案
-    this.drawWaves()
-    this.ctx.clip()
-    this.drawMaskImage()
   }
 
   /**

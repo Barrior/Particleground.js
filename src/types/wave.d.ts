@@ -37,10 +37,8 @@ export interface ComOptions {
   mask?: string
 
   // 遮罩模式，默认 normal
-  maskMode: 'normal' | 'ghost'
+  maskMode?: 'normal' | 'ghost'
 }
-
-export type modeMethods = 'modeNormal' | 'modeGhost'
 
 export interface Options extends ComOptions, Partial<CommonConfig> {
   // 波纹个数

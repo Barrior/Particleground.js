@@ -6,17 +6,42 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    #instance {
-      padding-top: 100px;
-    }
-    .demo {
+    #instance .demo {
       width: 200px;
       height: 167px;
+    }
+
+    #instance2 .demo {
+      width: 492px;
+      height: 480px;
+    }
+
+    #instance3 .demo {
+      width: 243px;
+      height: 106px;
     }
   </style>
 </head>
 <body>
 <div id="instance">
+  <div class="demo"></div>
+  <div class="btn-box">
+    <button class="btn btn-primary" type="button" data-open>
+      done
+    </button>
+  </div>
+</div>
+
+<div id="instance2">
+  <div class="demo"></div>
+  <div class="btn-box">
+    <button class="btn btn-primary" type="button" data-open>
+      done
+    </button>
+  </div>
+</div>
+
+<div id="instance3">
   <div class="demo"></div>
   <div class="btn-box">
     <button class="btn btn-primary" type="button" data-open>
@@ -58,6 +83,36 @@
     btn.onclick = function() {
       loading.done()
     }
+  })()
+
+  ;(function() {
+    const effect = new JParticles.WaveLoading('#instance2 .demo', {
+      font: 'normal 900 18px Arial',
+      formatter: '%d%',
+      speed: 0.2,
+      crestCount: 1,
+      crestHeight: 10,
+      duration: 8000,
+      resize: false,
+      borderRadius: '',
+      mask: 'https://img20.360buyimg.com/ling/jfs/t1/171417/27/9991/212205/60433cc3E4d2daac2/bc52ead60a2f5cc4.png',
+      maskMode: 'ghost'
+    })
+  })()
+
+  ;(function() {
+    const effect = new JParticles.WaveLoading('#instance3 .demo', {
+      font: 'normal 900 18px Arial',
+      formatter: '',
+      speed: 0.2,
+      crestCount: 1,
+      crestHeight: 10,
+      duration: 8000,
+      resize: false,
+      borderRadius: '',
+      mask: 'https://img30.360buyimg.com/ling/jfs/t1/92499/15/4615/9505/5de86318E776b30d4/dd02ceff50fcbe7f.png',
+      maskMode: 'ghost'
+    })
   })()
 </script>
 </body>

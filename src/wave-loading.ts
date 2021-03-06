@@ -136,11 +136,11 @@ export default class WaveLoading extends Mask<InputOptions> {
     this.calcProgress()
 
     if (this.progress < 100) {
-      this.drawingCore()
+      this.mainDrawing()
       this.requestAnimationFrame()
     } else {
       this.progress = 100
-      this.drawingCore()
+      this.mainDrawing()
       this.eventEmitter.trigger(EVENT_NAMES_WAVE_LOADING.FINISHED)
     }
   }
@@ -148,15 +148,14 @@ export default class WaveLoading extends Mask<InputOptions> {
   /**
    * 绘制图案
    */
-  private drawingCore() {
+  private mainDrawing() {
     this.calcOffsetTop()
     this.clearCanvasAndSetGlobalAttrs()
 
-    this.ctx.save()
-    this.drawMask()
-    this.drawWave()
+    this.renderMaskMode(() => {
+      this.drawWave()
+    })
     this.drawText()
-    this.ctx.restore()
   }
 
   /**
