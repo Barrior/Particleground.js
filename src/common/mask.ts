@@ -42,6 +42,11 @@ export default abstract class Mask<Options> extends Base<Options> {
   }
 
   protected renderMaskMode(mainDrawing: () => void): void {
+    if (!this.maskImage) {
+      mainDrawing()
+      return
+    }
+
     const modeName = this.options.maskMode || 'normal'
     this.ctx.save()
     this[`mode${upperFirst(modeName)}` as modeMethodNames](mainDrawing)
@@ -54,7 +59,7 @@ export default abstract class Mask<Options> extends Base<Options> {
   private modeNormal(mainDrawing: () => void): void {
     this.drawMaskImage()
 
-    // 设置图形组合模式，将波纹映射到遮罩内
+    // 设置图形组合模式，将效果映射到遮罩内
     this.ctx.globalCompositeOperation = 'source-atop'
 
     mainDrawing()
