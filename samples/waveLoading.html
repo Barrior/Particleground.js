@@ -85,7 +85,7 @@
     const demo = instance.querySelector('.demo')
     const loading = new JParticles.WaveLoading(demo, {
       font: 'normal 900 30px Arial',
-      formatter: '加载中...%d%',
+      textFormatter: '加载中...%d%',
       color: '#ffc71f',
       fillColor: '#FFC107',
       offsetLeft: 3,
@@ -103,7 +103,7 @@
           color: '#fff',
           offsetLeft: 20,
           crestHeight: 20,
-          formatter: `loading...${Math.ceil(progress * 10)}‰`,
+          textFormatter: `loading...${Math.ceil(progress * 10)}‰`,
           speed: 0.2,
         })
       }
@@ -128,7 +128,7 @@
 
     loading.onProgress(function() {
       loading.setOptions({
-        formatter: `loading...`
+        textFormatter: `loading...`
       })
     })
 

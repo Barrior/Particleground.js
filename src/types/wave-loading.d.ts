@@ -9,7 +9,7 @@ export interface Options extends Partial<CommonConfig> {
   color: string
 
   // 进度文本模板，`%d` 将被替换成取整的进度值
-  formatter: string
+  textFormatter: string
 
   // 填充的背景色
   fillColor: string

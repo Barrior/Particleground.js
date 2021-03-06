@@ -10,7 +10,7 @@ const dynamicOptions = [
   'opacity',
   'font',
   'color',
-  'formatter',
+  'textFormatter',
   'fillColor',
   'offsetLeft',
   'crestHeight',
@@ -30,7 +30,7 @@ export default class WaveLoading extends Mask<InputOptions> {
     color: '#333',
 
     // 进度文本模板
-    formatter: 'loading...%d%',
+    textFormatter: 'loading...%d%',
 
     // 填充的背景色
     fillColor: '#27C9E5',
@@ -197,10 +197,10 @@ export default class WaveLoading extends Mask<InputOptions> {
    */
   private drawText() {
     const { ctx, canvasWidth, halfCH, progress } = this
-    const { font, formatter, color } = this.options
+    const { font, textFormatter, color } = this.options
 
     // 替换文本模板真实值
-    const text = formatter.replace(/%d/g, String(Math.floor(progress)))
+    const text = textFormatter.replace(/%d/g, String(Math.floor(progress)))
 
     ctx.save()
     ctx.font = font
