@@ -1,84 +1,4 @@
-import { piBy180, regExp } from '@src/common/constants'
 import { isPlainObject } from '@src/utils/checking'
-
-/**
- * 包装原生 parseInt，确保输出十进制数值
- */
-export function pInt(s: string | number, radix = 10): number {
-  return parseInt(s, radix)
-}
-
-/**
- * 包装原生 toFixed，确保输出数字而不是字符串
- */
-export function toFixed(num: number | string, digits = 0): number {
-  return parseFloat(Number(num).toFixed(digits))
-}
-
-/**
- * 移除字符串内所有空白，包括空格、空行、制表符
- */
-export function trimAll(str: string): string {
-  return str.replace(regExp.trimAll, '')
-}
-
-/**
- * 将字符串首字母转换成大写
- */
-export function upperFirst(str: string): string {
-  return str[0].toUpperCase() + str.substring(1)
-}
-
-/**
- * 角度转弧度
- */
-export function degreesToRadians(degrees: number): number {
-  return degrees * piBy180
-}
-
-/**
- * 弧度转角度
- */
-export function radiansToDegrees(radians: number): number {
-  return radians / piBy180
-}
-
-/**
- * 在指定范围内获取随机数
- */
-export function randomInRange(max: number, min: number): number {
-  return max === min ? max : Math.random() * (max - min) + min
-}
-
-/**
- * 获取随机速度，取最大或最小速度之间的随机值，并随机赋予正负值
- */
-export function randomSpeed(maxSpeed: number, minSpeed: number): number {
-  return (
-    (randomInRange(maxSpeed, minSpeed) || maxSpeed) *
-    (Math.random() > 0.5 ? 1 : -1)
-  )
-}
-
-/**
- * 获取随机颜色值，返回 16 进制色值
- */
-export function randomColor(): string {
-  // http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-  // prettier-ignore
-  return `#${Math.random().toString(16).slice(-6)}`
-}
-
-/**
- * 根据「原始值」及「范围值」计算数量
- * 当原始值为 (0, 1) 时，返回原始值与范围值的倍数
- * 当原始值为 0 或 [1, +∞) 时，返回原始值
- * @param value  原始值
- * @param range  范围值
- */
-export function calcQuantity(value: number, range: number): number {
-  return value > 0 && value < 1 ? value * range : value
-}
 
 /**
  * 深拷贝，浅拷贝请使用 Object.assign 或 ECMAScript 扩展运算符
@@ -115,24 +35,18 @@ export function merge<T extends any>(...objects: any[]): T {
 }
 
 /**
- * 检查参数是否是以 http(s) 开头的 URL
- */
-export function isHttpUrl(url: string): boolean {
-  return regExp.http.test(url)
-}
-
-/**
  * 加载图像
  * @param url 图像地址
- * @param callback 加载完成后的回调函数
+ * @param successCallback 加载成功的回调函数
+ * @param errorCallback 加载失败的回调函数
  */
 export function loadImage(
   url: string,
-  callback: (image: HTMLImageElement) => void
+  successCallback: (image: HTMLImageElement) => void,
+  errorCallback?: (e: ErrorEvent) => void
 ): void {
-  if (!isHttpUrl(url)) return
-
   const image = new Image()
-  image.addEventListener('load', () => callback(image))
+  image.addEventListener('load', () => successCallback(image))
+  image.addEventListener('error', (e) => errorCallback?.(e))
   image.src = url
 }

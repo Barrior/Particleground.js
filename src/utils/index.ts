@@ -1,3 +1,6 @@
-export * from './misc'
 export * from './checking'
 export * from './dom'
+export * from './math'
+export * from './misc'
+export * from './random'
+export * from './str-num'

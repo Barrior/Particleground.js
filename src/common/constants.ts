@@ -11,7 +11,7 @@ export const isRuntimeSupported = Object.defineProperty && !isIE8
 // 正则列表
 export const regExp = {
   trimAll: /\s/g,
-  http: /^https?/i,
+  http: /^(https?|\/\/)/i,
 }
 
 // 事件名列表

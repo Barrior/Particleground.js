@@ -1,5 +1,5 @@
 import { isElement, isString } from './checking'
-import { pInt } from './misc'
+import { pInt } from './str-num'
 
 /**
  * 获取 DOM 元素数值类型的样式并返回取整后的数值
