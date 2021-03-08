@@ -33,7 +33,7 @@ export interface ComOptions {
   // 运动速度，默认随机 [.1, .4)
   speed: number | number[]
 
-  // 图形遮罩，以 https? 开头的 URL
+  // 遮罩，图片 URL 地址或 Base64 格式
   mask?: string
 
   // 遮罩模式，默认 normal

@@ -42,7 +42,7 @@ export interface Options extends Partial<CommonConfig> {
   // 目前支持匀速(linear)，先加速再减速(swing)，两种
   easing: 'linear' | 'swing' | 'easeInOutQuad'
 
-  // 图形遮罩，以 https? 开头的 URL
+  // 遮罩，图片 URL 地址或 Base64 格式
   mask?: string
 
   // 遮罩模式，默认 normal
