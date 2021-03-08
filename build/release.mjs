@@ -19,10 +19,7 @@ if (BRANCH_NAME !== 'master') {
 }
 
 // run auto testing
-const pTest = execa.command('yarn test --verbose=false')
-pTest.stdout.pipe(process.stdout)
-pTest.stderr.pipe(process.stderr)
-await pTest
+await execa.command('yarn test --verbose=false', { stdio: 'inherit' })
 
 // build package files
 await execa.command('yarn build', { stdio: 'inherit' })
@@ -40,5 +37,5 @@ fs.writeFileSync(
 // @todo generate changelog
 
 await execa.command('yarn login', { stdio: 'inherit' })
-await execa.command('yarn publish', { stdio: 'inherit' })
+await execa.command('yarn publish --tag next', { stdio: 'inherit' })
 await execa.command('git checkout .', { stdio: 'inherit' })
