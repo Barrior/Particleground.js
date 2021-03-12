@@ -73,11 +73,8 @@
       fill: true,
       line: false,
       speed: 0.1,
-
       // 遮罩
-      // mask: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png'
-      // mask: 'https://img30.360buyimg.com/ling/jfs/t1/92499/15/4615/9505/5de86318E776b30d4/dd02ceff50fcbe7f.png'
-      mask: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Octicons-logo-github.svg',
+      mask: 'https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg',
     })
   })
 
@@ -124,7 +121,7 @@
   })
 
   bind('#instance3', function() {
-    return new JParticles.Wave('#instance3 .demo', {
+    const effect = new JParticles.Wave('#instance3 .demo', {
       num: 1,
       fillColor: 'rgba(20, 200, 255, 1)',
       crestHeight: 8,
@@ -138,6 +135,14 @@
       mask: 'https://img30.360buyimg.com/ling/jfs/t1/92499/15/4615/9505/5de86318E776b30d4/dd02ceff50fcbe7f.png',
       maskMode: 'ghost'
     })
+
+    setInterval(() => {
+      effect.setOptions({
+        maskMode: Math.random() > 0.5 ? 'ghost' : 'normal'
+      })
+    }, 1000)
+
+    return effect
   })
 </script>
 </body>

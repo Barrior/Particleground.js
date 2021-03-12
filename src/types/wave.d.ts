@@ -46,7 +46,7 @@ export interface Options extends ComOptions, Partial<CommonConfig> {
 }
 
 export type StdOptions = {
-  [K in keyof ComOptions]: K extends 'maskMode'
+  [K in keyof ComOptions]: K extends 'maskMode' | 'mask'
     ? ComOptions[K]
     : Extract<ComOptions[K], unknown[]>
 }

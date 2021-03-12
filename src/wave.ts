@@ -10,8 +10,8 @@ import {
   randomInRange,
 } from '@src/utils'
 
-// 仅允许 opacity、mask 及以下选项动态设置
-const dynamicOptions = [
+// 动态更新选项：复杂类型（合并赋值）
+const complexOptions = [
   'fill',
   'fillColor',
   'line',
@@ -23,9 +23,13 @@ const dynamicOptions = [
   'speed',
 ] as const
 
-export type DynamicOptions = ValueOf<typeof dynamicOptions>
+// 动态更新选项：简单类型（直接赋值）
+const plainOptions = ['opacity', 'mask', 'maskMode'] as const
 
-const stdProperties = [...dynamicOptions, 'crestCount'] as const
+const stdProperties = [...complexOptions, 'crestCount'] as const
+
+export type ComplexOptions = ValueOf<typeof complexOptions>
+export type PlainOptions = ValueOf<typeof plainOptions>
 
 export default class Wave extends Mask<Options> {
   static defaultConfig: Options = {
@@ -284,13 +288,13 @@ export default class Wave extends Mask<Options> {
   }
 
   /**
-   * 更新选项值
+   * 更新复杂选项值（合并赋值）
    * @param property 选项属性
    * @param newValue 新值
    */
-  private updateOptions(
-    property: DynamicOptions,
-    newValue?: ValueOf<Pick<Options, DynamicOptions>>
+  private updateComplexOptions(
+    property: ComplexOptions,
+    newValue?: ValueOf<Pick<Options, ComplexOptions>>
   ) {
     if (!newValue) return
 
@@ -320,26 +324,39 @@ export default class Wave extends Mask<Options> {
   }
 
   /**
+   * 更新简单选项值（直接赋值）
+   * @param property 选项属性
+   * @param newValue 新值
+   */
+  private updatePlainOptions(
+    option: PlainOptions,
+    newValue?: ValueOf<Pick<Options, PlainOptions>>
+  ) {
+    this.options[option] = newValue as never
+    if (option === 'mask') {
+      this.loadMaskImage()
+    }
+  }
+
+  /**
    * 动态设置 options 选项值
    */
   setOptions(
-    newOptions: Partial<Pick<Options, DynamicOptions | 'opacity' | 'mask'>>
+    newOptions: Partial<Pick<Options, ComplexOptions | PlainOptions>>
   ): void {
-    if (!this.options || !isPlainObject(newOptions)) {
-      return
-    }
+    if (!this.isRunningSupported || !isPlainObject(newOptions)) return
 
     for (const property in newOptions) {
       if (Object.hasOwnProperty.call(newOptions, property)) {
-        if (property === 'opacity' || property === 'mask') {
-          this.options[property] = newOptions[property] as never
-          if (property === 'mask') {
-            this.loadMaskImage()
-          }
-        } else if (dynamicOptions.indexOf(property as never) !== -1) {
-          this.updateOptions(
-            property as DynamicOptions,
-            newOptions[property as DynamicOptions]
+        if (plainOptions.indexOf(property as never) !== -1) {
+          this.updatePlainOptions(
+            property as PlainOptions,
+            newOptions[property as PlainOptions]
+          )
+        } else if (complexOptions.indexOf(property as never) !== -1) {
+          this.updateComplexOptions(
+            property as ComplexOptions,
+            newOptions[property as ComplexOptions]
           )
         }
       }
