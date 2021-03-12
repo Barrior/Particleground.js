@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
 const buildDir = path.resolve(__dirname)
 
-// check publish branch
+// Check branch and status
 const BRANCH_NAME = execa.commandSync('git symbolic-ref HEAD --short')
 if (BRANCH_NAME !== 'master') {
   logger.error(
@@ -18,23 +18,34 @@ if (BRANCH_NAME !== 'master') {
   process.exit(1)
 }
 
-// run auto testing
+// Run auto testing
 await execa.command('yarn test --verbose=false', { stdio: 'inherit' })
-
-// build package files
-await execa.command('yarn build', { stdio: 'inherit' })
-
-// update NPM docs
-fs.writeFileSync(
-  path.resolve(rootDir, 'README.md'),
-  fs.readFileSync(path.resolve(buildDir, 'README_NPM.md'))
-)
 
 // info Current version: 3.0.0-beta.0
 // New version(optional):
 // Set tag(optional):
-// @todo input version
-// @todo generate changelog
+
+// @todo flow:
+//   1. edit version field of package.json (version are not equal)
+//   2. build and publish to NPM
+//   3. generate changelog?
+//   4. commit version changes [feat(release): v3.0.0-beta.0]
+//   5. generate git tag
+//   6. push to remote
+
+// Discard changes when emit error
+process.on('uncaughtException', () => {
+  execa.commandSync('git checkout .', { stdio: 'inherit' })
+})
+
+// Build package files
+await execa.command('yarn build', { stdio: 'inherit' })
+
+// Update NPM docs
+fs.writeFileSync(
+  path.resolve(rootDir, 'README.md'),
+  fs.readFileSync(path.resolve(buildDir, 'README_NPM.md'))
+)
 
 await execa.command('yarn login', { stdio: 'inherit' })
 await execa.command('yarn publish --tag next', { stdio: 'inherit' })
